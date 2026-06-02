@@ -19,6 +19,11 @@
   gap: 35px;
 }
 
+.navbar.active {
+  top: 140px;
+}
+
+
 .navbar a {
   text-decoration: none;
   color: #111;
@@ -63,6 +68,13 @@ text-transform: uppercase;
   z-index: 1000; */
   }
 
+  .menu-icon {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+
 .logo {
   width: 150px;
   height: 150px;
@@ -83,6 +95,14 @@ body {
 
 .header h1 {
   color: #d4a017;
+}
+
+.hamburger {
+  display: none;
+  font-size: 32px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #d4af37;
 }
 
 .hero {
@@ -127,47 +147,169 @@ body {
 .section {
   padding: 50px 40px;
 }
-
 .section h2 {
-  margin-bottom: 25px;
+  text-align: center;
+  font-size: 2.5rem;
+  color: #d4af37;
+
+  text-transform: uppercase;
+  letter-spacing: 2px;
+
+  text-shadow:
+    2px 2px 5px rgba(0,0,0,0.25),
+    0 0 10px rgba(212,175,55,0.3);
+
+  margin-bottom: 40px;
 }
 
-.category-grid,
+
+.new-arrivals {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.arrival-slider {
+  overflow: hidden;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.arrival-track {
+  display: flex;
+  gap: 30px;
+  width: max-content;
+
+  animation: scrollArrivals 20s linear infinite;
+}
+
+.arrival-card {
+  min-width: 250px;
+  height: 250px;
+
+  background: white;
+  border-radius: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.arrival-card img {
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+}
+
+@keyframes scrollArrivals {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+.arrival-track:hover {
+  animation-play-state: paused;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 25px;
 }
 
-.category-card {
-  height: 350px;
-  background-size: cover;
-  background-position: center;
-  border-radius: 20px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
 
 
 .category-card:hover {
   transform: translateY(-8px);
 }
 
-
-.overlay {
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.45);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2rem;
-  letter-spacing: 3px;
-  font-weight: bold;
+.filter-buttons {
+  text-align: center;
+  margin-bottom: 25px;
 }
 
+.filter-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #d4af37;
+  color: white;
+  cursor: pointer;
+}
+
+.category-card {
+  height: 350px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #fff;
+  background-position: center;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+
+
+.arrival-card:hover {
+  transform: translateY(-8px);
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+}
+.arrival-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: linear-gradient(
+    transparent,
+    rgba(0,0,0,0.8)
+  );
+
+  color: white;
+
+  padding: 20px;
+  text-align: center;
+}
+
+.overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.overlay h3 {
+  color: white;
+  font-size: 1.4rem;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+}
+
+.overlay p {
+  color: #f4c542;
+  font-weight: bold;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+}
 .product-card {
   background: white;
   border-radius: 20px;
@@ -216,6 +358,8 @@ body {
   padding: 30px;
   border-radius: 20px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .feature-card h3 {
@@ -276,3 +420,178 @@ body {
 .whatsapp-btn:hover {
 transform: scale(1.1);
 }
+
+
+/* Mobile responsive*/
+
+   @media (max-width: 768px) {
+
+      .navbar {
+        display: none;
+      }
+    
+    .header {
+      flex-direction: column;
+      padding: 15px;
+      position: relative;
+    }
+  
+    .logo-container {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .logo {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .logo-container h1 {
+      font-size: 2rem;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+  
+    .navbar {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .hamburger {
+      display: block;
+      position: absolute;
+      right: 20px;
+      top: 40px;
+      z-index: 9999;
+    }
+    
+    .menu-icon {
+      display: block;
+    }
+    
+    .navbar {
+      display: none;
+    }
+    
+    .navbar.active {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      position: absolute;
+      top: 100px;
+      right: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+
+    .hero {
+      height: 60vh;
+      padding: 20px;
+    }
+  
+    .hero-content h2 {
+      font-size: 2rem;
+    }
+  
+    .hero-content p {
+      font-size: 1rem;
+    }
+  
+    .section {
+      padding: 40px 20px;
+    }
+  
+    .section h2 {
+      font-size: 2rem;
+    }
+  
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  
+    .category-card {
+      height: 180px;
+    }
+  
+    .overlay h3 {
+      font-size: 1.2rem;
+    }
+  
+    .overlay p {
+      font-size: 0.8rem;
+    }
+  
+    .arrival-card {
+      min-width: 220px;
+      height: 220px;
+    }
+  
+    .arrival-card img {
+      width: 180px;
+      height: 180px;
+    }
+  
+    .product-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .product-card {
+      width: 100%;
+    }
+  
+    .product-card img {
+      height: 220px;
+    }
+  
+    .contact-section {
+      flex-direction: column;
+      padding: 40px 20px;
+    }
+  
+    .contact-left,
+    .contact-right {
+      width: 100%;
+    }
+  
+    .contact-right iframe {
+      height: 300px;
+    }
+  
+    .footer {
+      text-align: center;
+      padding: 20px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    .feature-card {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .contact-left,
+.contact-right,
+.feature-card,
+.product-card,
+.category-card {
+  max-width: 100%;
+}
+
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      overflow-x: hidden;
+    }
+  }

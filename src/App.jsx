@@ -7,28 +7,35 @@ import airmax from "./assets/airmax image.jpeg";
 import crocsclassic from "./assets/crocsclassic.jpg";
 import casio from "./assets/casiowatch.avif";
 import "./App.css";
+import { useState } from "react";
 
 function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
   const categories = [
     {
       name: "Shoes",
       image: shoes,
+      startingPrice: "Starting From ₹999",
     },
     {
       name: "Crocs",
-      image:Crocs,
+      image: Crocs,
+      startingPrice: "Starting From ₹799",
     },
     {
       name: "Watches",
-      image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49",
+      image: casio,
+      startingPrice: "Starting From ₹499",
     },
     {
       name: "Sliders",
       image: slides,
+      startingPrice: "Starting From ₹399",
     },
     {
       name: "Flip-Flops",
       image: flipflop,
+      startingPrice: "Starting From ₹299",
     },
   ];
 
@@ -55,6 +62,25 @@ function App() {
       image: casio,
     },
   ];
+  const newArrivals = [
+    { id: 1, image: airmax },
+    { id: 2, image: crocsclassic },
+    { id: 3, image: casio },
+    { id: 4, image: airmax },
+    { id: 5, image: crocsclassic },
+    { id: 6, image: casio },
+    { id: 7, image: airmax },
+    { id: 8, image: crocsclassic },
+  ];
+
+  const [selectedCategory, setSelectedCategory] = useState("All");
+ 
+  const filteredProducts =
+  selectedCategory === "All"
+    ? products
+    : products.filter(
+        (product) => product.category === selectedCategory
+      );
 
   return (
     <div>
@@ -64,12 +90,25 @@ function App() {
     <h1>555 SHOES</h1>
   </div>
 
-  <nav className="navbar">
-    <a href="#">Home</a>
-    <a href="#">Categories</a>
-    <a href="#">Products</a>
-    <a href="#">Contact</a>
-  </nav>
+  <h1
+  style={{
+    color: "red",
+    fontSize: "50px",
+    position: "absolute",
+    top: "20px",
+    right: "20px",
+    zIndex: "99999",
+  }}
+>
+  MENU
+</h1>
+<nav className={`navbar ${menuOpen ? "active" : ""}`}>
+  <a href="#">Home</a>
+  <a href="#">Categories</a>
+  <a href="#">Products</a>
+  <a href="#">Contact</a>
+</nav>
+
 </header>
 
       <section className="hero">
@@ -80,26 +119,54 @@ function App() {
         </div>
       </section>
 
+     <section className="section">
+  <h2>🔥 New Arrivals</h2>
+
+  <div className="arrival-slider">
+    <div className="arrival-track">
+      {newArrivals.map((item) => (
+        <div className="arrival-card" key={item.id}>
+          <img src={item.image} alt="New Arrival" />
+        </div>
+      ))}
+
+      {newArrivals.map((item) => (
+        <div className="arrival-card" key={`copy-${item.id}`}>
+          <img src={item.image} alt="New Arrival" />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
       <section className="section">
         <h2>Categories</h2>
+        
+        <div className="filter-buttons">
+  <button onClick={() => setSelectedCategory("All")}>
+    All Products
+  </button>
+</div>
 
         <div className="category-grid">
           {categories.map((category) => (
             <div
-              key={category.name}
-              className="category-card"
+            key={category.name}
+            className="category-card"
+            onClick={() => setSelectedCategory(category.name)}
               style={{
                 backgroundImage: `url(${category.image})`,
               }}
             >
-              <div className="overlay">{category.name}</div>
+              <div className="overlay">
+               <h3>{category.name}</h3>
+                <p>{category.startingPrice}</p>
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="section">
-        <h2>Featured Collections</h2>
         <section className="section">
   <h2>Why Choose 555 Shoes</h2>
 
@@ -122,9 +189,11 @@ function App() {
 </section>
 
 
+<section className="section">
+        <h2>Featured Collections</h2>
 
         <div className="product-grid">
-          {products.map((product) => (
+        {filteredProducts.map((product) => (
             <div className="product-card" key={product.id}>
               <img src={product.image} alt={product.name} />
 
