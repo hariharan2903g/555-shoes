@@ -70,7 +70,7 @@ text-transform: uppercase;
 
   .menu-icon {
     display: none;
-    font-size: 30px;
+    font-size: 2rem;
     cursor: pointer;
   }
 
@@ -126,6 +126,7 @@ body {
 .hero-content h2 {
   font-size: 3rem;
   margin-bottom: 15px;
+  color: white;
     text-shadow: 0 3px 10px rgba(0,0,0,0.6);
 }
 

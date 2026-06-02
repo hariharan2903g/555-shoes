@@ -90,18 +90,12 @@ function App() {
     <h1>555 SHOES</h1>
   </div>
 
-  <h1
-  style={{
-    color: "red",
-    fontSize: "50px",
-    position: "absolute",
-    top: "20px",
-    right: "20px",
-    zIndex: "99999",
-  }}
+  <div
+  className="menu-icon"
+  onClick={() => setMenuOpen(!menuOpen)}
 >
-  MENU
-</h1>
+  ☰
+</div>
 <nav className={`navbar ${menuOpen ? "active" : ""}`}>
   <a href="#">Home</a>
   <a href="#">Categories</a>
