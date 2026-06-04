@@ -7,10 +7,23 @@ import airmax from "./assets/airmax image.jpeg";
 import crocsclassic from "./assets/crocsclassic.jpg";
 import casio from "./assets/casiowatch.avif";
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 80);
+    };
+  
+    window.addEventListener("scroll", handleScroll);
+  
+    return () =>
+      window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const categories = [
     {
       name: "Shoes",
@@ -84,22 +97,30 @@ function App() {
 
   return (
     <div>
-     <header className="header">
-  <div className="logo-container">
-    <img src={logo} alt="555 Shoes Logo" className="logo" />
-    <h1>555 SHOES</h1>
-  </div>
-
-  <div
+     <header className={`header ${scrolled ? "scrolled" : ""}`}>
+     <div
+  className={`logo-container ${ scrolled ? "logo-small" : ""}`}>
+      <img src={logo} alt="555 Shoes Logo" className="logo" />
+      <h1 className={scrolled ? "hide-title" : ""}>555 SHOES </h1> 
+     </div>
+     <div
   className="menu-icon"
   onClick={() => setMenuOpen(!menuOpen)}
 >
   ☰
 </div>
+{menuOpen && (
+  <div
+    className="menu-overlay"
+    onClick={() => setMenuOpen(false)}
+  ></div>
+)}
 <nav className={`navbar ${menuOpen ? "active" : ""}`}>
-  <a href="#">Home</a>
-  <a href="#">Categories</a>
-  <a href="#">Products</a>
+  <a href="#">Men</a>
+  <a href="#">Women</a>
+  <a href="#">Watches</a>
+  <a href="#">Sale</a>
+  <a href="#">Help</a>
   <a href="#">Contact</a>
 </nav>
 
