@@ -96,12 +96,25 @@ text-transform: uppercase;
   background: white;
   z-index: 1000;
 
-  transition: all 0.3s ease;
+  transition: all 0.7s ease;
 
     /* position: sticky;
   top: 0;
   background: white;
   z-index: 1000; */
+  }
+
+  .logo {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    transition: all 0.4s ease;
+  }
+  
+  .hide-title {
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.4s ease;
   }
 
   /* .menu-icon {
@@ -112,7 +125,7 @@ text-transform: uppercase;
 
   .menu-icon {
     position: absolute;
-    top: 20px;
+    top: 40px;
     right: 30px;
     font-size: 2rem;
   }
@@ -474,15 +487,28 @@ body {
 transform: scale(1.1);
 }
 
-.logo-small .logo {
-  width: 60px;
-  height: 60px;
+.logo {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+
+  transition: all 0.4s ease;
+}
+
+.header.scrolled .logo {
+  width: 100px;
+  height: 100px;
 }
 
 .hide-title {
   opacity: 0;
-  width: 0;
-  overflow: hidden;
+  transform: translateY(-20px);
+
+  transition: all 0.4s ease;
+}
+
+.logo-container h1 {
+  transition: all 0.4s ease;
 }
 
 .logo-container h1 {
@@ -505,16 +531,39 @@ transform: scale(1.1);
         display: none;
       }
     
-    .header {
-      flex-direction: column;
-      padding: 15px;
-      position: relative;
-    }
-  
-    .logo-container {
-      flex-direction: column;
-      gap: 10px;
-    }
+      .header {
+        padding: 15px 20px;
+        position: fixed;
+        width: 100%;
+      }
+
+      .header.scrolled {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 5px 15px;
+      }
+
+      .header.scrolled .logo {
+        width: 80px;
+        height: 80px;
+      }
+
+      .header.scrolled .logo-container {
+        gap: 5px;
+      }
+      
+      .logo-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .hide-title {
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: all 0.4s ease;
+        pointer-events: none;
+      }
   
     .logo {
       width: 100px;
