@@ -549,8 +549,8 @@ transform: scale(1.1);
       }
 
       .header.scrolled .logo-container {
-        gap: 5px;
-      }
+  gap: 5px;
+}
       
       .logo-container {
         display: flex;

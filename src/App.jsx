@@ -7,6 +7,11 @@ import airmax from "./assets/airmax image.jpeg";
 import crocsclassic from "./assets/crocsclassic.jpg";
 import casio from "./assets/casiowatch.avif";
 import "./App.css";
+import Header from "./components/Header";
+import Hero from "./components/Hero";
+import Categories from "./components/Categories";
+// import Contact from "./components/Contact";
+// import Footer from "./components/Footer";
 import { useState, useEffect } from "react";
 
 function App() {
@@ -97,42 +102,14 @@ function App() {
 
   return (
     <div>
-     <header className={`header ${scrolled ? "scrolled" : ""}`}>
-     <div
-  className={`logo-container ${ scrolled ? "logo-small" : ""}`}>
-      <img src={logo} alt="555 Shoes Logo" className="logo" />
-      <h1 className={scrolled ? "hide-title" : ""}>555 SHOES </h1> 
-     </div>
-     <div
-  className="menu-icon"
-  onClick={() => setMenuOpen(!menuOpen)}
->
-  ☰
-</div>
-{menuOpen && (
-  <div
-    className="menu-overlay"
-    onClick={() => setMenuOpen(false)}
-  ></div>
-)}
-<nav className={`navbar ${menuOpen ? "active" : ""}`}>
-  <a href="#">Men</a>
-  <a href="#">Women</a>
-  <a href="#">Watches</a>
-  <a href="#">Sale</a>
-  <a href="#">Help</a>
-  <a href="#">Contact</a>
-</nav>
 
-</header>
+<Header
+  menuOpen={menuOpen}
+  setMenuOpen={setMenuOpen}
+  scrolled={scrolled}
+/>
 
-      <section className="hero">
-        <div className="hero-content">
-          <h2>EVERY STEP HAS A STORY</h2>
-          <p>Premium Footwear & Accessories</p>
-          <button>Browse Collection</button>
-        </div>
-      </section>
+<Hero />
 
      <section className="section">
   <h2>🔥 New Arrivals</h2>
@@ -154,33 +131,8 @@ function App() {
   </div>
 </section>
 
-      <section className="section">
-        <h2>Categories</h2>
-        
-        <div className="filter-buttons">
-  <button onClick={() => setSelectedCategory("All")}>
-    All Products
-  </button>
-</div>
+<Categories categories={categories} />
 
-        <div className="category-grid">
-          {categories.map((category) => (
-            <div
-            key={category.name}
-            className="category-card"
-            onClick={() => setSelectedCategory(category.name)}
-              style={{
-                backgroundImage: `url(${category.image})`,
-              }}
-            >
-              <div className="overlay">
-               <h3>{category.name}</h3>
-                <p>{category.startingPrice}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
         <section className="section">
   <h2>Why Choose 555 Shoes</h2>
