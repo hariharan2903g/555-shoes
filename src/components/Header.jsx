@@ -1,6 +1,7 @@
 import logo from "../assets/555logo.png";
 import { useEffect } from "react";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Header({menuOpen,setMenuOpen,scrolled,}) {
   
@@ -55,14 +56,15 @@ function Header({menuOpen,setMenuOpen,scrolled,}) {
   </button>
 </div>
 
-  <a href="#">Shoes</a>
-  <a href="#">Slides</a>
-  <a href="#">Crocs</a>
-  <a href="#">Sandals</a>
-  <a href="#">Watches</a>
-  <a href="#">Sale</a>
-  <a href="#">Help</a>
-  <a href="#">Contact</a>
+<Link to="/category/shoes"onClick={() => setMenuOpen(false)}>Shoes</Link>
+
+<Link to="/category/slides"onClick={() => setMenuOpen(false)}>Slides</Link>
+
+<Link to="/category/crocs"onClick={() => setMenuOpen(false)}>Crocs</Link>
+
+<Link to="/category/Flip-Flops"onClick={() => setMenuOpen(false)}>Sandals</Link>
+
+<Link to="/category/watches"onClick={() => setMenuOpen(false)}>Watches</Link>
 
   <div className="menu-socials">
   <a

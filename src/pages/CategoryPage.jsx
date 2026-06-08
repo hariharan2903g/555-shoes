@@ -3,66 +3,91 @@ import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
+import logo from "../assets/555logo.png";
 
 function CategoryPage() {
   const { category } = useParams();
   const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
     fetchCategoryProducts();
   }, [category]);
 
-  async function fetchCategoryProducts() {
-    const { data, error } = await supabase
-      .from("products")
-      .select("*")
-      .ilike("category", category);
+ async function fetchCategoryProducts() {
 
-    if (error) {
-      console.error(error);
-    } else {
-      setProducts(data);
-    }
+  setLoading(true);
+
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .ilike("category", category);
+
+  if (error) {
+    console.error(error);
+  } else {
+    setProducts(data);
   }
 
+  setLoading(false);
+}
+
+if (loading) {
   return (
-    <section className="section">
-      <h2 className="category-page-title">
-  {category.toUpperCase()}
-</h2>
+    <div className="loading-screen">
+      <img
+        src={logo}
+        alt="555 Shoes"
+        className="loading-logo"
+      />
+    </div>
+  );
+}
 
-      <div className="category-products-grid">
-                {products.map((product) => (
-          <div
-            key={product.id}
-            className="product-category-card"
-            onClick={() =>
-              navigate(`/product/${product.id}`)
-            }
-          >
-            <img
-              src={product.image_url}
-              alt={product.name}
-            />
-
-            <div className="product-category-info">
-              <h3>{product.name}</h3>
-
-              <p>₹{product.price}</p>
-
-              <button>
-                View Product
-              </button>
+  return (
+    <div className="category-page">
+  
+      <section className="section">
+        <h2 className="category-page-title">
+          {category.toUpperCase()}
+        </h2>
+  
+        <div className="category-products-grid">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="product-category-card"
+              onClick={() =>
+                navigate(`/product/${product.id}`)
+              }
+            >
+              <img
+                src={product.image_url}
+                alt={product.name}
+              />
+  
+              <div className="product-category-info">
+                <h3>{product.name}</h3>
+                <p>₹{product.price}</p>
+  
+                <button>
+                  View Product
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-      <Contact />
-  <Footer />
-    </section>
-    
+          ))}
+        </div>
+      </section>
+  
+      <Footer />
+  
+    </div>
   );
 }
 

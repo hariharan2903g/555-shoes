@@ -3,7 +3,7 @@ function Contact() {
     return (
         <section className="contact-section">
         <div className="contact-left">
-          <h2>Contact 555 Shoes</h2>
+          <h2>Contact Us</h2>
       
           <p>📞 +91 7868905884</p>
           <p>﹫ 555shoesindia@gmail.com</p>
