@@ -58,8 +58,7 @@ function FeaturedProducts({
       })
     }
   >
-<FaChevronRight/> 
- </button>
+<FaChevronRight/>  </button>
 </div>
       </section>
     );

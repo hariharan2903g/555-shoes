@@ -1,3 +1,4 @@
+import { FaWhatsapp } from "react-icons/fa";
 function Contact() {
     return (
         <section className="contact-section">
@@ -9,9 +10,17 @@ function Contact() {
           <p>📍Garage no.19 <br />28th Cross Street <br /> Besant Nagar <br />Chennai-90</p>
           <p>🕒 Open Daily:11 AM - 10 PM</p>
       
-          <button className="whatsapp-btn">
-            WhatsApp Us 
-          </button>
+          <button
+  className="whatsapp-btn"
+  onClick={() =>
+    window.open(
+      "https://wa.me/917868905884",
+      "_blank"
+    )
+  }
+> <FaWhatsapp /> 
+  WhatsApp Us
+</button>
         </div>
       
         <div className="contact-right">

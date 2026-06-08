@@ -49,7 +49,7 @@ function ProductModal({
 
                 <div className="modal-label">
                   Category
-                </div>
+              </div>
 
               <div className="modal-value">
                     {product.category}

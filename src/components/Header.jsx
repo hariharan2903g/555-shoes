@@ -1,11 +1,20 @@
 import logo from "../assets/555logo.png";
+import { useEffect } from "react";
 import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 
-function Header({
-    menuOpen,
-    setMenuOpen,
-    scrolled,
-  }) {
+function Header({menuOpen,setMenuOpen,scrolled,}) {
+  
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [menuOpen]);
     return (
       <header
         className={`header ${scrolled ? "scrolled" : ""}`}>
@@ -36,14 +45,16 @@ function Header({
   
         <nav className={menuOpen ? "navbar active" : "navbar"}>
         <div className="menu-header">
-          <img src={logo} alt="logo" />
-        </div>
-        <button className="menu-close"
+  <img src={logo} alt="logo" />
+
+  <button
+    className="menu-close"
     onClick={() => setMenuOpen(false)}
-         >
-           ✕
-         </button>
-  <a href="#">New Arrivals</a>
+  >
+    ✕
+  </button>
+</div>
+
   <a href="#">Shoes</a>
   <a href="#">Slides</a>
   <a href="#">Crocs</a>
@@ -59,18 +70,14 @@ function Header({
     target="_blank"
     rel="noreferrer"
   >
-    <FaInstagram />
-    Instagram
-  </a>
+    <FaInstagram /></a>
 
   <a
     href="https://wa.me/917868905884"
     target="_blank"
     rel="noreferrer"
   >
-    <FaWhatsapp />
-    WhatsApp
-  </a>
+    <FaWhatsapp />  </a>
 </div>
 </nav>
       </header>
