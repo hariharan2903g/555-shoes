@@ -1,12 +1,16 @@
+import { useRef } from "react";
+import {FaChevronLeft,FaChevronRight,} from "react-icons/fa";
 function FeaturedProducts({
     products,
     setSelectedProduct,
   }) {
+    const sliderRef = useRef(null);
     return (
       <section className="section">
         <h2>Featured Collections</h2>
   
-        <div className="product-grid">
+        <div
+  className="product-grid"ref={sliderRef} >
           {products.map((product) => (
             <div
               className="product-card"
@@ -34,6 +38,29 @@ function FeaturedProducts({
             </div>
           ))}
         </div>
+        <div className="scroll-controls">
+  <button
+    onClick={() =>
+      sliderRef.current.scrollBy({
+        left: -300,
+        behavior: "smooth",
+      })
+    }
+  >
+    <FaChevronLeft />
+  </button>
+
+  <button
+    onClick={() =>
+      sliderRef.current.scrollBy({
+        left: 300,
+        behavior: "smooth",
+      })
+    }
+  >
+<FaChevronRight/> 
+ </button>
+</div>
       </section>
     );
   }
