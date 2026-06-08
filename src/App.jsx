@@ -11,12 +11,20 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Categories from "./components/Categories";
 import Contact from "./components/Contact";
+import Whychooseus from "./components/Whychooseus";
 import Footer from "./components/Footer";
+import NewArrivals from "./components/NewArrivals";
+import ProductModal from "./components/ProductModal";
+import FeaturedProducts from "./components/FeaturedProducts";
+import { supabase } from "./supabase";
 import { useState, useEffect } from "react";
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [newArrivals, setNewArrivals] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -57,39 +65,39 @@ function App() {
     },
   ];
 
-  const products = [
-    {
-      id: 1,
-      name: "Nike Air Max",
-      price: "₹3,999",
-      category: "Shoes",
-      image: airmax,
-    },
-    {
-      id: 2,
-      name: "Classic Crocs",
-      price: "₹2,499",
-      category: "Crocs",
-      image: crocsclassic,
-    },
-    {
-      id: 3,
-      name: "Casio Watch",
-      price: "₹1,999",
-      category: "Watches",
-      image: casio,
-    },
-  ];
-  const newArrivals = [
-    { id: 1, image: airmax },
-    { id: 2, image: crocsclassic },
-    { id: 3, image: casio },
-    { id: 4, image: airmax },
-    { id: 5, image: crocsclassic },
-    { id: 6, image: casio },
-    { id: 7, image: airmax },
-    { id: 8, image: crocsclassic },
-  ];
+  useEffect(() => {
+    fetchProducts();
+    fetchNewArrivals();
+  }, []);
+  
+  async function fetchProducts() {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*");
+  
+    if (error) {
+      console.error(error);
+    } else {
+      setProducts(data);
+      console.log(data);
+    }
+  }
+  
+  // newArrivals fetching
+
+  async function fetchNewArrivals() {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(8);
+  
+    if (error) {
+      console.error(error);
+    } else {
+      setNewArrivals(data);
+    }
+  }
 
   const [selectedCategory, setSelectedCategory] = useState("All");
  
@@ -111,74 +119,34 @@ function App() {
 
 <Hero />
 
-     <section className="section">
-  <h2>🔥 New Arrivals</h2>
+<NewArrivals
+  newArrivals={newArrivals}
+  setSelectedProduct={setSelectedProduct}
+/>
 
-  <div className="arrival-slider">
-    <div className="arrival-track">
-      {newArrivals.map((item) => (
-        <div className="arrival-card" key={item.id}>
-          <img src={item.image} alt="New Arrival" />
-        </div>
-      ))}
-
-      {newArrivals.map((item) => (
-        <div className="arrival-card" key={`copy-${item.id}`}>
-          <img src={item.image} alt="New Arrival" />
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
+<FeaturedProducts
+  products={filteredProducts}
+  setSelectedProduct={setSelectedProduct}
+/>
 
 <Categories categories={categories} />
 
+<Whychooseus />
 
-        <section className="section">
-  <h2>Why Choose 555 Shoes</h2>
-
-  <div className="features">
-    <div className="feature-card">
-      <h3>Premium Quality</h3>
-      <p>Carefully selected footwear and accessories.</p>
-    </div>
-
-    <div className="feature-card">
-      <h3>Latest Styles</h3>
-      <p>Modern collections for every occasion.</p>
-    </div>
-
-    <div className="feature-card">
-      <h3>Trusted Service</h3>
-      <p>Helping customers step confidently every day.</p>
-    </div>
-  </div>
-</section>
-
-
-<section className="section">
-        <h2>Featured Collections</h2>
-
-        <div className="product-grid">
-        {filteredProducts.map((product) => (
-            <div className="product-card" key={product.id}>
-              <img src={product.image} alt={product.name} />
-
-              <div className="product-info">
-                <h3>{product.name}</h3>
-                <p>{product.price}</p>
-                <span>{product.category}</span>
-
-                <button>View Product</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 <Contact/>
 
 <Footer />
+
+{selectedProduct && (
+  <ProductModal
+    product={selectedProduct}
+    setSelectedProduct={
+      setSelectedProduct
+    }
+  />
+)}
     </div>
+    
     
   );
   

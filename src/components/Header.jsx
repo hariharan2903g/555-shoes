@@ -1,5 +1,5 @@
 import logo from "../assets/555logo.png";
-
+import { FaInstagram, FaWhatsapp } from "react-icons/fa";
 
 function Header({
     menuOpen,
@@ -27,19 +27,52 @@ function Header({
         >
           ☰
         </div>
+        {menuOpen && (
+  <div
+    className="menu-overlay"
+    onClick={() => setMenuOpen(false)}>
+   </div>
+    )}
   
-        <nav
-          className={`navbar ${
-            menuOpen ? "active" : ""
-          }`}
-        >
-          <a href="#">Men</a>
-          <a href="#">Women</a>
-          <a href="#">Watches</a>
-          <a href="#">Sale</a>
-          <a href="#">Help</a>
-          <a href="#">Contact</a>
-        </nav>
+        <nav className={menuOpen ? "navbar active" : "navbar"}>
+        <div className="menu-header">
+          <img src={logo} alt="logo" />
+        </div>
+        <button className="menu-close"
+    onClick={() => setMenuOpen(false)}
+         >
+           ✕
+         </button>
+  <a href="#">New Arrivals</a>
+  <a href="#">Shoes</a>
+  <a href="#">Slides</a>
+  <a href="#">Crocs</a>
+  <a href="#">Sandals</a>
+  <a href="#">Watches</a>
+  <a href="#">Sale</a>
+  <a href="#">Help</a>
+  <a href="#">Contact</a>
+
+  <div className="menu-socials">
+  <a
+    href="https://instagram.com/555_shoes_online"
+    target="_blank"
+    rel="noreferrer"
+  >
+    <FaInstagram />
+    Instagram
+  </a>
+
+  <a
+    href="https://wa.me/917868905884"
+    target="_blank"
+    rel="noreferrer"
+  >
+    <FaWhatsapp />
+    WhatsApp
+  </a>
+</div>
+</nav>
       </header>
     );
   }

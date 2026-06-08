@@ -19,41 +19,46 @@
   gap: 35px;
   position: fixed;
   top: 0;
-  right: -300px;
   width: 250px;
   height: 100vh;
   background: white;
-  transition: 0.3s;
+  transform: translateX(100%);
+  transition: transform 0.35s ease;
 }
 
 .navbar.active {
   display: flex;
   flex-direction: column;
-
+  transform: translateX(0);
   position: fixed;
   top: 0;
   right: 0;
-
   width: 280px;
   height: 100vh;
-
   background: white;
-
-  padding: 100px 30px;
-
+  padding: 70px 40px 40px;
   gap: 25px;
-
   box-shadow: -5px 0 20px rgba(0,0,0,0.15);
-
   z-index: 9999;
 }
 
+.navbar.active a {
+  font-size: 2rem;
+  font-weight: 400;
+  margin: 0;
+  padding: 12px 0;
+  border-bottom: none;
+}
 
 .navbar a {
   text-decoration: none;
   color: #111;
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.8rem;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
   position: relative;
   transition: all 0.3s ease;
   letter-spacing: 1px;
@@ -79,6 +84,10 @@ text-transform: uppercase;
   width: 100%;
 }
 
+.navbar a:not(:last-child) {
+  border-bottom: 1px solid #f1f1f1;
+  padding-bottom: 18px;
+}
 
 .header {
   padding: 15px 30px;
@@ -132,13 +141,30 @@ text-transform: uppercase;
 
   .menu-overlay {
     position: fixed;
+  
     top: 0;
     left: 0;
+  
     width: 100%;
     height: 100%;
-    z-index: 998;
+  
+    background: rgba(0,0,0,0.45);
+  
+    z-index: 9998;
   }
 
+  .menu-header {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  .menu-header img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+  }
+  
 .logo {
   width: 150px;
   height: 150px;
@@ -164,10 +190,10 @@ body {
 
 .hamburger {
   display: none;
-  font-size: 32px;
+  font-size: 38px;
+  color: #111;
   font-weight: bold;
   cursor: pointer;
-  color: #d4af37;
 }
 
 .hero {
@@ -237,21 +263,34 @@ body {
 }
 
 .arrival-slider {
-  overflow: hidden;
-  width: 100%;
-  padding: 20px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  cursor: grab;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  user-select: none;
 }
+
 
 .arrival-track {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   width: max-content;
+  animation: autoScroll 30s linear infinite;
+}
+@keyframes autoScroll {
+  from {
+    transform: translateX(0);
+  }
 
-  animation: scrollArrivals 20s linear infinite;
+  to {
+    transform: translateX(-70%);
+  }
 }
 
 .arrival-card {
   min-width: 250px;
+  flex: 0 0 250px;
   height: 250px;
 
   background: white;
@@ -269,16 +308,10 @@ body {
   height: 220px;
   object-fit: contain;
 }
-
-@keyframes scrollArrivals {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
+.arrival-slider::-webkit-scrollbar {
+  display: none;
 }
+
 .arrival-track:hover {
   animation-play-state: paused;
 }
@@ -381,8 +414,11 @@ body {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  
+
+  display: flex;
+  flex-direction: column;
 }
+
 .product-card:hover {
   transform: translateY(-5px);
   transition: 0.3s;
@@ -390,16 +426,21 @@ body {
 
 .product-card img {
   width: 100%;
-  height: 250px;
+  height: 220px;
   object-fit: contain;
-  object-position: center;
+  padding: 15px;
 }
 
 .product-info {
   padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .product-info h3 {
+  min-height: 80px;
   margin-bottom: 10px;
 }
 
@@ -413,6 +454,10 @@ body {
   display: block;
   margin-bottom: 15px;
 }
+.product-info button {
+  margin-top: auto;
+}
+
 .features {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -519,9 +564,172 @@ transform: scale(1.1);
   transition: all 0.3s ease;
 }
 
+/* product display */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.75);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 9999;
+}
+
+.modal {
+  background: white;
+  position: relative;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.modal-image {
+  width: 100%;
+  height: 250px;
+  object-fit: contain;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.modal-content {
+  flex: 1;
+  padding: 30px 30px 50px 30px;
+  min-width: 300px;
+}
+.modal-content h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.modal-product-name{
+  padding: 0 30px 30px 30px;
+}
+.modal-product-name h2 {
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #222;
+  margin-top: 15px;
+  padding: 0 10px 10px;
+}
+
+.modal-price {
+  font-size: 32px;
+  font-weight: 700;
+  color: #d4af37;
+  margin: 20px 0 5px;
+  padding-left: 50px;
+}
+.modal-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #999;
+  margin-top: 15px;
+}
+.modal-divider {
+  height: 1px;
+  background: #eee;
+  margin: 20px 0;
+}
+.modal-divider {
+  height: 1px;
+  background: #eee;
+  margin: 20px 0;
+}
+
+.modal-brand span,
+.modal-category span {
+  color: #d4af37;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.modal-category {
+  color: #666;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.modal-description {
+  color: #666;
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+.add-cart-btn {
+  width: 100%;
+  padding: 15px;
+  margin-top: 25px;
+
+  background: #d4af37;
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.close-btn {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+
+  width: 50px;
+  height: 50px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #d4af37;
+  color: white;
+
+  font-size: 24px;
+  cursor: pointer;
+
+  z-index: 999;
+}
+/* Social media btn */
+
+.menu-socials {
+  margin-top: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+
+  padding-top: 25px;
+
+  border-top: 1px solid #eee;
+}
+
+.menu-socials a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  text-decoration: none;
+  color: #111;
+
+  font-size: 16px;
+  font-weight: 500;
+}
 
 
-
+.menu-socials a:hover {
+  color: #d4af37;
+}
 
 /* Mobile responsive*/
 
@@ -544,8 +752,8 @@ transform: scale(1.1);
       }
 
       .header.scrolled .logo {
-        width: 80px;
-        height: 80px;
+        width: 200px;
+        height: 200px;
       }
 
       .header.scrolled .logo-container {
@@ -603,15 +811,32 @@ transform: scale(1.1);
     .navbar.active {
       display: flex;
       flex-direction: column;
-      gap: 15px;
-      position: absolute;
-      top: 100px;
-      right: 20px;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 85%;
+      max-width: 320px;
+      height: 100vh;    
+      background: #fff;
+      padding: 25px 30px;    
+      box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+      z-index: 9999;
     }
+
+   .menu-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+
+  background: none;
+  border: none;
+
+  font-size: 32px;
+  color: #111;
+
+  cursor: pointer;
+  z-index: 10000;
+}
 
     .hero {
       height: 60vh;
