@@ -8,6 +8,8 @@ import crocsclassic from "../assets/crocsclassic.jpg";
 import casio from "../assets/casiowatch.avif";
 import "../App.css";
 import Header from "../components/Header";
+import DiscountBanner from "../components/DiscountBanner";
+import Banner from "../components/Banner";
 import Hero from "../components/Hero";
 import Categories from "../components/Categories";
 import Contact from "../components/Contact";
@@ -18,6 +20,8 @@ import ProductModal from "../components/ProductModal";
 import FeaturedProducts from "../components/FeaturedProducts";
 import { supabase } from "../supabase";
 import { useState, useEffect } from "react";
+import accessoriesImage from "../assets/accessories.avif";
+import Brands from "../components/Brands";
 
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -61,6 +65,11 @@ function Home() {
     {
       name: "Flip-Flops",
       image: flipflop,
+      startingPrice: "Starting From ₹299",
+    },
+    {
+      name: "Accessories",
+      image: accessoriesImage,
       startingPrice: "Starting From ₹299",
     },
   ];
@@ -117,6 +126,8 @@ function Home() {
   scrolled={scrolled}
 />
 
+<Banner/>
+
 <Hero />
 
 <NewArrivals
@@ -124,12 +135,16 @@ function Home() {
   setSelectedProduct={setSelectedProduct}
 />
 
+<DiscountBanner />
+
+<Categories categories={categories} />
+
+<Brands />
+
 <FeaturedProducts
   products={filteredProducts}
   setSelectedProduct={setSelectedProduct}
 />
-
-<Categories categories={categories} />
 
 <Whychooseus />
 

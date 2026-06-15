@@ -1,6 +1,7 @@
 import logo from "../assets/555logo.png";
 import { useEffect } from "react";
-import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import {FaInstagram,FaWhatsapp,FaSearch,FaShoppingBag,}from "react-icons/fa";
+import {FiSearch,FiShoppingBag} from "react-icons/fi";
 import { Link } from "react-router-dom";
 
 function Header({menuOpen,setMenuOpen,scrolled,}) {
@@ -17,26 +18,47 @@ function Header({menuOpen,setMenuOpen,scrolled,}) {
     };
   }, [menuOpen]);
     return (
-      <header
-        className={`header ${scrolled ? "scrolled" : ""}`}>
-        <div className="logo-container">
-          <img
-            src={logo}
-            alt="555 Shoes Logo"
-            className="logo"
-          />
-  
-          <h1 className={scrolled ? "hide-title" : ""}>
-            555 SHOES
-          </h1>
-        </div>
-  
-        <div
+      <header className={`header ${scrolled ? "scrolled" : ""}`}>
+    <div className="header-left">
+
+<div
+  className={`logo-container ${scrolled ? "logo-left" : ""}`}>
+  <img
+    src={logo}
+    alt="555 Shoes Logo"
+    className="logo"
+  />
+
+  <h1 className={scrolled ? "hide-title" : ""}>
+    555 SHOES
+  </h1>
+</div>
+
+<nav
+  className={`desktop-nav ${
+    scrolled ? "desktop-nav-scrolled" : ""
+  }`}
+>
+  <Link to="/category/shoes">Shoes</Link>
+  <Link to="/category/slides">Slides</Link>
+  <Link to="/category/crocs">Crocs</Link>
+  <Link to="/category/Flip-Flops">Sandals</Link>
+  <Link to="/category/watches">Watches</Link>
+  <Link to="/category/accessories">Accessories</Link>
+</nav>
+
+</div>
+
+<div className="header-icons">
+<FiSearch className="header-icon" />
+<FiShoppingBag className="header-icon" />
+<div
           className="menu-icon"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           ☰
         </div>
+</div>
         {menuOpen && (
   <div
     className="menu-overlay"
@@ -62,9 +84,11 @@ function Header({menuOpen,setMenuOpen,scrolled,}) {
 
 <Link to="/category/crocs"onClick={() => setMenuOpen(false)}>Crocs</Link>
 
-<Link to="/category/Flip-Flops"onClick={() => setMenuOpen(false)}>Sandals</Link>
+<Link to="/category/FlipFlops"onClick={() => setMenuOpen(false)}>Sandals</Link>
 
 <Link to="/category/watches"onClick={() => setMenuOpen(false)}>Watches</Link>
+
+<Link to="/category/accessories"onClick={() =>setMenuOpen(false)}>Accessories</Link>
 
   <div className="menu-socials">
   <a
