@@ -1,9 +1,8 @@
 import banner1 from "../assets/Banner1.jpg";
 import banner2 from "../assets/Banner2.webp";
-import banner3 from "../assets/banner3.avif";
-import banner4 from "../assets/banner4.jpg";
+import banner3 from "../assets/Banner3.avif";
+import banner4 from "../assets/Banner4.jpg";
 import {FaChevronLeft,FaChevronRight,} from "react-icons/fa";
-
 import { useState, useEffect } from "react";
 
 function Banner() {
