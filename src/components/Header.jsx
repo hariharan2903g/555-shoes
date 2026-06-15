@@ -21,6 +21,7 @@ function Header({menuOpen,setMenuOpen,scrolled,}) {
       <header className={`header ${scrolled ? "scrolled" : ""}`}>
     <div className="header-left">
 
+    <Link to="/"className="logo-link">
 <div
   className={`logo-container ${scrolled ? "logo-left" : ""}`}>
   <img
@@ -33,7 +34,7 @@ function Header({menuOpen,setMenuOpen,scrolled,}) {
     555 SHOES
   </h1>
 </div>
-
+ </Link>
 <nav
   className={`desktop-nav ${
     scrolled ? "desktop-nav-scrolled" : ""

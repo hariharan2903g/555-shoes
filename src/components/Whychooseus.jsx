@@ -1,27 +1,41 @@
+import {FaCheckCircle,FaRulerCombined,FaTruck,} from "react-icons/fa";
 function Whychooseus() {
-    return (
-        <section className="section">
-        <h2>Why Choose 555 Shoes</h2>
-      
-        <div className="features">
-          <div className="feature-card">
-            <h3>Premium Quality</h3>
-            <p>Carefully selected footwear and accessories.</p>
-          </div>
-      
-          <div className="feature-card">
-            <h3>Latest Styles</h3>
-            <p>Modern collections for every occasion.</p>
-          </div>
-      
-          <div className="feature-card">
-            <h3>Trusted Service</h3>
-            <p>Helping customers step confidently every day.</p>
-          </div>
+  return (
+    <section className="section">
+      <h2>Why Choose Us</h2>
+
+      <div className="features">
+
+        <div className="feature-card">
+        <div className="feature-icon">✅</div>
+
+          <h3>Quality Assured</h3>
+
+          <p>
+            Genuine products carefully selected and
+            quality-checked before reaching you.
+          </p>
         </div>
-      </section>
-      
-    );
-  }
-  
-  export default Whychooseus;
+
+        <div className="feature-card">
+        <div className="feature-icon">🚚</div>
+          <h3>Free & Fast Delivery</h3>
+          <p>Free delivery across India on orders above ₹2300 with quick and reliable shipping.</p>
+        </div>
+
+        <div className="feature-card">
+        <div className="feature-icon">📏</div>
+          <h3>Easy Size Exchange</h3>
+
+          <p>
+            If the size doesn't fit, we'll help you
+            exchange it for the right one.
+          </p>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+export default Whychooseus;

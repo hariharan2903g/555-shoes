@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
+import Header from "../components/Header";
 import logo from "../assets/555logo.png";
 
 function ProductPage() {
@@ -47,7 +48,8 @@ function ProductPage() {
 
   return (
     <div className="product-page-container">
-  
+      <Header/>
+
       <section className="product-page">
   
         <div className="product-page-card">
