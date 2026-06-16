@@ -14,7 +14,7 @@ function Categories({ categories }) {
                 onClick={() =>
                   saveScrollAndNavigate(
                     navigate,
-                    `/brand/${brand.name.toLowerCase()}`
+                    `/category/${category.name.toLowerCase()}`
                   )
                 }
                 style={{

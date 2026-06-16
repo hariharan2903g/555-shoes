@@ -8,11 +8,12 @@ import brooks from"../assets/brands/brooks.png";
 import { useNavigate } from "react-router-dom";
 import { saveScrollAndNavigate }from "../utils/navigation";
 
+
 function Brands() {
   const navigate = useNavigate();
   const brands = [
     { name: "Nike", logo: nike },
-    { name: "Adidas", logo: adidas },
+    { name: "Addidas", logo: adidas },
     { name: "Puma", logo: puma },
     { name: "Crocs", logo: crocs },
     { name: "Casio", logo: casio },

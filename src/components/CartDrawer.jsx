@@ -6,7 +6,14 @@ function CartDrawer({
 }) {
   const [cart, setCart] = useState([]);
   const total = cart.reduce(
-    (sum, item) =>sum + item.price * item.quantity,0);
+    (sum, item) =>
+      sum +
+      Number(
+        String(item.price).replace(/[^\d]/g, "")
+      ) *
+        item.quantity,
+    0
+  );
   
     useEffect(() => {
     const savedCart =
@@ -29,6 +36,42 @@ function CartDrawer({
       JSON.stringify(updatedCart)
     );
 
+    window.dispatchEvent(
+      new Event("cartUpdated")
+    );
+  }
+
+  function increaseQty(index) {
+    const updatedCart = [...cart];
+  
+    updatedCart[index].quantity += 1;
+  
+    setCart(updatedCart);
+  
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(updatedCart)
+    );
+  
+    window.dispatchEvent(
+      new Event("cartUpdated")
+    );
+  }
+  
+  function decreaseQty(index) {
+    const updatedCart = [...cart];
+  
+    if (updatedCart[index].quantity > 1) {
+      updatedCart[index].quantity -= 1;
+    }
+  
+    setCart(updatedCart);
+  
+    localStorage.setItem(
+      "cart",
+      JSON.stringify(updatedCart)
+    );
+  
     window.dispatchEvent(
       new Event("cartUpdated")
     );
@@ -90,16 +133,29 @@ Price: ₹${item.price}`
 
                   <div>
                     <h4>{item.name}</h4>
-                    <h4>₹ {item.price}</h4>
+                    <p className="cart-price">
+                        ₹{item.price}
+                      </p>
                     <p>
                       {item.size} •{" "}
                       {item.color}
                     </p>
 
-                    <p>
-                      Qty:{" "}
-                      {item.quantity}
-                    </p>
+                    <div className="cart-qty">
+                      <button
+                        onClick={() => decreaseQty(index)}
+                      >
+                        -
+                      </button>
+
+                      <span>{item.quantity}</span>
+
+                      <button
+                        onClick={() => increaseQty(index)}
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
 
                   <button
@@ -108,6 +164,7 @@ Price: ₹${item.price}`
                         index
                       )
                     }
+                    
                   >
                     ✕
                   </button>

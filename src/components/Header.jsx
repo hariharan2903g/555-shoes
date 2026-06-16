@@ -82,7 +82,13 @@ function Header({menuOpen = false,
 </div>
 
 <div className="header-icons">
-<FiSearch className="header-icon" />
+<FiSearch
+  className="header-icon"
+  onClick={() =>
+    window.location.href =
+      "/products"
+  }
+/>
 
 <div
   className="bag-link"

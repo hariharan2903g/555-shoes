@@ -1,23 +1,42 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
 import Contact from "../components/Contact";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import logo from "../assets/555logo.png";
+import { Link } from "react-router-dom";
+import { FiShare2, FiHeart  } from "react-icons/fi";
 
 function ProductPage({setCartOpen}) {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [addedToCart, setAddedToCart] = useState(false);
+  const [recentProducts,setRecentProducts] = useState([]);
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
+
+  useEffect(() => {
+
+    const viewed =
+      JSON.parse(
+        localStorage.getItem(
+          "recentlyViewed"
+        )
+      ) || [];
+  
+    setRecentProducts(viewed);
+  
+  }, []);
+
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [id]);
 
   async function fetchProduct() {
     setLoading(true);
@@ -28,14 +47,68 @@ function ProductPage({setCartOpen}) {
       .eq("id", id)
       .single();
   
-    if (error) {
-      console.error(error);
-    } else {
-      setProduct(data);
-    }
+      if (error) {
+        console.error(error);
+      } else {
+        setProduct(data);
+        fetchRecommendations(data);
+
+        const viewed =
+          JSON.parse(
+            localStorage.getItem(
+              "recentlyViewed"
+            )
+          ) || [];
+      
+        const filtered = viewed.filter(
+          (item) => item.id !== data.id
+        );
+      
+        filtered.unshift(data);
+      
+        localStorage.setItem(
+          "recentlyViewed",
+          JSON.stringify(
+            filtered.slice(0, 6)
+          )
+        );
+        setRecentProducts(
+          filtered.slice(0, 6)
+        );
+      }
+
+      setLoading(false);
+      }
   
-    setLoading(false);
-  }
+
+      async function fetchRecommendations(
+        currentProduct
+      ) {
+        const { data, error } =
+          await supabase
+            .from("products")
+            .select("*")
+            .eq(
+              "category",
+              currentProduct.category
+            );
+      
+        if (!error) {
+          const filtered = data
+            .filter(
+              (item) =>
+                item.id !== currentProduct.id
+            )
+            .slice(0, 4);
+      
+          setRecommendedProducts(
+            filtered
+          );
+        }
+      }
+
+
+
   const sizes = product?.sizes
   ? product.sizes.split(",")
   : [];
@@ -62,15 +135,32 @@ function addToCart() {
       localStorage.getItem("cart")
     ) || [];
 
-  cart.push({
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    image: product.image_url,
-    size: selectedSize,
-    color: selectedColor,
-    quantity,
-  });
+
+    const existingItem = cart.find(
+      (item) =>
+        item.id === product.id &&
+        item.size === selectedSize &&
+        item.color === selectedColor
+    );
+    
+    if (existingItem) {
+    
+      existingItem.quantity += quantity;
+    
+    } else {
+    
+      cart.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image_url,
+        size: selectedSize,
+        color: selectedColor,
+        quantity,
+      });
+    
+    }
+  
 
   localStorage.setItem(
     "cart",
@@ -80,7 +170,7 @@ function addToCart() {
   window.dispatchEvent(
     new Event("cartUpdated")
   );
-    alert("Added to cart");
+  setAddedToCart(true);
 }
 
 
@@ -114,7 +204,54 @@ function addToCart() {
             alt={product.name}
             className="product-page-image"
           />
-  
+          <div className="breadcrumb">
+
+<span
+  onClick={() => navigate("/")}
+>
+  Home
+</span>
+
+<span> › </span>
+
+<span
+  onClick={() =>
+    navigate(
+      `/category/${product.category.toLowerCase()}`
+    )
+  }
+>
+  {product.category}
+</span>
+
+<span> › </span>
+
+<span>{product.name}</span>
+
+</div>
+        <div className="product-top-row">
+
+        <Link
+          to={`/brand/${product.brand.toLowerCase()}`}
+          className="product-brand clickable-brand"
+        >
+          {product.brand}
+        </Link>
+
+        <div className="product-actions">
+
+          <button className="icon-btn">
+            <FiShare2 />
+          </button>
+
+          <button className="icon-btn">
+            <FiHeart />
+          </button>
+
+        </div>
+
+</div>
+
           <div className="product-page-details">
   
             <h1>{product.name}</h1>
@@ -199,13 +336,23 @@ function addToCart() {
             <p className="product-page-description">
               {product.description}
             </p>
-            <button
-            className="add-cart-btn"
-            onClick={addToCart}
+         
+            <button className={ addedToCart
+                  ? "view-cart-btn"
+                  : "add-cart-btn"
+              }   onClick={() => {
+              if (addedToCart) {
+                setCartOpen(true);
+                return;
+              }
+
+              addToCart();
+            }}
           >
-            Add To Cart
+            {addedToCart
+              ? "View Cart"
+              : "Add To Cart"}
           </button>
-          
   
           </div>
   
@@ -213,6 +360,88 @@ function addToCart() {
   
       </section>
   
+      <section className="section">
+
+      <h2>Recently Viewed</h2>
+
+      <div className="product-grid">
+
+      {recentProducts
+      .filter(
+      (item) => item.id !== product.id
+      )
+      .map((item) => (
+
+      <div
+      key={item.id}
+      className="product-card"
+      onClick={() =>
+      window.location.href =
+      `/product/${item.id}`
+      }
+      >
+
+      <img
+      src={item.image_url}
+      alt={item.name}
+      />
+
+      <div className="product-info">
+
+      <h3>{item.name}</h3>
+
+      <p>₹{item.price}</p>
+
+      </div>
+
+      </div>
+
+      ))}
+
+      </div>
+
+      </section>
+ 
+      <section className="section">
+
+  <h2>You May Also Like</h2>
+
+  <div className="you-may-like-grid">
+
+    {recommendedProducts.map(
+      (item) => (
+
+      <div
+        key={item.id}
+        className="product-card"
+        onClick={() =>
+          navigate(
+            `/product/${item.id}`
+          )
+        }
+      >
+
+        <img
+          src={item.image_url}
+          alt={item.name}
+        />
+       
+        <div className="product-info">
+
+          <h3>{item.name}</h3>
+
+          <p>₹{item.price}</p>
+
+        </div>
+
+      </div>
+    ))}
+
+  </div>
+
+</section>
+
+
       <Footer />
   
     </div>
