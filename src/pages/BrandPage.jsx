@@ -4,7 +4,7 @@ import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-function BrandPage() {
+function BrandPage({setCartOpen}) {
   const { brand } = useParams();
   const navigate = useNavigate();
 
@@ -25,9 +25,30 @@ function BrandPage() {
     }
   }
 
+  const [menuOpen, setMenuOpen] = useState(false);
+const [scrolled, setScrolled] = useState(false);
+
+useEffect(() => {
+  const handleScroll = () => {
+    setScrolled(window.scrollY > 80);
+  };
+
+  window.addEventListener("scroll", handleScroll);
+
+  return () =>
+    window.removeEventListener("scroll", handleScroll);
+}, []);
+
+
+
   return (
     <section className="section">
-       <Header />
+      <Header
+  menuOpen={menuOpen}
+  setMenuOpen={setMenuOpen}
+  scrolled={scrolled}
+  setCartOpen={setCartOpen}
+/>
       <h2>{brand.toUpperCase()}</h2>
 
       <div className="category-products-grid">

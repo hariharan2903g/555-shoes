@@ -1,10 +1,11 @@
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {FaChevronLeft,FaChevronRight,} from "react-icons/fa";
-function FeaturedProducts({
-    products,
-    setSelectedProduct,
-  }) {
+import { saveScrollAndNavigate } from "../utils/navigation";
+function FeaturedProducts({products, })
+ {
     const sliderRef = useRef(null);
+    const navigate = useNavigate();
     return (
       <section className="section">
         <h2>Featured Collections</h2>
@@ -15,7 +16,7 @@ function FeaturedProducts({
             <div
               className="product-card"
               key={product.id}
-            >
+              onClick={() =>saveScrollAndNavigate(navigate,`/product/${product.id}`)} >
               <img
                 src={product.image_url}
                 alt={product.name}
@@ -30,10 +31,12 @@ function FeaturedProducts({
                   {product.category}
                 </span>
   
-                <button
-                onClick={() => setSelectedProduct(product)}>
-                 View Product
-                </button>
+                <button onClick={(e) => {e.stopPropagation();
+                saveScrollAndNavigate(navigate,`/product/${product.id}`);
+                     }}
+                    >
+              View Product
+                  </button>
               </div>
             </div>
           ))}

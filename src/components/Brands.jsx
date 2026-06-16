@@ -6,6 +6,8 @@ import casio from "../assets/brands/casio.png";
 import under_armour from "../assets/brands/under armour.png";
 import brooks from"../assets/brands/brooks.png";
 import { useNavigate } from "react-router-dom";
+import { saveScrollAndNavigate }from "../utils/navigation";
+
 function Brands() {
   const navigate = useNavigate();
   const brands = [
@@ -28,8 +30,11 @@ function Brands() {
            key={brand.name}
            className="brand-card"
            onClick={() =>
-             navigate(`/brand/${brand.name.toLowerCase()}`)
-           }
+            saveScrollAndNavigate(
+              navigate,
+              `/brand/${brand.name.toLowerCase()}`
+            )
+          }
          >
             <div className="brand-circle">
               <img

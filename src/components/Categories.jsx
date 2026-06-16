@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { saveScrollAndNavigate }from "../utils/navigation";
 function Categories({ categories }) {
   const navigate = useNavigate();
     return (
@@ -11,8 +12,9 @@ function Categories({ categories }) {
                 key={category.name}
                 className="category-card"
                 onClick={() =>
-                  navigate(
-                    `/category/${category.name.toLowerCase()}`
+                  saveScrollAndNavigate(
+                    navigate,
+                    `/brand/${brand.name.toLowerCase()}`
                   )
                 }
                 style={{

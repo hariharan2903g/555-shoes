@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import logo from "../assets/555logo.png";
 
-function CategoryPage() {
+function CategoryPage({setCartOpen}) {
 
   const { category } = useParams();
   const navigate = useNavigate();
@@ -73,6 +73,7 @@ if (loading) {
       menuOpen={menuOpen}
       setMenuOpen={setMenuOpen}
       scrolled={scrolled}
+      setCartOpen={setCartOpen}
     />
 
     <section className="section">

@@ -1,11 +1,16 @@
 import logo from "../assets/555logo.png";
-import { useEffect } from "react";
-import {FaInstagram,FaWhatsapp,FaSearch,FaShoppingBag,}from "react-icons/fa";
+import { useEffect,useState } from "react";
+import {FaInstagram,FaWhatsapp,}from "react-icons/fa";
 import {FiSearch,FiShoppingBag} from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-function Header({menuOpen,setMenuOpen,scrolled,}) {
-  
+function Header({menuOpen = false,
+  setMenuOpen = () => {},
+  scrolled = false,
+  setCartOpen = () => {},
+})
+ {
+  const [cartCount, setCartCount] = useState(0);
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden";
@@ -17,6 +22,32 @@ function Header({menuOpen,setMenuOpen,scrolled,}) {
       document.body.style.overflow = "auto";
     };
   }, [menuOpen]);
+
+  useEffect(() => {
+    const updateCartCount = () => {
+      const cart =
+        JSON.parse(
+          localStorage.getItem("cart")
+        ) || [];
+  
+      setCartCount(cart.length);
+    };
+  
+    updateCartCount();
+  
+    window.addEventListener(
+      "cartUpdated",
+      updateCartCount
+    );
+  
+    return () =>
+      window.removeEventListener(
+        "cartUpdated",
+        updateCartCount
+      );
+  }, []);
+
+  
     return (
       <header className={`header ${scrolled ? "scrolled" : ""}`}>
     <div className="header-left">
@@ -52,7 +83,27 @@ function Header({menuOpen,setMenuOpen,scrolled,}) {
 
 <div className="header-icons">
 <FiSearch className="header-icon" />
-<FiShoppingBag className="header-icon" />
+
+<div
+  className="bag-link"
+  
+  onClick={() =>setCartOpen(true) 
+    }
+>  
+<div className="bag-wrapper">
+
+    <FiShoppingBag
+      className="header-icon"/>
+
+    {cartCount > 0 && (
+      <span className="cart-badge">
+        {cartCount}
+      </span>
+    )}
+
+  </div>
+</div>
+
 <div
           className="menu-icon"
           onClick={() => setMenuOpen(!menuOpen)}

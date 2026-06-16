@@ -6,11 +6,15 @@ import Footer from "../components/Footer";
 import Header from "../components/Header";
 import logo from "../assets/555logo.png";
 
-function ProductPage() {
+function ProductPage({setCartOpen}) {
   const { id } = useParams();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     fetchProduct();
   }, []);
@@ -32,6 +36,53 @@ function ProductPage() {
   
     setLoading(false);
   }
+  const sizes = product?.sizes
+  ? product.sizes.split(",")
+  : [];
+
+  const colors = product?.colors
+  ? product.colors.split(",")
+  : [];
+
+
+function addToCart() {
+
+  // if (!selectedSize) {
+  //   alert("Please select a size");
+  //   return;
+  // }
+
+  // if (!selectedColor) {
+  //   alert("Please select a color");
+  //   return;
+  // }
+
+  const cart =
+    JSON.parse(
+      localStorage.getItem("cart")
+    ) || [];
+
+  cart.push({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    image: product.image_url,
+    size: selectedSize,
+    color: selectedColor,
+    quantity,
+  });
+
+  localStorage.setItem(
+    "cart",
+    JSON.stringify(cart)
+  );
+  
+  window.dispatchEvent(
+    new Event("cartUpdated")
+  );
+    alert("Added to cart");
+}
+
 
   if (loading) {
     return (
@@ -48,7 +99,11 @@ function ProductPage() {
 
   return (
     <div className="product-page-container">
-      <Header/>
+      <Header  
+      menuOpen={menuOpen}
+      setMenuOpen={setMenuOpen}
+      setCartOpen={setCartOpen}
+      />
 
       <section className="product-page">
   
@@ -67,29 +122,90 @@ function ProductPage() {
             <p className="product-page-price">
               MRP: ₹{product.price}
             </p>
+            <h3>Color</h3>
+
+            <div className="color-options">
+              {colors.map((color) => (
+                <button
+                  key={color}
+                  className={`color-circle ${
+                    selectedColor === color
+                      ? "selected-color"
+                      : ""
+                  }`}
+                  style={{
+                    backgroundColor: color.trim(),
+                  }}
+                  onClick={() =>
+                    setSelectedColor(color)
+                  }
+                />
+              ))}
+            </div>
   
             <div className="product-page-divider"></div>
-  
+                <h3>Size</h3>
+
+                <div className="size-options">
+                  {sizes.map((size) => (
+                    <button
+                      key={size}
+                      className={`size-btn ${
+                        selectedSize === size
+                          ? "selected-size"
+                          : ""
+                      }`}
+                      onClick={() =>
+                        setSelectedSize(size)
+                      }
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+
             <p className="product-page-category">
+              
               <strong>Category:</strong> {product.category}
             </p>
   
             <div className="product-page-divider"></div>
-  
+            <h3>Quantity</h3>
+
+            <div className="quantity-selector">
+
+              <button
+                onClick={() =>
+                  quantity > 1 &&
+                  setQuantity(quantity - 1)
+                }
+              >
+                -
+              </button>
+
+              <span>{quantity}</span>
+
+              <button
+                onClick={() =>
+                  setQuantity(quantity + 1)
+                }
+              >
+                +
+              </button>
+
+            </div>
             <h3>Description</h3>
   
             <p className="product-page-description">
               {product.description}
             </p>
-  
-            <a
-              href="https://wa.me/917868905884"
-              target="_blank"
-              rel="noreferrer"
-              className="whatsapp-btn"
-            >
-              WhatsApp Enquiry
-            </a>
+            <button
+            className="add-cart-btn"
+            onClick={addToCart}
+          >
+            Add To Cart
+          </button>
+          
   
           </div>
   

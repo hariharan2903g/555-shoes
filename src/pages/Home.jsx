@@ -23,7 +23,7 @@ import { useState, useEffect } from "react";
 import accessoriesImage from "../assets/accessories.avif";
 import Brands from "../components/Brands";
 
-function Home() {
+function Home({ setCartOpen }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [products, setProducts] = useState([]);
@@ -39,6 +39,26 @@ function Home() {
   
     return () =>
       window.removeEventListener("scroll", handleScroll);
+  }, []);
+  
+  useEffect(() => {
+    const saveScroll = () => {
+      sessionStorage.setItem(
+        "homeScroll",
+        window.scrollY
+      );
+    };
+  
+    window.addEventListener(
+      "scroll",
+      saveScroll
+    );
+  
+    return () =>
+      window.removeEventListener(
+        "scroll",
+        saveScroll
+      );
   }, []);
 
   const categories = [
@@ -87,8 +107,20 @@ function Home() {
     if (error) {
       console.error(error);
     } else {
-      setProducts(data);
-      console.log(data);
+     setProducts(data);
+
+const savedPosition =
+  sessionStorage.getItem("homeScroll");
+
+if (savedPosition) {
+  setTimeout(() => {
+    window.scrollTo(
+      0,
+      parseInt(savedPosition)
+    );
+  }, 100);
+}
+console.log(data);
     }
   }
   
@@ -124,6 +156,7 @@ function Home() {
   menuOpen={menuOpen}
   setMenuOpen={setMenuOpen}
   scrolled={scrolled}
+  setCartOpen={setCartOpen}
 />
 
 <Banner/>
@@ -143,7 +176,6 @@ function Home() {
 
 <FeaturedProducts
   products={filteredProducts}
-  setSelectedProduct={setSelectedProduct}
 />
 
 <Whychooseus />
