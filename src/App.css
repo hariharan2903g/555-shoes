@@ -33,6 +33,9 @@
 
   transition: all 0.4s ease;
 }
+.section h1{
+  color: #111 !important;
+}
 
 .desktop-nav {
   display: flex;
@@ -738,7 +741,7 @@ opacity: 30%;
 .product-category-info p {
   font-size: 16px;
   font-weight: 600;
-  color: white;
+  color: #111;
 }
 
 .product-grid::-webkit-scrollbar {
@@ -1897,6 +1900,22 @@ color: #111;
 .navbar .wishlist-link {
   color: #e63946;
   font-weight: 600;
+}
+
+.wishlist-page {
+  min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.wishlist-content {
+  flex: 1;
+  padding-top: 120px;
+}
+
+.empty-wishlist {
+  text-align: center;
+  margin-top: 50px;
+  color: #666;
 }
 
 /* Mobile responsive*/

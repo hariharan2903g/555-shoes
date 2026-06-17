@@ -22,15 +22,22 @@ function WishlistPage({ setCartOpen }) {
   }, []);
 
   return (
-    <div>
+    <div className="wishlist-page">
 
       <Header
         setCartOpen={setCartOpen}
       />
+      <main className="wishlist-content">
 
       <section className="section">
 
         <h1>My Wishlist</h1>
+
+        {wishlist.length === 0 && (
+        <p className="empty-wishlist">
+          Your wishlist is empty
+        </p>
+      )}
 
         <div className="category-products-grid">
 
@@ -70,7 +77,7 @@ function WishlistPage({ setCartOpen }) {
         </div>
 
       </section>
-
+      </main>
       <Footer />
 
     </div>
