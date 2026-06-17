@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import logo from "../assets/555logo.png";
 import { Link } from "react-router-dom";
 import { FiShare2, FiHeart  } from "react-icons/fi";
+import { FaHeart } from "react-icons/fa";
 
 function ProductPage({setCartOpen}) {
   const { id } = useParams();
@@ -20,6 +21,7 @@ function ProductPage({setCartOpen}) {
   const [addedToCart, setAddedToCart] = useState(false);
   const [recentProducts,setRecentProducts] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
+  const [wishlisted, setWishlisted] = useState(false);
 
   useEffect(() => {
 
@@ -37,6 +39,40 @@ function ProductPage({setCartOpen}) {
   useEffect(() => {
     fetchProduct();
   }, [id]);
+
+  useEffect(() => {
+    if (!product) return;
+  
+    const wishlist =
+      JSON.parse(
+        localStorage.getItem("wishlist")
+      ) || [];
+  
+    const exists = wishlist.some(
+      (item) => item.id === product.id
+    );
+  
+    setWishlisted(exists);
+  
+  }, [product]);
+
+  useEffect(() => {
+
+    if (!product) return;
+  
+    const cart =
+      JSON.parse(
+        localStorage.getItem("cart")
+      ) || [];
+  
+    const exists = cart.some(
+      (item) => item.id === product.id
+    );
+  
+    setAddedToCart(exists);
+  
+  }, [product]);
+  
 
   async function fetchProduct() {
     setLoading(true);
@@ -173,6 +209,55 @@ function addToCart() {
   setAddedToCart(true);
 }
 
+// Wishlist function
+
+function toggleWishlist() {
+
+  const wishlist =
+    JSON.parse(
+      localStorage.getItem("wishlist")
+    ) || [];
+
+  const exists = wishlist.some(
+    (item) => item.id === product.id
+  );
+
+  if (exists) {
+
+    const updatedWishlist =
+      wishlist.filter(
+        (item) =>
+          item.id !== product.id
+      );
+
+    localStorage.setItem(
+      "wishlist",
+      JSON.stringify(updatedWishlist)
+    );
+
+    window.dispatchEvent(
+      new Event("wishlistUpdated")
+    );
+
+    setWishlisted(false);
+
+  } else {
+
+    wishlist.push(product);
+
+    localStorage.setItem(
+      "wishlist",
+      JSON.stringify(wishlist)
+    );
+
+    window.dispatchEvent(
+      new Event("wishlistUpdated")
+    );
+
+    setWishlisted(true);
+
+  }
+}
 
   if (loading) {
     return (
@@ -240,13 +325,42 @@ function addToCart() {
 
         <div className="product-actions">
 
-          <button className="icon-btn">
-            <FiShare2 />
-          </button>
+        <button
+          className="icon-btn"
+          onClick={() => {
 
-          <button className="icon-btn">
-            <FiHeart />
-          </button>
+            if (navigator.share) {
+
+              navigator.share({
+                title: product.name,
+                text: product.name,
+                url: window.location.href,
+              });
+
+            } else {
+
+              navigator.clipboard.writeText(
+                window.location.href
+              );
+
+              alert(
+                "Product link copied!"
+              );
+            }
+          }}
+        >
+          <FiShare2 />
+        </button>
+          <button
+              className="icon-btn"
+              onClick={toggleWishlist}
+            >
+              {wishlisted ? (
+                <FaHeart className="filled-heart" />
+              ) : (
+                <FiHeart />
+              )}
+            </button>
 
         </div>
 
@@ -301,10 +415,10 @@ function addToCart() {
                   ))}
                 </div>
 
-            <p className="product-page-category">
+            {/* <p className="product-page-category">
               
               <strong>Category:</strong> {product.category}
-            </p>
+            </p> */}
   
             <div className="product-page-divider"></div>
             <h3>Quantity</h3>
@@ -351,9 +465,30 @@ function addToCart() {
           >
             {addedToCart
               ? "View Cart"
-              : "Add To Cart"}
+              : "Add To Bag"}
           </button>
   
+          <div className="product-benefits">
+            <div className="benefit-item">
+              <span>✅</span>
+              <p>100% Authentic</p>
+            </div>
+
+            <div className="benefit-item">
+              <span>🚚</span>
+              <p>Free shipping over ₹2,000</p>
+            </div>
+
+            <div className="benefit-item">
+              <span>🔁</span>
+              <p>Easy Size Replacements</p>
+            </div>
+
+            <div className="benefit-item">
+              <span>📦</span>
+              <p>Same-day dispatch</p>
+            </div>
+          </div>
           </div>
   
         </div>
@@ -376,9 +511,8 @@ function addToCart() {
       key={item.id}
       className="product-card"
       onClick={() =>
-      window.location.href =
-      `/product/${item.id}`
-      }
+        navigate(`/product/${item.id}`)
+        }
       >
 
       <img

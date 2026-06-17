@@ -1682,7 +1682,98 @@ color: #111;
 }
 
 /* search and filter  */
-.search-input {
+
+.search-page {
+  min-height: 100vh;
+  background: white;
+  padding: 20px;
+  padding-top: 40px;
+}
+.search-page h2,h3{
+  color: #111;
+}
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  background: white;
+  color: #111;
+}
+
+.search-back{
+  color: #111;
+}
+
+.search-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.search-back {
+  border: none;
+  background: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border: 2px solid #ddd;
+  padding: 12px 15px;
+  border-radius: 10px;
+}
+
+.search-box input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 18px;
+}
+
+.search-results {
+  margin-top: 30px;
+}
+
+.search-product {
+  display: flex;
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.search-product img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+}
+.trending-searches,
+.search-suggestions {
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.trending-item,
+.suggestion-item {
+  font-size: 18px;
+  font-weight: 600;
+  color: #666;
+  margin: 16px 0;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.trending-item:hover,
+.suggestion-item:hover {
+  color: #000;
+}
+
+/* .search-input {
   width: 100%;
 
   padding: 12px;
@@ -1710,7 +1801,7 @@ color: #111;
   border-radius: 10px;
 
   border: 1px solid #ddd;
-}
+} */
 
 .you-may-like-grid {
   display: grid;
@@ -1765,9 +1856,47 @@ color: #111;
   border-radius: 50%;
   border: 1px solid #ddd;
   background: white;
-  cursor: pointer;
   color: #111;
+  cursor: pointer;
   font-size: 20px;
+}
+.product-benefits {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.benefit-item span {
+  font-size: 22px;
+}
+
+.benefit-item p {
+  margin: 0;
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+}
+
+.icon-btn {
+  color: #111;
+}
+
+.filled-heart {
+  color: red;
+}
+
+.navbar .wishlist-link {
+  color: #e63946;
+  font-weight: 600;
 }
 
 /* Mobile responsive*/

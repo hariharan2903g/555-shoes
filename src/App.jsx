@@ -7,7 +7,8 @@ import AllProductsPage from "./pages/AllProductsPage";
 import BrandPage from "./pages/BrandPage";
 import { useState } from "react";
 import CartDrawer from "./components/CartDrawer";
-
+import WishlistPage from "./pages/WishlistPage";
+import SearchPage from "./pages/SearchPage";
 function App() {
   const [cartOpen, setCartOpen] =useState(false);
   return (
@@ -29,9 +30,22 @@ function App() {
       />
 
       <Route
+        path="/search"
+        element={<SearchPage />}
+      />
+
+      <Route
         path="/category/:category"
         element={
           <CategoryPage
+            setCartOpen={setCartOpen}
+          />
+        }
+      />
+      <Route
+        path="/wishlist"
+        element={
+          <WishlistPage
             setCartOpen={setCartOpen}
           />
         }
