@@ -2068,15 +2068,33 @@ color: #111;
 }
 
 .checkout-product {
+  display: flex;
+  gap: 15px;
+  align-items: center;
   padding: 15px 0;
   border-bottom: 1px solid #eee;
 }
-.checkout-product h3 {
+
+.checkout-product-image {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  border-radius: 10px;
+  background: #f8f8f8;
+  padding: 5px;
+  flex-shrink: 0;
+}
+
+.checkout-product-info {
+  flex: 1;
+}
+
+.checkout-product-info h3 {
   margin-bottom: 8px;
 }
-.checkout-product p {
-  margin: 0;
-  font-weight: 600;
+
+.checkout-product-info p {
+  margin: 4px 0;
 }
 
 .checkout-product small {

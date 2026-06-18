@@ -258,26 +258,32 @@ function CheckoutPage() {
 />
 
         <div className="checkout-summary">
-                    {cart.map((item) => (
+        {cart.map((item) => (
 
             <div
             key={item.id}
             className="checkout-product"
             >
 
-                <h3>{item.name}</h3>
+            <div className="checkout-product-info">
 
-                <p>
-                Size: {item.size || "-"}
-                </p>
+            <h3>{item.name}</h3>
 
-                <p>
-                Color: {item.color || "-"}
-                </p>
+            <p>Size: {item.size || "-"}</p>
 
-                <p>
-                Qty: {item.quantity}
-                </p>
+            <p>Color: {item.color || "-"}</p>
+
+            <p>Qty: {item.quantity}</p>
+
+            <p>Price: ₹{item.price}</p>
+
+            </div>
+
+            <img
+            src={item.image}
+            alt={item.name}
+            className="checkout-product-image"
+            />
 
             </div>
 
