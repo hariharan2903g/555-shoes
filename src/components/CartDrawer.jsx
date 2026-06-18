@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CartDrawer({
   cartOpen,
   setCartOpen,
 }) {
+  const navigate = useNavigate();
   const [cart, setCart] = useState([]);
   const total = cart.reduce(
     (sum, item) =>
@@ -14,6 +16,9 @@ function CartDrawer({
         item.quantity,
     0
   );
+  const freeShippingLimit = 2000;
+
+  const remaining = freeShippingLimit - total;
   
     useEffect(() => {
     const savedCart =
@@ -171,21 +176,51 @@ Price: ₹${item.price}`
                 </div>
               )
             )}
-            
-          <div className="cart-total">
-             <h3>Total</h3>
+
+            <div className="cart-summary">
+
+            <div className="summary-row">
+              <span>Subtotal</span>
+              <span>₹{total}</span>
+            </div>
+
+            <div className="summary-row">
+              <span>Shipping</span>
+
+              <span>
+                {total >= freeShippingLimit
+                  ? "FREE 🚚"
+                  : "Applicable"}
+              </span>
+            </div>
+
+            {total < freeShippingLimit ? (
+              <p className="shipping-message">
+                Add ₹{remaining} more to get
+                FREE shipping 🚚
+              </p>
+            ) : (
+              <p className="shipping-success">
+                You unlocked free shipping 🎉
+              </p>
+            )}
+
+            <div className="cart-total">
+              <h3>Total</h3>
               <h2>₹{total}</h2>
-          </div>
-            <a
-              className="whatsapp-btn"
-              href={`https://wa.me/917868905884?text=${encodeURIComponent(
-                whatsappMessage
-              )}`}
-              target="_blank"
-              rel="noreferrer"
+            </div>
+
+            </div>   
+         
+            <button
+              className="checkout-btn"
+              onClick={() => {
+                setCartOpen(false);
+                navigate("/checkout");
+              }}
             >
-              Order On WhatsApp
-            </a>
+              Checkout
+            </button>
           </>
         )}
       </div>

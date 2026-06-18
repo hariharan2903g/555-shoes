@@ -9,6 +9,7 @@ import { useState } from "react";
 import CartDrawer from "./components/CartDrawer";
 import WishlistPage from "./pages/WishlistPage";
 import SearchPage from "./pages/SearchPage";
+import CheckoutPage from "./pages/CheckoutPage";
 function App() {
   const [cartOpen, setCartOpen] =useState(false);
   return (
@@ -63,6 +64,13 @@ function App() {
         />
       }
     />
+
+        <Route
+          path="/checkout"
+          element={
+            <CheckoutPage />
+          }
+        />
 
       <Route
         path="/products"
