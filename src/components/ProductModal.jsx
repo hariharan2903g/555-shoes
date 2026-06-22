@@ -1,8 +1,10 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ProductModal({
     product,setSelectedProduct,}) 
     {
+      const navigate = useNavigate();
     useEffect(() => {document.body.style.overflow = "hidden";
       return () => {
       document.body.style.overflow = "auto";
@@ -60,9 +62,20 @@ function ProductModal({
                {product.description}
             </p>
   
-            <button className="add-cart-btn">
-              Add To Cart
-            </button>
+            <button
+            className="add-cart-btn"
+            onClick={() => {
+
+              setSelectedProduct(null);
+
+              navigate(
+                "/products?sort=newest"
+              );
+
+            }}
+          >
+            View All New Arrivals
+          </button>
           </div>
         </div>
       </div>

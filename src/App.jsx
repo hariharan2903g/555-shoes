@@ -1,17 +1,19 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage";
-import AccessoriesPage from "./pages/AccessoriesPage";
 import AllProductsPage from "./pages/AllProductsPage";
-import BrandPage from "./pages/BrandPage";
 import { useState } from "react";
 import CartDrawer from "./components/CartDrawer";
 import WishlistPage from "./pages/WishlistPage";
 import SearchPage from "./pages/SearchPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import { useLocation } from "react-router-dom";
+import BottomNav from "./components/BottomNav";
 function App() {
   const [cartOpen, setCartOpen] =useState(false);
+  const location = useLocation();
+  const hideBottomNav = location.pathname === "/checkout";
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     
     <>
@@ -20,29 +22,24 @@ function App() {
       setCartOpen={setCartOpen}
     />
     <Routes>
-      <Route
-        path="/"
-        element={<Home setCartOpen={setCartOpen}/>}
-      />
+     
 
-      <Route
-        path="/category/accessories"
-        element={<AccessoriesPage />}
-      />
+    <Route
+      path="/"
+      element={
+        <Home
+          setCartOpen={setCartOpen}
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+        />
+      }
+    />
 
       <Route
         path="/search"
         element={<SearchPage />}
       />
 
-      <Route
-        path="/category/:category"
-        element={
-          <CategoryPage
-            setCartOpen={setCartOpen}
-          />
-        }
-      />
       <Route
         path="/wishlist"
         element={
@@ -56,14 +53,7 @@ function App() {
         path="/product/:id"
         element={ <ProductPage setCartOpen={setCartOpen}/>}
       />
-          <Route
-      path="/brand/:brand"
-      element={
-        <BrandPage
-          setCartOpen={setCartOpen}
-        />
-      }
-    />
+
 
         <Route
           path="/checkout"
@@ -77,6 +67,13 @@ function App() {
         element={<AllProductsPage setCartOpen={setCartOpen}/>}
       />
     </Routes>
+    
+        {!hideBottomNav && (
+      <BottomNav
+        setCartOpen={setCartOpen}
+        setMenuOpen={setMenuOpen}
+      />
+       )}
     </>
   );
 }

@@ -22,6 +22,7 @@ import { supabase } from "../supabase";
 import { useState, useEffect } from "react";
 import accessoriesImage from "../assets/accessories.avif";
 import Brands from "../components/Brands";
+import BottomNav from "../components/BottomNav";
 
 function Home({ setCartOpen }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -176,6 +177,11 @@ console.log(data);
 
 <FeaturedProducts
   products={filteredProducts}
+/>
+
+<BottomNav
+  setMenuOpen={setMenuOpen}
+  setCartOpen={setCartOpen}
 />
 
 <Whychooseus />

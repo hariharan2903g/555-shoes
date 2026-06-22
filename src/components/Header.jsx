@@ -270,23 +270,6 @@ function Header({
             ` (${wishlistCount})`}
         </Link>
 
-        <div className="menu-socials">
-          <a
-            href="https://instagram.com/555_shoes_online"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaInstagram />
-          </a>
-
-          <a
-            href="https://wa.me/917868905884"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FaWhatsapp />
-          </a>
-        </div>
       </nav>
     </header>
   );

@@ -1,5 +1,5 @@
 import nike from "../assets/brands/nike.png";
-import adidas from "../assets/brands/adidas.png";
+import addidas from "../assets/brands/adidas.png";
 import puma from "../assets/brands/puma.png";
 import crocs from "../assets/brands/crocs.png";
 import casio from "../assets/brands/casio.png";
@@ -13,7 +13,7 @@ function Brands() {
   const navigate = useNavigate();
   const brands = [
     { name: "Nike", logo: nike },
-    { name: "Addidas", logo: adidas },
+    { name: "Addidas", logo: addidas },
     { name: "Puma", logo: puma },
     { name: "Crocs", logo: crocs },
     { name: "Casio", logo: casio },
@@ -33,7 +33,7 @@ function Brands() {
            onClick={() =>
             saveScrollAndNavigate(
               navigate,
-              `/brand/${brand.name.toLowerCase()}`
+              `/products?brand=${brand.name}`
             )
           }
          >

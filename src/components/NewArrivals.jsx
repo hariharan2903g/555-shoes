@@ -15,7 +15,10 @@ function NewArrivals({
                 key={`${item.id}-${index}`}
                 className="arrival-card"
                 onClick={() =>
-                  setSelectedProduct(item)
+                  setSelectedProduct({
+                    ...item,
+                    source: "newArrivals",
+                  })
                 }
               >
                 <img

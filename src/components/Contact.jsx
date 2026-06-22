@@ -1,4 +1,7 @@
-import { FaWhatsapp } from "react-icons/fa";
+import whatsapp from "../assets/brands/whatsapp.png";
+import insta from "../assets/brands/Insta.png";
+import gmail from "../assets/brands/Gmail.png";
+
 function Contact() {
     return (
         <section className="contact-section">
@@ -10,18 +13,49 @@ function Contact() {
           <p>📍Garage no.19 <br />28th Cross Street <br /> Besant Nagar <br />Chennai-90</p>
           <p>🕒 Open Daily:11 AM - 10 PM</p>
       
-          <button
-  className="whatsapp-btn"
-  onClick={() =>
-    window.open(
-      "https://wa.me/917868905884",
-      "_blank"
-    )
-  }
-> <FaWhatsapp /> 
-  WhatsApp Us
-</button>
+         
         </div>
+
+        <div className="social-section">
+
+  <h3>Connect With Us</h3>
+
+  <div className="social-icons">
+
+    <a
+      href="https://www.instagram.com/555_shoes_online"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <img
+        src={insta}
+        alt="Instagram"
+      />
+    </a>
+
+    <a
+      href="https://wa.me/917868905884"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <img
+        src={whatsapp}
+        alt="WhatsApp"
+      />
+    </a>
+
+    <a
+      href="mailto:555shoesindia@gmail.com"
+    >
+      <img
+        src={gmail}
+        alt="Gmail"
+      />
+    </a>
+
+  </div>
+
+</div>
       
         <div className="contact-right">
           <iframe
