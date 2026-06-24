@@ -9,6 +9,8 @@ import SearchPage from "./pages/SearchPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import { useLocation } from "react-router-dom";
 import BottomNav from "./components/BottomNav";
+import CategoriesPage from "./pages/CategoriesPage";
+
 function App() {
   const [cartOpen, setCartOpen] =useState(false);
   const location = useLocation();
@@ -61,6 +63,11 @@ function App() {
             <CheckoutPage />
           }
         />
+
+          <Route
+            path="/categories"
+            element={<CategoriesPage />}
+          />
 
       <Route
         path="/products"

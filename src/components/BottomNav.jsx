@@ -39,7 +39,7 @@ import {
             </button>
   
         <button
-          onClick={() => navigate("/catagories")}
+          onClick={() => navigate("/Categories")}
         >
           <FaThLarge />
           <span>Categories</span>

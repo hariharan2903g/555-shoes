@@ -774,7 +774,7 @@ opacity: 30%;
   cursor: pointer;
 }
 
-.category-card {
+/* .category-card {
   height: 280px;
 
   background-size: cover;
@@ -800,7 +800,7 @@ opacity: 30%;
   font-weight: 700;
   text-align: center;
   width: 100%;
-}
+} */
 
 /* loading screen animation */
 .loading-screen {
@@ -2415,6 +2415,216 @@ color: #111;
 .bottom-nav svg {
   font-size: 22px;
 }
+
+.categories-page{
+  padding:20px;
+  padding-bottom:100px;
+}
+
+.categories-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.categories-header h1{
+  font-size:2rem;
+}
+
+.back-btn{
+  border:none;
+  background:none;
+  font-size:2rem;
+  cursor:pointer;
+}
+
+.categories-search input{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:1px solid #ddd;
+  font-size:1rem;
+}
+.categories-search {
+  position: static;
+  top: 0;
+  background: white;
+  z-index: 10;
+  margin: 20px;
+  
+  
+}
+
+.categories-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: white;
+  border-radius: 14px;
+  padding: 14px 18px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+
+.quick-filters{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  margin:20px 0;
+  scrollbar-width: none;
+}
+
+
+
+.quick-filters button{
+  border:2px solid #d8c0a0;
+  background:white;
+  padding:10px 16px;
+  border-radius:10px;
+  white-space:nowrap;
+  font-weight:600;
+  color: #666;
+}
+
+.categories-title{
+  margin-bottom:20px;
+}
+
+.categories-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+
+}.category-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  border-radius: 20px;
+}
+
+.category-card{
+  cursor:pointer;
+  text-align:center;
+  position: relative;
+}
+
+.category-card img{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+  border-radius:12px;
+}
+
+.category-card h3{
+  margin-top:10px;
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  color: white;
+  z-index: 2;
+  font-size: 1.3rem;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.categories-hero {
+  text-align: center;
+  padding: 20px 20px 10px;
+}
+
+.categories-logo {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  margin-bottom: 10px;
+}
+
+.categories-hero h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #111;
+}
+
+.categories-hero p {
+  color: #777;
+  font-size: 0.95rem;
+}
+
+.gender-filters{
+  display:flex;
+  gap:10px;
+  margin:20px 0 12px;
+}
+
+.gender-filters button{
+  flex:1;
+  height:48px;
+
+  border:2px solid #d8c0a0;
+  background:white;
+color: #111;
+  border-radius:12px;
+
+  font-weight:600;
+}
+
+.category-pills{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding-bottom:8px;
+
+  scrollbar-width:none;
+}
+
+.category-pills::-webkit-scrollbar{
+  display:none;
+}
+
+.category-pill{
+  border:none;
+
+  background:#f5f5f5;
+
+  padding:10px 18px;
+
+  border-radius:999px;
+
+  white-space:nowrap;
+
+  font-weight:600;
+  flex-shrink:0;
+  cursor:pointer;
+  color:#555;
+}
+
+.active-pill{
+  background:#d8c0a0 !important;
+  color:white !important;
+}
+.gender-filters button,
+.category-pill{
+  transition: all 0.25s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Mobile responsive*/
 

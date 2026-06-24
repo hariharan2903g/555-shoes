@@ -15,11 +15,17 @@ function AllProductsPage({ setCartOpen }) {
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState( searchParams.get("category") || "All");
   const [selectedBrand, setSelectedBrand] = useState(searchParams.get("brand") || "All");
-  const [selectedGender, setSelectedGender] = useState("All");
-  const [selectedActivity, setSelectedActivity] = useState("All");
+  const [selectedGender, setSelectedGender] =
+  useState(
+    searchParams.get("gender") ||
+    "All"
+  );  const [selectedActivity, setSelectedActivity] = useState("All");
   const [selectedDiscount, setSelectedDiscount] = useState("All");
   const [selectedSize, setSelectedSize] = useState("All");
   const [selectedColor, setSelectedColor] = useState("All");
+  const urlGender = searchParams.get("gender");
+  const urlCategory = searchParams.get("category");
+  const urlSubcategory = searchParams.get("subcategory");
   // const [relatedProducts, setRelatedProducts] = useState([]);
  
 
@@ -27,6 +33,12 @@ function AllProductsPage({ setCartOpen }) {
   // products
   //   .sort(() => 0.5 - Math.random())
   //   .slice(0, 10);
+
+  const [selectedSubcategory, setSelectedSubcategory] =
+  useState(
+    searchParams.get("subcategory") ||
+    "All"
+  );
 
   const relatedProducts =
   products
@@ -207,11 +219,20 @@ useEffect(() => {
     searchParams.get("category") || "All"
   );
 
+  setSelectedGender(
+    searchParams.get("gender") || "All"
+  );
+
+  setSelectedSubcategory(
+    searchParams.get("subcategory") ||
+    "All"
+  );
+
   setSelectedBrand(
     searchParams.get("brand") || "All"
   );
 
-}, [searchParams]);
+},  [searchParams]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -253,6 +274,16 @@ useEffect(() => {
           product.category ===
           selectedCategory
       );
+    }
+
+    if (selectedSubcategory !== "All") {
+
+      result = result.filter(
+        (product) =>
+          product.subcategory ===
+          selectedSubcategory
+      );
+    
     }
 
     if (searchTerm) {
