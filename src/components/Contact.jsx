@@ -1,5 +1,5 @@
 import whatsapp from "../assets/brands/whatsapp.png";
-import insta from "../assets/brands/Insta.png";
+import insta from "../assets/brands/insta.png";
 import gmail from "../assets/brands/Gmail.png";
 
 function Contact() {
