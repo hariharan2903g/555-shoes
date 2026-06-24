@@ -20,7 +20,7 @@ import automaticWatch from "../assets/categories/Automaticwatch.avif";
 import chronographWatch from "../assets/categories/Chronographwatch.webp";
 import leatherWatch from "../assets/categories/Leatherstrapwatch.webp";
 import metalWatch from "../assets/categories/Metalstrapwatch.webp";
-import socks from "../assets/categories/socks.jpg";
+import socks from "../assets/categories/Socks.jpg";
 import capImage from "../assets/categories/cap.webp";
 import beltImage from "../assets/categories/belts.avif";
 import walletImage from "../assets/categories/Wallets.avif";
