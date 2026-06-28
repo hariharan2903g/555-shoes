@@ -39,7 +39,17 @@ function Header({
           localStorage.getItem("wishlist")
         ) || [];
 
-      setCartCount(cart.length);
+        setCartCount(
+
+          cart.reduce(
+        
+            (total, item) => total + item.quantity,
+        
+            0
+        
+          )
+        
+        );
       setWishlistCount(wishlist.length);
     };
 
@@ -99,7 +109,7 @@ function Header({
                   : ""
               }
             >
-              555 SHOES
+             555shoes.in
             </h1>
           </div>
         </Link>
@@ -145,22 +155,6 @@ function Header({
           }
         />
 
-        <div
-          className="bag-link"
-          onClick={() =>
-            setCartOpen(true)
-          }
-        >
-          <div className="bag-wrapper">
-            <FiShoppingBag className="header-icon" />
-
-            {cartCount > 0 && (
-              <span className="cart-badge">
-                {cartCount}
-              </span>
-            )}
-          </div>
-        </div>
 
         <div
           className="menu-icon"
@@ -258,17 +252,7 @@ function Header({
           Accessories
         </Link>
 
-        <Link
-          to="/wishlist"
-          className="wishlist-link"
-          onClick={() =>
-            setMenuOpen(false)
-          }
-        >
-          ❤️ Wishlist
-          {wishlistCount > 0 &&
-            ` (${wishlistCount})`}
-        </Link>
+        
 
       </nav>
     </header>

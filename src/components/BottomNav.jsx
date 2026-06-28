@@ -1,9 +1,10 @@
 import {
-    FaHome,
-    FaThLarge,
-    FaShoppingBag,
-    FaHeart,FaBox
-  } from "react-icons/fa";
+  FiHome,
+  FiGrid,
+  FiShoppingBag,
+  FiHeart,
+  FiPackage
+} from "react-icons/fi";
   import { useNavigate } from "react-router-dom";
 
  
@@ -13,6 +14,17 @@ import {
     setCartOpen,
   }) {
     const navigate = useNavigate();
+
+    const cart =
+  JSON.parse(localStorage.getItem("cart")) || [];
+
+const wishlist =
+  JSON.parse(localStorage.getItem("wishlist")) || [];
+
+const cartCount = cart.reduce(
+  (total, item) => total + item.quantity,
+  0
+);
 
     function goHome() {
   
@@ -34,28 +46,51 @@ import {
       <div className="bottom-nav">
   
             <button onClick= {goHome}>
-            <FaHome />
+            <FiHome />
             <span>Home</span>
             </button>
   
         <button
           onClick={() => navigate("/Categories")}
         >
-          <FaThLarge />
+          <FiGrid />
           <span>Categories</span>
         </button>
   
-        <button
-          onClick={() => setCartOpen(true)}
-        >
-          <FaShoppingBag />
-          <span>Cart</span>
-        </button>
+            <button
+        onClick={() => setCartOpen(true)}
+       >
+      <div className="nav-icon">
+        <FiShoppingBag />
+
+        {cartCount > 0 && (
+          <span className="nav-badge">
+            {cartCount}
+          </span>
+        )}
+      </div>
+
+      <span>Cart</span>
+    </button>
   
         <button
         onClick={() => navigate("/wishlist")}
         >
-        <FaHeart />
+     <div className="nav-icon">
+
+        <FiHeart />
+
+        {wishlist.length > 0 && (
+
+            <span className="nav-badge">
+
+                {wishlist.length}
+
+            </span>
+
+        )}
+
+        </div>
         <span>Wishlist</span>
         </button>
   
@@ -64,7 +99,7 @@ import {
                 alert("Orders page coming soon")
             }
             >
-            <FaBox />
+            <FiPackage/>
             <span>Orders</span>
             </button>
   

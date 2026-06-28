@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
+import { Funnel, ArrowUpDown } from "lucide-react";
 import { supabase } from "../supabase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { useSearchParams } from "react-router-dom";
+import ProductHeader from "../components/ProductHeader";
+import ActiveFilters from "../components/ActiveFilters";
+import SortDrawer from "../components/SortDrawer";
+import FilterDrawer from "../components/FilterDrawer";
 
 function AllProductsPage({ setCartOpen }) {
 
@@ -13,13 +18,12 @@ function AllProductsPage({ setCartOpen }) {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchParams] = useSearchParams();
   const [filterOpen, setFilterOpen] = useState(false);
+  const [sortOpen, setSortOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState( searchParams.get("category") || "All");
   const [selectedBrand, setSelectedBrand] = useState(searchParams.get("brand") || "All");
-  const [selectedGender, setSelectedGender] =
-  useState(
-    searchParams.get("gender") ||
-    "All"
-  );  const [selectedActivity, setSelectedActivity] = useState("All");
+  const [selectedGender, setSelectedGender] = useState(searchParams.get("gender") || "All");  
+  const [selectedActivity, setSelectedActivity] = useState("All");
+  const [selectedStrapType, setSelectedStrapType] = useState("All");
   const [selectedDiscount, setSelectedDiscount] = useState("All");
   const [selectedSize, setSelectedSize] = useState("All");
   const [selectedColor, setSelectedColor] = useState("All");
@@ -51,6 +55,9 @@ function AllProductsPage({ setCartOpen }) {
   const [sortBy, setSortBy] =
     useState("newest");
 
+    const [gridView, setGridView] =
+  useState("2");
+  
   const [searchTerm, setSearchTerm] =
     useState("");
 
@@ -65,6 +72,13 @@ function AllProductsPage({ setCartOpen }) {
             product.category ===
             selectedCategory
         );
+
+        const pageTitle =
+        selectedSubcategory !== "All"
+          ? selectedSubcategory
+          : selectedCategory !== "All"
+          ? selectedCategory
+          : "All Products";
   
   
 
@@ -78,17 +92,29 @@ function AllProductsPage({ setCartOpen }) {
       );
 
       const brands = [
-        "All",
         ...new Set(
-          categoryFilteredProducts
-            .map(
-              (product) =>
-                product.brand
-            )
+          products
+            .filter(p => {
+      
+              if (
+                selectedCategory !== "All" &&
+                p.category !== selectedCategory
+              )
+                return false;
+      
+              if (
+                selectedSubcategory !== "All" &&
+                p.subcategory !== selectedSubcategory
+              )
+                return false;
+      
+              return true;
+      
+            })
+            .map(p => p.brand)
             .filter(Boolean)
         ),
       ];
-
 
       const sizes = [
         "All",
@@ -152,7 +178,7 @@ function AllProductsPage({ setCartOpen }) {
       // ]);
 
 const categories = [
-  "All",
+  
   ...new Set(
     brandFilteredProducts
       .map(
@@ -163,8 +189,21 @@ const categories = [
   ),
 ];
 
+const subcategories = [
+  ...new Set(
+    products
+      .filter(
+        p =>
+          selectedCategory === "All" ||
+          p.category === selectedCategory
+      )
+      .map(p => p.subcategory)
+      .filter(Boolean)
+  ),
+];
+
 const genders = [
-  "All",
+  
   ...new Set(
     products
       .map(
@@ -176,17 +215,60 @@ const genders = [
 ];
 
 const activities = [
-  "All",
   ...new Set(
     products
-      .map(
-        (product) =>
-          product.activity_type
-      )
+      .filter(p => {
+
+        if (p.category !== "Shoes")
+          return false;
+
+        if (
+          selectedSubcategory !== "All" &&
+          p.subcategory !== selectedSubcategory
+        )
+          return false;
+
+        if (
+          selectedBrand !== "All" &&
+          p.brand !== selectedBrand
+        )
+          return false;
+
+        return true;
+
+      })
+      .map(p => p.activity_type)
+      .filter(Boolean)
+  ),
+]; 
+
+const strapTypes = [
+  ...new Set(
+    products
+      .filter(p => {
+
+        if (p.category !== "Watches")
+          return false;
+
+        if (
+          selectedSubcategory !== "All" &&
+          p.subcategory !== selectedSubcategory
+        )
+          return false;
+
+        if (
+          selectedBrand !== "All" &&
+          p.brand !== selectedBrand
+        )
+          return false;
+
+        return true;
+
+      })
+      .map(p => p.Strap_Type)
       .filter(Boolean)
   ),
 ];
-      
 
 
   const [scrolled, setScrolled] =
@@ -202,6 +284,7 @@ const activities = [
   [
     products,
     selectedCategory,
+    selectedSubcategory,
     selectedBrand,
     sortBy,
     searchTerm,
@@ -212,6 +295,8 @@ const activities = [
     selectedColor,
   ]
 );
+
+
 
 useEffect(() => {
 
@@ -262,6 +347,18 @@ useEffect(() => {
     }
   }
 
+  useEffect(() => {
+
+    document.body.style.overflow =
+      filterOpen || sortOpen
+        ? "hidden"
+        : "auto";
+  
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  
+  }, [filterOpen, sortOpen]);
     
 
   function filterProducts() {
@@ -329,6 +426,16 @@ useEffect(() => {
     
     }
 
+    if (selectedStrapType !== "All") {
+
+      result = result.filter(
+        product =>
+          product.Strap_Type ===
+          selectedStrapType
+      );
+    
+    }
+
     if (selectedGender === "Men") {
 
       result = result.filter(
@@ -362,6 +469,7 @@ useEffect(() => {
     
     }
     
+   
     
     if (selectedActivity !== "All") {
       result = result.filter(
@@ -436,6 +544,14 @@ useEffect(() => {
     setFilteredProducts(result);
   }
 
+   if (sortBy === "popular") {
+      filteredProducts.sort((a, b) => {
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return 0;
+      });
+    }
+
   return (
     <>
       <Header
@@ -445,301 +561,141 @@ useEffect(() => {
         setCartOpen={setCartOpen}
       />
 
+<div className="products-banner">
+  🚚 FREE DELIVERY ON ORDERS ABOVE ₹2000
+</div>
       <section className="section">
 
-      <h1 className="products-title">
-          Shop All Products
-        </h1>
+      <ProductHeader
+    pageTitle={pageTitle}
+      />
 
-        <input
-          type="text"
-          placeholder="Search Products..."
-          value={searchTerm}
-          onChange={(e) =>
-            setSearchTerm(
-              e.target.value
-            )
-          }
-          className="search-input"
-        />
+<ActiveFilters
 
-        <div className="products-toolbar">
+selectedGender={selectedGender}
+selectedCategory={selectedCategory}
+selectedSubcategory={selectedSubcategory}
 
-        <button
-          className="filter-btn"
-          onClick={() =>
-            setFilterOpen(true)
-          }
-        >
-          Filters ⚙
-        </button>
+setSelectedGender={setSelectedGender}
+setSelectedCategory={setSelectedCategory}
+setSelectedSubcategory={setSelectedSubcategory}
 
-        <select
-          value={sortBy}
-          onChange={(e) =>
-            setSortBy(e.target.value)
-          }
-          className="sort-select"
-        >
-          <option value="newest">
-            Newest First
-          </option>
+/>
 
-          <option value="low">
-            Price Low → High
-          </option>
-
-          <option value="high">
-            Price High → Low
-          </option>
-
-          <option value="az">
-            A → Z
-          </option>
-
-          <option value="za">
-            Z → A
-          </option>
-
-        </select>
-
-        </div>
-
-        {filterOpen && (
-          
-
-<div className="filter-drawer">
-
-  <div className="filter-header">
-
-    <h2>Product Filters</h2>
-
-    <button
-      className="close-filter"
-      onClick={() =>
-        setFilterOpen(false)
-      }
-    >
-      ✕
-    </button>
-
-  </div>
-
-  <select
-  value={selectedCategory}
-  onChange={(e) =>
-    setSelectedCategory(
-      e.target.value
-    )
-  }
->
-<option value="All">
-    Category
-  </option>
-
-  {categories.map(
-    (category) => (
-      <option
-        key={category}
-        value={category}
-      >
-        {category}
-      </option>
-    )
-  )}
-</select>
-
-
-  <select
-    value={selectedBrand}
-    onChange={(e) =>
-      setSelectedBrand(
-        e.target.value
-      )
-    }
-  >
-    <option value="All">
-      Brand
-    </option>
-    {brands.map((brand) => (
-
-      <option
-        key={brand}
-        value={brand}
-      >
-        {brand}
-      </option>
-
-    ))}
-  </select>
-
-  <select
-  value={selectedSize}
-  onChange={(e) =>
-    setSelectedSize(
-      e.target.value
-    )
-  }
->
-
-  <option value="All">
-    Size
-  </option>
-
-  {sizes.map((size) => (
-
-    <option
-      key={size}
-      value={size}
-    >
-      {size}
-    </option>
-
-  ))}
-
-</select>
-
-
-<select
-  value={selectedColor}
-  onChange={(e) =>
-    setSelectedColor(
-      e.target.value
-    )
-  }
->
-
-  <option value="All">
-    Color
-  </option>
-
-  {colors.map((color) => (
-
-    <option
-      key={color}
-      value={color}
-    >
-      {color}
-    </option>
-
-  ))}
-
-</select>
-
-  <select
-  value={selectedGender}
-  onChange={(e) =>
-    setSelectedGender(
-      e.target.value
-    )
-  }
->
-<option value="All">
-  Gender
-</option>
-
-  {genders.map(
-    (gender) => (
-
-      <option
-        key={gender}
-        value={gender}
-      >
-        {gender}
-      </option>
-
-    )
-  )}
-
-</select>
-
-<select
-  value={selectedActivity}
-  onChange={(e) =>
-    setSelectedActivity(
-      e.target.value
-    )
-  }
->
-<option value="All">
-  Activity Type
-</option>
-
-  {activities.map(
-    (activity) => (
-
-      <option
-        key={activity}
-        value={activity}
-      >
-        {activity}
-      </option>
-
-    )
-  )}
-
-</select>
-
-<select
-  value={selectedDiscount}
-  onChange={(e) =>
-    setSelectedDiscount(
-      e.target.value
-    )
-  }
->
-
-  <option value="All">
-    Discounts
-  </option>
-
-  <option value="10">
-    10%+ Off
-  </option>
-
-  <option value="20">
-    20%+ Off
-  </option>
-
-  <option value="30">
-    30%+ Off
-  </option>
-
-  <option value="50">
-    50%+ Off
-  </option>
-
-</select>
+<div className="top-category-pills">
 
 <button
-  className="clear-filters-btn"
-  onClick={() => {
-
-    setSelectedCategory("All");
-    setSelectedBrand("All");
-    setSelectedGender("All");
-    setSelectedActivity("All");
-    setSelectedDiscount("All");
-    setSelectedSize("All");
-    setSelectedColor("All");
-  }}
+className={selectedCategory==="All" ? "active-pill" : ""}
+onClick={()=>setSelectedCategory("All")}
 >
-  Clear All Filters ✕
+All
 </button>
 
-  <button
-    className="show-products-btn"
-    onClick={() =>
-      setFilterOpen(false)
-    }
-  >
-    Show {filteredProducts.length}
-    Products
-  </button>
+{categories.map(category=>(
+
+<button
+key={category}
+className={
+selectedCategory===category
+? "active-pill"
+: ""
+}
+onClick={()=>setSelectedCategory(category)}
+>
+{category}
+</button>
+
+))}
 
 </div>
 
+      <div className="grid-toggle">
+
+      <button
+        className={
+          gridView === "2"
+            ? "active-grid"
+            : ""
+        }
+        onClick={() =>
+          setGridView("2")
+        }
+      >
+        ▦
+      </button>
+
+      <button
+        className={
+          gridView === "3"
+            ? "active-grid"
+            : ""
+        }
+        onClick={() =>
+          setGridView("3")
+        }
+      >
+        ▥
+      </button>
+
+      </div>
+
+
+      {filterOpen && (
+<div
+  className="drawer-overlay"
+  onClick={() =>
+    setFilterOpen(false)
+  }
+/>
 )}
+
+<SortDrawer
+
+sortOpen={sortOpen}
+setSortOpen={setSortOpen}
+
+sortBy={sortBy}
+setSortBy={setSortBy}
+
+/>
+
+<FilterDrawer
+
+filterOpen={filterOpen}
+setFilterOpen={setFilterOpen}
+
+products={products}
+filteredProducts={filteredProducts}
+
+categories={categories}
+subcategories={subcategories}
+brands={brands}
+activities={activities}
+strapTypes={strapTypes}
+
+selectedCategory={selectedCategory}
+setSelectedCategory={setSelectedCategory}
+
+selectedSubcategory={selectedSubcategory}
+setSelectedSubcategory={setSelectedSubcategory}
+
+selectedBrand={selectedBrand}
+setSelectedBrand={setSelectedBrand}
+
+selectedGender={selectedGender}
+setSelectedGender={setSelectedGender}
+
+selectedActivity={selectedActivity}
+setSelectedActivity={setSelectedActivity}
+
+selectedStrapType={selectedStrapType}
+setSelectedStrapType={setSelectedStrapType}
+
+selectedDiscount={selectedDiscount}
+setSelectedDiscount={setSelectedDiscount}
+
+/>
+
 
         <p className="product-count">
             Showing {
@@ -765,7 +721,13 @@ useEffect(() => {
 
           )}
 
-        <div className="category-products-grid">
+          <div
+            className={
+              gridView === "2"
+                ? "category-products-grid"
+                : "category-products-grid-3"
+            }
+          >
 
           {filteredProducts.map(
             (product) => (
@@ -792,9 +754,9 @@ useEffect(() => {
                     ₹{product.price}
                   </p>
 
-                  <button>
+                  {/* <button>
                     View Product
-                  </button>
+                  </button> */}
                 </div>
               </div>
             )
@@ -828,9 +790,9 @@ useEffect(() => {
         <h3>{product.name}</h3>
         <p>₹{product.price}</p>
 
-        <button>
+        {/* <button>
           View Product
-        </button>
+        </button> */}
       </div>
     </div>
 
@@ -844,6 +806,25 @@ useEffect(() => {
 
         
       </section>
+      <div className="bottom-actions">
+
+<button
+  className="bottom-filter-btn"
+  onClick={() => setFilterOpen(true)}
+>
+  <Funnel size={20} />
+  <span>Filter</span>
+</button>
+
+<button
+  className="bottom-sort-btn"
+  onClick={() => setSortOpen(true)}
+>
+  <ArrowUpDown size={20} />
+  <span>Sort</span>
+</button>
+
+</div>
 
       <Footer />
     </>
