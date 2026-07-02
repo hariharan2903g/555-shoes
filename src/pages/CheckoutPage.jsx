@@ -1,26 +1,13 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Footer from "../components/Footer";
+import { useNavigate, useLocation } from "react-router-dom";import Footer from "../components/Footer";
+import { calculateShipping } from "../utils/shipping";
 
 function CheckoutPage() {
     const navigate = useNavigate();
-    const [formData, setFormData] =
-    useState({
-      name: "",
-      phone: "",
-      alternatePhone: "",
-  
-      house: "",
-      street: "",
-      area: "",
-  
-      city: "",
-      state: "",
-      pincode: "",
-    });
-
     const [cart, setCart] = useState([]);
     const [shipping, setShipping] = useState(0);
+    const [delivery, setDelivery] = useState("");
+    const [selectedAddress, setSelectedAddress] = useState(null);
     const freeShippingLimit = 2000;
 
     useEffect(() => {
@@ -47,76 +34,71 @@ function CheckoutPage() {
         0
       );
 
-    //   pincode and cost
-
       useEffect(() => {
 
-        const pincode =
-          formData.pincode;
-      
-        if (
-          subtotal >= freeShippingLimit
-        ) {
-          setShipping(0);
-          return;
-        }
-      
-        if (
-          pincode.startsWith("600")
-        ) {
-          setShipping(50);
-        }
-      
-        else if (
-          pincode.startsWith("6")
-        ) {
-          setShipping(80);
-        }
-      
-        else if (
-          /^\d{6}$/.test(pincode)
-        ) {
-          setShipping(100);
-        }
-      
-        else {
-          setShipping(0);
-        }
-      
-      }, [
-        formData.pincode,
-        subtotal,
-      ]);
+        if (!selectedAddress) return;
+    
+        const result = calculateShipping(
+            subtotal,
+            selectedAddress.pincode
+        );
+    
+        setShipping(result.shipping);
+    
+        setDelivery(result.delivery);
+    
+    }, [subtotal, selectedAddress]);
+
+
+
+    useEffect(() => {
+
+      const loadAddress = () => {
+  
+          const addresses =
+              JSON.parse(localStorage.getItem("addresses")) || [];
+  
+          const selected =
+              addresses.find(address => address.selected);
+  
+          setSelectedAddress(selected || null);
+  
+      };
+  
+      loadAddress();
+  
+      window.addEventListener(
+          "focus",
+          loadAddress
+      );
+  
+      return () =>
+          window.removeEventListener(
+              "focus",
+              loadAddress
+          );
+  
+  }, []);
+
+    //   pincode and cost
+
+   
 
       const total = subtotal + shipping;
 
-  const handleChange = (e) => {
-
-    setFormData({
-      ...formData,
-      [e.target.name]:
-        e.target.value,
-    });
-
-  };
+  
 
 //   order placement function
 
   const placeOrder = () => {
 
-    if (
-      !formData.name ||
-      !formData.phone ||
-      !formData.house ||
-      !formData.street ||
-      !formData.area ||
-      !formData.city ||
-      !formData.state ||
-      !formData.pincode
-    ) {
-      alert("Please fill all required fields");
+    if (!selectedAddress) {
+
+      alert("Please select a delivery address");
+  
       return;
-    }
+  
+  }
   
     const products = cart
       .map(
@@ -133,23 +115,23 @@ function CheckoutPage() {
     const message = `
   🛒 NEW ORDER - 555 SHOES
   
-  Customer Name:
-  ${formData.name}
+ Customer Name:
+${selectedAddress.name}
   
   Phone:
-  ${formData.phone}
+  ${selectedAddress.phone}
   
   Alternate Phone:
-  ${formData.alternatePhone || "Not Provided"}
+  ${selectedAddress.alternatePhone || "Not Provided"}
   
   Address:
   
-  ${formData.house}
-  ${formData.street}
-  ${formData.area}
-  ${formData.city}
-  ${formData.state}
-  ${formData.pincode}
+  ${selectedAddress.house}
+  ${selectedAddress.street}
+  ${selectedAddress.area}
+  ${selectedAddress.city}
+  ${selectedAddress.state}
+  ${selectedAddress.pincode}
   
   ---------------------
   
@@ -169,6 +151,8 @@ function CheckoutPage() {
   
   Total: ₹${total}
   `;
+
+ 
   
     window.open(
       `https://wa.me/917868905884?text=${encodeURIComponent(
@@ -199,63 +183,74 @@ function CheckoutPage() {
         </div>
 
         <div className="checkout-form">
-      <h2>Contact Details</h2>
+      
+        <div className="checkout-address">
 
-        <input
-          name="name"
-          placeholder="Full Name"
-          onChange={handleChange}
-        />
+<div className="checkout-address-header">
 
-        <input
-          name="phone"
-          placeholder="Phone Number"
-          onChange={handleChange}
-        />
+    <h3>Delivery Address</h3>
 
-        <input
-        name="alternatePhone"
-        placeholder="Alternate Mobile Number (Optional)"
-        onChange={handleChange}
-        />
+    <button
+        onClick={() => navigate("/address")}
+    >
+        Change
+    </button>
 
-<h2>Delivery Address</h2>
+</div>
 
-<input
-  name="house"
-  placeholder="House / Flat No"
-  onChange={handleChange}
-/>
+{selectedAddress ? (
 
-<input
-  name="street"
-  placeholder="Street Address"
-  onChange={handleChange}
-/>
+    <>
 
-<input
-  name="area"
-  placeholder="Area / Locality"
-  onChange={handleChange}
-/>
+        <strong>
+            {selectedAddress.name}
+        </strong>
 
-<input
-  name="city"
-  placeholder="City"
-  onChange={handleChange}
-/>
+        <p>
 
-<input
-  name="state"
-  placeholder="State"
-  onChange={handleChange}
-/>
+            {selectedAddress.house},
 
-<input
-  name="pincode"
-  placeholder="Pincode"
-  onChange={handleChange}
-/>
+            {" "}
+
+            {selectedAddress.street},
+
+            {" "}
+
+            {selectedAddress.area}
+
+        </p>
+
+        <p>
+
+            {selectedAddress.city}
+
+            {" - "}
+
+            {selectedAddress.pincode}
+
+        </p>
+
+        <p>
+
+            {delivery}
+
+        </p>
+
+    </>
+
+) : (
+
+    <button
+        className="add-address-checkout"
+        onClick={() => navigate("/address")}
+    >
+        + Add Address
+    </button>
+
+)}
+
+</div>
+
 
         <div className="checkout-summary">
         {cart.map((item) => (

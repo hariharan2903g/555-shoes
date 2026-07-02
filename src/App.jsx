@@ -10,11 +10,16 @@ import CheckoutPage from "./pages/CheckoutPage";
 import { useLocation } from "react-router-dom";
 import BottomNav from "./components/BottomNav";
 import CategoriesPage from "./pages/CategoriesPage";
+import AddressPage from "./pages/AddressPage";
+import AddAddressPage from "./pages/AddAddressPage";
 
 function App() {
   const [cartOpen, setCartOpen] =useState(false);
   const location = useLocation();
-  const hideBottomNav = location.pathname === "/checkout";
+  const hideBottomNav =
+  location.pathname === "/checkout" ||
+  location.pathname === "/address"  ||
+  location.pathname === "/add-address";
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     
@@ -73,16 +78,32 @@ function App() {
         path="/products"
         element={<AllProductsPage setCartOpen={setCartOpen}/>}
       />
-    </Routes>
+   
+
+    <Route
+  path="/address"
+  element={<AddressPage />}
+  />
+  <Route
+    path="/add-address"
+    element={<AddAddressPage />}
+/>
+   </Routes>
+
+   
     
         {!hideBottomNav && (
       <BottomNav
         setCartOpen={setCartOpen}
         setMenuOpen={setMenuOpen}
       />
+
+      
        )}
+    
     </>
   );
 }
+
 
 export default App;

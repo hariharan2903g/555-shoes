@@ -103,11 +103,11 @@ function Header({
             />
 
             <h1
-              className={
-                scrolled
-                  ? "hide-title"
-                  : ""
-              }
+              // className={
+              //   scrolled
+              //     ? "hide-title"
+              //     : ""
+              // }
             >
              555shoes.in
             </h1>

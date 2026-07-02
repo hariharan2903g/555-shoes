@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { calculateShipping } from "../utils/shipping";
 
 function CartDrawer({
   cartOpen,
@@ -17,6 +18,15 @@ function CartDrawer({
     0
   );
   const freeShippingLimit = 2000;
+  const addresses =
+    JSON.parse(localStorage.getItem("addresses")) || [];
+
+const address =
+    addresses.find(address => address.selected);
+const result = calculateShipping(
+  total,
+  address?.pincode || ""
+);
 
   const remaining = freeShippingLimit - total;
   
@@ -110,7 +120,7 @@ Price: ₹${item.price}`
         }`}
       >
         <div className="cart-header">
-          <h2>Your Cart</h2>
+          <h2> CART</h2>
 
           <button
             onClick={() =>
@@ -120,11 +130,13 @@ Price: ₹${item.price}`
             ✕
           </button>
         </div>
+       
 
         {cart.length === 0 ? (
           <p>Your cart is empty</p>
         ) : (
           <>
+          <div className="cart-body">
             {cart.map(
               (item, index) => (
                 <div
@@ -176,6 +188,7 @@ Price: ₹${item.price}`
                 </div>
               )
             )}
+            </div>
 
             <div className="cart-summary">
 
@@ -196,7 +209,7 @@ Price: ₹${item.price}`
 
             {total < freeShippingLimit ? (
               <p className="shipping-message">
-                Add ₹{remaining} more to get
+                You are ₹{remaining} away from 
                 FREE shipping 🚚
               </p>
             ) : (
@@ -211,11 +224,60 @@ Price: ₹${item.price}`
             </div>
 
             </div>   
+
+            <div className="delivery-card">
+
+<div className="delivery-top">
+
+    <div>
+
+          {address ? (
+
+  <>
+  <strong>Deliver to</strong>
+
+  <br />
+
+  📍 {address.area}, {address.city} - {address.pincode}
+
+  </>
+
+  ) : (
+
+  <>
+  <strong>Delivery</strong>
+
+  <br />
+
+  Enter address to check
+  delivery estimate.
+
+  </>
+
+  )}
+
+    </div>
+
+    <button
+        onClick={()=>{
+            setCartOpen(false);
+            navigate("/address");
+        }}
+    >
+       {address ? "Change" : "Add"}
+    </button>
+
+</div>
+
+<p>{result.delivery}</p>
+
+</div>
          
             <button
               className="checkout-btn"
               onClick={() => {
                 setCartOpen(false);
+                
                 navigate("/checkout");
               }}
             >
