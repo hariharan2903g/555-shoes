@@ -10,9 +10,10 @@ import {
  
   
   function BottomNav({
-    setMenuOpen,
     setCartOpen,
-  }) {
+    setMenuOpen,
+    hide
+}) {
     const navigate = useNavigate();
 
     const cart =
@@ -43,7 +44,11 @@ const cartCount = cart.reduce(
 
         
         
-      <div className="bottom-nav">
+            <div
+          className={`bottom-nav ${
+              hide ? "hide" : ""
+          }`}
+      >
   
             <button onClick= {goHome}>
             <FiHome />

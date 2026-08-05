@@ -23,6 +23,8 @@ import { useState, useEffect } from "react";
 import accessoriesImage from "../assets/accessories.avif";
 import Brands from "../components/Brands";
 import BottomNav from "../components/BottomNav";
+// import DeliveryBanner from "../components/DeliveryBanner";
+// import AddressSheet from "../pages/AddressPage";
 
 function Home({ setCartOpen }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -124,6 +126,9 @@ if (savedPosition) {
 console.log(data);
     }
   }
+
+  // const [showAddressSheet,setShowAddressSheet] = useState(false);
+
   
   // newArrivals fetching
 
@@ -159,6 +164,13 @@ console.log(data);
   scrolled={scrolled}
   setCartOpen={setCartOpen}
 />
+{/* <DeliveryBanner
+
+    selectedAddress={selectedAddress}
+
+    onOpen={() => setShowAddressSheet(true)}
+
+/> */}
 
 <Banner/>
 
@@ -202,6 +214,14 @@ console.log(data);
     
     
   );
+
+//   <AddressSheet
+
+//     open={showAddressSheet}
+
+//     onClose={() => setShowAddressSheet(false)}
+
+// />
   
 
 }

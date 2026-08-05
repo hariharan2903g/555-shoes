@@ -33,7 +33,7 @@ export function calculateShipping(subtotal, pincode) {
 
         return {
             shipping: 100,
-            delivery: "Delivery in 3–5 working days"
+            delivery: "Delivery in 4–6 working days"
         };
 
     }

@@ -9,11 +9,13 @@ import ProductHeader from "../components/ProductHeader";
 import ActiveFilters from "../components/ActiveFilters";
 import SortDrawer from "../components/SortDrawer";
 import FilterDrawer from "../components/FilterDrawer";
+// import DeliveryBanner from "../components/DeliveryBanner";
+// import AddressSheet from "../pages/AddressPage";
 
 function AllProductsPage({ setCartOpen }) {
 
   const navigate = useNavigate();
-
+  // const [showAddressSheet,setShowAddressSheet] = useState(false);
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchParams] = useSearchParams();
@@ -133,14 +135,11 @@ function AllProductsPage({ setCartOpen }) {
       const colors = [
         "All",
         ...new Set(
-          products
-            .flatMap(
-              (product) =>
-                product.colors
-                  ? product.colors.split(",")
-                  : []
-            )
-            .map((color) => color.trim())
+          products.flatMap(product =>
+            product.colors
+              ? product.colors.map(color => color.color)
+              : []
+          )
         ),
       ];
   
@@ -416,12 +415,10 @@ useEffect(() => {
 
     if (selectedColor !== "All") {
 
-      result = result.filter(
-        (product) =>
-          product.colors
-            ?.split(",")
-            .map((color) => color.trim())
-            .includes(selectedColor)
+      result = result.filter(product =>
+        product.colors?.some(
+          color => color.color === selectedColor
+        )
       );
     
     }
@@ -554,6 +551,9 @@ useEffect(() => {
 
   return (
     <>
+    <div className="products-banner">
+  🚚 FREE DELIVERY ON ORDERS ABOVE ₹2000
+</div>
       <Header
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
@@ -561,9 +561,15 @@ useEffect(() => {
         setCartOpen={setCartOpen}
       />
 
-<div className="products-banner">
-  🚚 FREE DELIVERY ON ORDERS ABOVE ₹2000
-</div>
+{/* <DeliveryBanner
+
+selectedAddress={selectedAddress}
+
+onOpen={() => setShowAddressSheet(true)}
+
+/> */}
+
+
       <section className="section">
 
       <ProductHeader
@@ -741,17 +747,23 @@ setSelectedDiscount={setSelectedDiscount}
                 }
               >
                 <img
-                  src={product.image_url}
-                  alt={product.name}
-                />
+                    src={
+                      product.colors?.[0]?.images?.find(
+                        image =>
+                          image.id ===
+                          product.colors[0].coverImageId
+                      )?.url
+                    }
+                    alt={product.product_name}
+                  />
 
                 <div className="product-category-info">
                   <h3>
-                    {product.name}
+                  {product.product_name}
                   </h3>
 
                   <p>
-                    ₹{product.price}
+                  ₹{product.selling_price}
                   </p>
 
                   {/* <button>
@@ -781,14 +793,20 @@ setSelectedDiscount={setSelectedDiscount}
         navigate(`/product/${product.id}`)
       }
     >
-      <img
-        src={product.image_url}
-        alt={product.name}
+     <img
+        src={
+          product.colors?.[0]?.images?.find(
+            image =>
+              image.id ===
+              product.colors[0].coverImageId
+          )?.url
+        }
+        alt={product.product_name}
       />
 
       <div className="product-category-info">
-        <h3>{product.name}</h3>
-        <p>₹{product.price}</p>
+        <h3>{product.product_name}</h3>
+        <p>₹{product.selling_price}</p>
 
         {/* <button>
           View Product
@@ -827,6 +845,14 @@ setSelectedDiscount={setSelectedDiscount}
 </div>
 
       <Footer />
+
+      {/* <AddressSheet
+
+    open={showAddressSheet}
+
+    onClose={() => setShowAddressSheet(false)}
+
+/> */}
     </>
   );
 }

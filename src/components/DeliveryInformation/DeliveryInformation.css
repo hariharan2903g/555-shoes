@@ -1,0 +1,53 @@
+.delivery-sheet{
+
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+
+}
+
+.delivery-sheet h3{
+
+    font-size:22px;
+    margin:0;
+
+}
+
+.delivery-sheet p{
+
+    color:#555;
+    line-height:1.8;
+    font-size:15px;
+    margin:0;
+
+}
+
+.delivery-partners{
+
+    margin-top:10px;
+    border-top:1px solid #eee;
+    padding-top:20px;
+
+}
+
+.delivery-partners h4{
+
+    margin-bottom:15px;
+
+}
+
+.partner-list{
+
+    display:flex;
+    justify-content:center;
+    gap:35px;
+    align-items:center;
+
+}
+
+.partner-list img{
+
+    height:42px;
+    object-fit:contain;
+
+}

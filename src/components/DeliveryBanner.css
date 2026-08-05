@@ -1,0 +1,56 @@
+.delivery-banner{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:12px 16px;
+
+    background:#fff;
+
+    border-bottom:1px solid #eee;
+
+    cursor:pointer;
+
+}
+
+.delivery-banner-left{
+
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+
+}
+
+.delivery-title{
+
+    font-size:12px;
+    color:#777;
+
+}
+
+.delivery-address{
+
+    font-size:14px;
+    font-weight:600;
+
+}
+
+.delivery-empty{
+
+    font-size:14px;
+    color:#ff9800;
+    font-weight:600;
+
+}
+
+.delivery-change-btn{
+
+    background:none;
+    border:none;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+}

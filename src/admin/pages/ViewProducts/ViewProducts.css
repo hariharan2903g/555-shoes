@@ -1,0 +1,196 @@
+.view-products-page {
+    width: 96%;
+    max-width: 1800px;
+    margin: 40px auto;
+}
+
+.view-products-page h1{
+    font-size:48px;
+    font-weight:700;
+    color:#111;
+    margin-bottom:12px;
+}
+
+.editable-image{
+    cursor:pointer;
+    transition:.2s;
+}
+
+.editable-image:hover{
+    transform:scale(1.05);
+    opacity:.9;
+}
+
+.view-products-subtitle{
+    font-size:18px;
+    color:#666;
+    margin-bottom:40px;
+}
+
+.products-table-container{
+
+    width:100%;
+
+    margin-top:30px;
+
+    overflow-x:visible;
+
+    border:1px solid #ddd;
+
+    border-radius:12px;
+
+    background:white;
+
+}
+
+.products-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.products-table th{
+
+    background:#f8f8f8;
+
+    padding:12px 10px;
+
+    text-align:left;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    border-bottom:1px solid #ddd;
+
+    white-space:nowrap;
+
+}
+
+.products-table td{
+
+    padding:12px 10px;
+
+    border-bottom:1px solid #eee;
+
+    vertical-align:middle;
+
+    font-size:14px;
+
+}
+
+.products-table tbody tr:hover{
+
+    background:#fafafa;
+
+}
+
+.products-table td button{
+
+    margin-right:6px;
+
+    padding:6px 10px;
+
+    border:none;
+
+    border-radius:6px;
+
+    cursor:pointer;
+
+    background:black;
+
+    color:white;
+
+    font-size:12px;
+}
+
+.product-card{
+
+    background:#fff;
+
+    border:1px solid #ddd;
+    border-radius:12px;
+
+    padding:20px;
+
+    transition:.2s;
+}
+
+.product-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.product-card h3{
+
+    margin-bottom:12px;
+
+    color:#111;
+}
+
+.product-card p{
+
+    margin-bottom:8px;
+
+    color:#555;
+}
+
+.table-product-image{
+
+    width:48px;
+
+    height:48px;
+
+    object-fit:cover;
+
+    border-radius:6px;
+
+    border:1px solid #ddd;
+}
+
+.image-placeholder{
+
+    width:70px;
+    height:70px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:1px dashed #ccc;
+    border-radius:8px;
+
+    font-size:12px;
+    color:#777;
+}
+
+.status-badge{
+
+    display:inline-block;
+
+    padding:5px 10px;
+
+    border-radius:20px;
+
+    font-size:12px;
+
+    font-weight:600;
+}
+
+.status-badge.active{
+
+    background:#dcfce7;
+
+    color:#166534;
+}
+
+.status-badge.hidden{
+
+    background:#fee2e2;
+
+    color:#991b1b;
+}

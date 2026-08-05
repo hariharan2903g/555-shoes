@@ -12,14 +12,21 @@ import BottomNav from "./components/BottomNav";
 import CategoriesPage from "./pages/CategoriesPage";
 import AddressPage from "./pages/AddressPage";
 import AddAddressPage from "./pages/AddAddressPage";
+import Admin from "./pages/Admin";
+import AddProduct from "./admin/AddProduct";
+import { ToastContainer } from "react-toastify";
+import ViewProducts from "./admin/pages/ViewProducts/ViewProducts";
 
 function App() {
   const [cartOpen, setCartOpen] =useState(false);
+  const [returnToCart, setReturnToCart] = useState(false);
   const location = useLocation();
-  const hideBottomNav =
+  const shouldHideBottomNav =
   location.pathname === "/checkout" ||
-  location.pathname === "/address"  ||
-  location.pathname === "/add-address";
+  location.pathname === "/address" ||
+  location.pathname === "/add-address" ||
+  location.pathname.startsWith("/admin");
+  const [hideBottomNav, setHideBottomNav] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     
@@ -56,10 +63,15 @@ function App() {
         }
       />
 
-      <Route
-        path="/product/:id"
-        element={ <ProductPage setCartOpen={setCartOpen}/>}
-      />
+<Route
+  path="/product/:id"
+  element={
+    <ProductPage
+      setCartOpen={setCartOpen}
+      setHideBottomNav={setHideBottomNav}
+    />
+  }
+/>
 
 
         <Route
@@ -78,6 +90,23 @@ function App() {
         path="/products"
         element={<AllProductsPage setCartOpen={setCartOpen}/>}
       />
+
+{/* Admin */}
+
+<Route
+  path="/admin"
+  element={<Admin />}
+/>
+
+<Route
+  path="/admin/add-product"
+  element={<AddProduct />}
+/>
+
+<Route
+  path="/admin/view-products"
+  element={<ViewProducts />}
+/>
    
 
     <Route
@@ -86,20 +115,37 @@ function App() {
   />
   <Route
     path="/add-address"
-    element={<AddAddressPage />}
+    element={
+        <AddAddressPage
+            setCartOpen={setCartOpen}
+            returnToCart={returnToCart}
+            setReturnToCart={setReturnToCart}
+        />
+    }
 />
    </Routes>
 
    
     
-        {!hideBottomNav && (
-      <BottomNav
-        setCartOpen={setCartOpen}
-        setMenuOpen={setMenuOpen}
-      />
+   {!shouldHideBottomNav && (
+     <BottomNav
+     setCartOpen={setCartOpen}
+     setMenuOpen={setMenuOpen}
+     hide={hideBottomNav}
+ />
 
       
        )}
+
+<ToastContainer
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  closeOnClick
+  pauseOnHover
+  draggable
+  theme="light"
+/>
     
     </>
   );

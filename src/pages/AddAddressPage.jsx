@@ -1,8 +1,12 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation,} from "react-router-dom";
 import "../App.css";
 import { useState, useEffect, useRef } from "react";
-function AddAddressPage() {
-
+import logo from "../assets/555logo.png";
+function AddAddressPage({
+    setCartOpen,
+    returnToCart,
+    setReturnToCart
+}) {
     const navigate = useNavigate();
 
 const location = useLocation();
@@ -29,34 +33,76 @@ useState({
   state:"",
   pincode:"",
 });
+const [initialFormData, setInitialFormData] = useState(formData);
+const [showDiscardPopup, setShowDiscardPopup] = useState(false);
 
 
 useEffect(() => {
 
   if (mode === "edit" && editingAddress) {
 
-      setFormData(editingAddress);
+    setFormData(editingAddress);
+    setInitialFormData(editingAddress);
 
-  } else {
+} else {
 
-      setFormData({
-        type: "Home",
-        label: "",
+    const savedAddresses =
+    JSON.parse(localStorage.getItem("addresses")) || [];
 
-          name: "",
-          phone: "",
-          alternatePhone: "",
+const hasHome =
+    savedAddresses.some(address => address.type === "Home");
 
-          house: "",
-          street: "",
-          area: "",
+const hasWork =
+    savedAddresses.some(address => address.type === "Work");
 
-          city: "",
-          state: "",
-          pincode: ""
-      });
+const defaultType =
+    !hasHome
+        ? "Home"
+        : !hasWork
+        ? "Work"
+        : "Other";
+
+const emptyForm = {
+    type: defaultType,
+    label: "",
+
+    name: "",
+    phone: "",
+    alternatePhone: "",
+
+    house: "",
+    street: "",
+    area: "",
+
+    city: "",
+    state: "",
+    pincode: ""
+};
+
+    setFormData(emptyForm);
+    setInitialFormData(emptyForm);
+
+}
+
+}, [mode, editingAddress]);
+
+useEffect(() => {
+
+  if (mode === "edit") {
+
+      setLoadingAddress(false);
 
   }
+
+}, [mode]);
+
+useEffect(() => {
+
+  window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "auto"
+  });
 
 }, [mode, editingAddress]);
 
@@ -69,11 +115,13 @@ const [errors, setErrors] = useState({
   area: "",
   street: "",
   house: "",
-  label: ""
+  label: "",
+  duplicate: ""
 });
 
 const nameRef = useRef(null);
 const phoneRef = useRef(null);
+const alternatePhoneRef = useRef(null);
 const pincodeRef = useRef(null);
 const cityRef = useRef(null);
 const stateRef = useRef(null);
@@ -81,12 +129,28 @@ const areaRef = useRef(null);
 const streetRef = useRef(null);
 const houseRef = useRef(null);
 const labelRef = useRef(null);
+const isSavingRef = useRef(false);
 
 const [loadingPincode, setLoadingPincode] = useState(false);
-
+const [showDuplicatePopup, setShowDuplicatePopup] = useState(false);
+const [duplicateAddress, setDuplicateAddress] = useState(null);
+const [loadingAddress, setLoadingAddress] = useState(false);
+const [loadingSave, setLoadingSave] = useState(false);
+const [saveSuccess, setSaveSuccess] = useState(false);
 const handleChange = (e) => {
 
   let value = e.target.value;
+  if (
+    e.target.name === "name" ||
+    e.target.name === "city" ||
+    e.target.name === "area" 
+    
+) {
+    value = value.replace(
+        /\b\w/g,
+        char => char.toUpperCase()
+    );
+}
 
   if (
       e.target.name === "phone" ||
@@ -125,6 +189,10 @@ const handleChange = (e) => {
                           city: office.District,
                           state: office.State
                       }));
+
+                      setTimeout(() => {
+                        areaRef.current?.focus();
+                    }, 100);
 
                   } else {
                     setLoadingPincode(false);
@@ -202,9 +270,10 @@ const handleChange = (e) => {
   }));
 
   setErrors(prev => ({
-      ...prev,
-      [e.target.name]: ""
-  }));
+    ...prev,
+    [e.target.name]: "",
+    duplicate: ""
+}));
 
 };
 
@@ -221,7 +290,55 @@ savedAddresses.some(address =>
   address.type === "Work"
 );
 
+const otherCount =
+    savedAddresses.filter(
+        address => address.type === "Other"
+    ).length;
+
+const hasReachedOtherLimit =
+    otherCount >= 8;
+
+const hasChanges =
+JSON.stringify(formData) !== JSON.stringify(initialFormData);
+
+function normalize(value) {
+
+  return value
+      .trim()
+      .replace(/\s+/g, " ")
+      .toLowerCase();
+
+}
+
+useEffect(() => {
+
+  if (!hasChanges) return;
+
+  window.history.pushState(null, "", window.location.href);
+
+  const handlePopState = () => {
+
+      setShowDiscardPopup(true);
+
+      window.history.pushState(null, "", window.location.href);
+
+  };
+
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+
+      window.removeEventListener("popstate", handlePopState);
+
+  };
+
+}, [hasChanges]);
+
       function saveAddress() {
+
+        if (isSavingRef.current) return;
+
+          isSavingRef.current = true;
 
                 const newErrors = {};
 
@@ -265,19 +382,22 @@ savedAddresses.some(address =>
 
       if (newErrors.name) {
 
+        isSavingRef.current = false;
+    
         nameRef.current?.focus();
         return;
     
     }
     
     if (newErrors.phone) {
-    
+      isSavingRef.current = false;
         phoneRef.current?.focus();
         return;
     
     }
     
     if (newErrors.pincode) {
+      isSavingRef.current = false;
     
         pincodeRef.current?.focus();
         return;
@@ -285,6 +405,7 @@ savedAddresses.some(address =>
     }
     
     if (newErrors.city) {
+      isSavingRef.current = false;
     
         cityRef.current?.focus();
         return;
@@ -292,6 +413,7 @@ savedAddresses.some(address =>
     }
 
     if (newErrors.state) {
+      isSavingRef.current = false;
 
       stateRef.current?.focus();
       return;
@@ -299,6 +421,7 @@ savedAddresses.some(address =>
   }
     
     if (newErrors.area) {
+      isSavingRef.current = false;
     
         areaRef.current?.focus();
         return;
@@ -306,6 +429,7 @@ savedAddresses.some(address =>
     }
     
     if (newErrors.street) {
+      isSavingRef.current = false;
     
         streetRef.current?.focus();
         return;
@@ -313,6 +437,7 @@ savedAddresses.some(address =>
     }
     
     if (newErrors.house) {
+      isSavingRef.current = false;
     
         houseRef.current?.focus();
         return;
@@ -320,129 +445,141 @@ savedAddresses.some(address =>
     }
     
     if (newErrors.label) {
+      isSavingRef.current = false;
     
         labelRef.current?.focus();
         return;
     
     }
 
-
-
-      // if (Object.keys(newErrors).length > 0) {
-      //     return;
-      // }
-
-
         const savedAddresses =
             JSON.parse(localStorage.getItem("addresses")) || [];
 
-        //     if (formData.phone.length !== 10) {
-
-        //       setErrors(prev => ({
-        //           ...prev,
-        //           phone: "Please enter a valid mobile number."
-        //       }));
-          
-        //       return;
-          
-        //   }
-  
-        //   if (formData.pincode.length !== 6) {
-
-        //     setErrors(prev => ({
-        //         ...prev,
-        //         pincode: "Please enter a valid pincode."
-        //     }));
-        
-        //     return;
-        
-        // }
-  
-  
-        //         if (!formData.name.trim()) {
-
-        //           setErrors(prev => ({
-        //               ...prev,
-        //               name: "Please enter your name."
-        //           }));
-              
-        //           return;
-              
-        //       }
-              
-        //       if (!/^[A-Za-z ]+$/.test(formData.name)) {
-              
-        //           setErrors(prev => ({
-        //               ...prev,
-        //               name: "Only letters are allowed."
-        //           }));
-              
-        //           return;
-              
-        //       }
-
             const duplicate = savedAddresses.find(address =>
 
-              address.house === formData.house &&
-              address.street === formData.street &&
-              address.area === formData.area &&
-              address.city === formData.city &&
+              normalize(address.house) === normalize(formData.house) &&
+              normalize(address.street) === normalize(formData.street) &&
+              normalize(address.area) === normalize(formData.area) &&
+              normalize(address.city) === normalize(formData.city) &&
               address.pincode === formData.pincode
-              
-              );
+          
+          );
               
               if (duplicate && mode !== "edit") {
 
-                alert("This address already exists.");
+                isSavingRef.current = false;
+            
+                setDuplicateAddress(duplicate);
+            
+                setShowDuplicatePopup(true);
             
                 return;
             
             }
+
+            setLoadingSave(true);
     
         savedAddresses.forEach(address => {
             address.selected = false;
         });
     
         if (mode === "edit" && editingAddress) {
-    
+
             const index = savedAddresses.findIndex(
                 address => address.id === editingAddress.id
             );
-    
-            savedAddresses[index] = {
-
-                ...formData,
-            
-                id: editingAddress.id,
-            
-                selected: true
-            
-            };
-    
+        
+            if (index !== -1) {
+        
+                savedAddresses[index] = {
+                    ...formData,
+                    id: editingAddress.id,
+                    selected: true
+                };
+        
+            } else {
+        
+                console.error(
+                    "Edited address not found:",
+                    editingAddress.id
+                );
+        
+            }
+        
         } else {
-    
-          savedAddresses.push({
-
-            id: crypto.randomUUID(),
-            
-            ...formData,
-            
-            selected: savedAddresses.length === 0
-            
+        
+            if (
+                formData.type === "Other" &&
+                otherCount >= 8
+            ) {
+        
+                alert("Maximum of 8 Other addresses allowed.");
+                isSavingRef.current = false;
+                return;
+        
+            }
+        
+            savedAddresses.push({
+        
+                id: crypto.randomUUID(),
+        
+                ...formData,
+        
+                selected: true
+        
             });
-
-           
-    
+        
         }
     
         localStorage.setItem(
-            "addresses",
-            JSON.stringify(savedAddresses)
-        );
-    
-        navigate(-1);
-    
+          "addresses",
+          JSON.stringify(savedAddresses)
+      );
+      console.log(savedAddresses);
+      
+      setTimeout(() => {
+        
+      
+          setLoadingSave(false);
+          isSavingRef.current = false;
+          setSaveSuccess(true);
+          setInitialFormData(formData);
+
+          setShowDiscardPopup(false);
+      
+          setTimeout(() => {
+
+            setSaveSuccess(false);
+
+            window.dispatchEvent(
+                new Event("addressUpdated")
+            );
+        
+            if (location.state?.fromCart) {
+        
+                setCartOpen(true);
+        
+            }
+            setShowDiscardPopup(false);
+
+            if (location.state?.fromCart) {
+
+                navigate(location.state.returnTo || "/", {
+                    replace: true
+                });
+
+            } else {
+
+                navigate(-1);
+
+            }
+        
+        }, 900);
+      
+      }, 400);
     }
+
+   
 
     return (
 
@@ -452,37 +589,77 @@ savedAddresses.some(address =>
 
     <button
         className="back-btn"
-        onClick={() => navigate(-1)}
+        onClick={() => {
+
+          if (hasChanges) {
+      
+              setShowDiscardPopup(true);
+      
+          } else {
+      
+            navigate(-1);
+      
+          }
+      
+      }}
     >
         ←
     </button>
 
-    <h2>Add Address</h2>
+        <h2>
+        {mode === "edit"
+            ? "Edit Address"
+            : "Add Address"}
+    </h2>
 
     <button
         className="reset-btn"
         onClick={() => {
 
+          if (mode === "edit") {
+
+            setFormData(editingAddress);
+            setInitialFormData(editingAddress);
+        
+        } else {
+        
             setFormData({
                 type: "Home",
                 label: "",
-
+        
                 name: "",
                 phone: "",
                 alternatePhone: "",
-
+        
                 house: "",
                 street: "",
                 area: "",
-
+        
                 city: "",
                 state: "",
                 pincode: ""
             });
+        }
+            setErrors({
+              name: "",
+              phone: "",
+              pincode: "",
+              city: "",
+              state: "",
+              area: "",
+              street: "",
+              house: "",
+              label: ""
+          });
+
+          setLoadingPincode(false);
 
         }}
     >
-        Reset
+        {mode === "edit"
+    ? "Revert"
+    : "Reset"}
+
     </button>
 
 </div>
@@ -499,6 +676,12 @@ savedAddresses.some(address =>
       <input
         className={errors.name ? "input-error" : ""}
         ref={nameRef}
+
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+              phoneRef.current?.focus();
+          }
+      }}
           name="name"
           autoComplete="name"
           placeholder=" "
@@ -519,6 +702,15 @@ savedAddresses.some(address =>
         <input
          className={errors.phone ? "input-error" : ""}
          ref={phoneRef}
+
+         onKeyDown={(e) => {
+          if (e.key === "Enter") {
+              document.querySelector(
+                  'input[name="alternatePhone"]'
+              )?.focus();
+          }
+      }}
+
           name="phone"
            autoComplete="tel"
            placeholder=" "
@@ -542,6 +734,12 @@ savedAddresses.some(address =>
 
 
         <input
+        ref={alternatePhoneRef}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+              pincodeRef.current?.focus();
+          }
+      }}
         name="alternatePhone"
         autoComplete="tel-national"
         placeholder=" "
@@ -569,6 +767,13 @@ savedAddresses.some(address =>
         <input
             className={errors.pincode ? "input-error" : ""}
             ref={pincodeRef}
+
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                  streetRef.current?.focus();
+              }
+          }}
+
             name="pincode"
             placeholder=" "
              autoComplete="postal-code"
@@ -647,6 +852,11 @@ savedAddresses.some(address =>
     <input
         className={errors.area ? "input-error" : ""}
         ref={areaRef}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+              houseRef.current?.focus();
+          }
+      }}
         name="area"
         placeholder=" "
         autoComplete="address-line2"
@@ -671,6 +881,11 @@ savedAddresses.some(address =>
     <input
         className={errors.street ? "input-error" : ""}
         ref={streetRef}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+              houseRef.current?.focus();
+          }
+      }}
         name="street"
         placeholder=" "
         autoComplete="street-address"
@@ -695,6 +910,11 @@ savedAddresses.some(address =>
     <input
         className={errors.house ? "input-error" : ""}
         ref={houseRef}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+              saveAddress();
+          }
+      }}
         name="house"
         placeholder=" "
         autoComplete="address-line1"
@@ -707,6 +927,8 @@ savedAddresses.some(address =>
     {errors.house && (
         <p className="error-text">{errors.house}</p>
     )}
+
+   
 
 </div>
 </div>
@@ -753,6 +975,10 @@ savedAddresses.some(address =>
     type="radio"
     name="type"
     value="Other"
+    disabled={
+        hasReachedOtherLimit &&
+        mode !== "edit"
+    }
     checked={formData.type === "Other"}
     onChange={handleChange}
 />
@@ -786,9 +1012,172 @@ onChange={handleChange}
 <button
     className="save-address-btn"
     onClick={saveAddress}
+    disabled={loadingPincode || loadingSave}
 >
-    Save Address
+      {
+      loadingSave
+      ? "Saving Address..."
+
+      : loadingPincode
+      ? "Looking up pincode..."
+
+      : mode === "edit"
+      ? "Update Address"
+
+      : "Save Address"
+      }
+
 </button>
+
+{showDuplicatePopup && (
+
+<div
+    className="popup-overlay"
+    onClick={() => setShowDuplicatePopup(false)}
+>
+
+    <div
+        className="duplicate-popup"
+        onClick={(e) => e.stopPropagation()}
+    >
+
+        <h3>Address already exists</h3>
+
+        <p>
+            You've already saved this address.
+        </p>
+     
+         <div className="popup-actions">
+
+    <button
+        className="popup-secondary-btn"
+        onClick={() => setShowDuplicatePopup(false)}
+    >
+        Keep Editing
+    </button>
+
+    <button
+    className="popup-btn"
+    onClick={() => {
+
+        setShowDuplicatePopup(false);
+
+        setLoadingAddress(true);
+
+        setTimeout(() => {
+
+            navigate("/add-address", {
+                replace: true,
+                state: {
+                    mode: "edit",
+                    address: duplicateAddress,
+                    fromCart: location.state?.fromCart,
+                    returnTo: location.state?.returnTo
+                }
+            });
+
+        }, 700);
+
+    }}
+>
+    View Address
+</button>
+</div>
+      </div>
+     
+    </div>
+
+
+)}
+
+{showDiscardPopup && (
+
+<div
+    className="popup-overlay"
+    onClick={() => {
+
+      setShowDiscardPopup(false);
+  
+  
+  }}
+>
+
+    <div
+        className="duplicate-popup"
+        onClick={(e) => e.stopPropagation()}
+    >
+
+        <h3>Discard changes?</h3>
+
+        <p>
+            You have unsaved changes.
+        </p>
+
+        <div className="popup-actions">
+
+            <button
+                className="popup-secondary-btn"
+                onClick={() => setShowDiscardPopup(false)}
+            >
+                Keep Editing
+            </button>
+
+            <button
+          className="popup-btn"
+          onClick={() => {  navigate(-1); }}
+      >
+          Discard
+      </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+)}
+
+{saveSuccess && (
+
+<div className="loading-overlay">
+
+    <div className="loading-card">
+
+        <div className="success-check">
+
+            ✓
+
+        </div>
+
+        <h3>Address Saved</h3>
+
+        <p>Your address has been saved successfully.</p>
+
+    </div>
+
+</div>
+
+)}
+
+{loadingAddress && (
+
+<div className="loading-overlay">
+
+    <div className="loading-card">
+
+        <img
+            src={logo}
+            alt="555 Shoes"
+            className="loading-logo"
+        />
+
+        <p>Opening address...</p>
+
+    </div>
+
+</div>
+
+)}
 
 </div>
     )

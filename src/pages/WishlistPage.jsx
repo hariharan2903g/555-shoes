@@ -41,11 +41,11 @@ function WishlistPage({ setCartOpen }) {
 
         <div className="category-products-grid">
 
-          {wishlist.map((product) => (
+        {wishlist.map((product, index) => (
 
-            <div
-              key={product.id}
-              className="product-category-card"
+        <div
+          key={`${product.id}-${index}`}
+          className="product-category-card"
               onClick={() =>
                 navigate(
                   `/product/${product.id}`
