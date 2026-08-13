@@ -1,7 +1,7 @@
-import banner1 from "../assets/Banner1.png";
-import banner2 from "../assets/Banner2.png";
-import banner3 from "../assets/Banner3.png";
-import banner4 from "../assets/Banner4.png";
+import banner1 from "../assets/banner1.png";
+import banner2 from "../assets/banner2.png";
+import banner3 from "../assets/banner3.png";
+import banner4 from "../assets/banner4.png";
 import { Link } from "react-router-dom";
 import {FaChevronLeft,FaChevronRight,} from "react-icons/fa";
 import { useState, useEffect } from "react";
