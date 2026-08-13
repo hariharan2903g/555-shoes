@@ -7,7 +7,7 @@ function Admin() {
 
   return (
     <div className="admin-page">
-      <h1>555 Shoes Admin</h1>
+      <h1>Skooks Admin</h1>
       <p className="admin-subtitle">
         Manage your store from one place.
       </p>

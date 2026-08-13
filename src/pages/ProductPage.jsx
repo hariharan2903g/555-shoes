@@ -4,7 +4,7 @@ import { useState, useEffect, useRef  } from "react";
 import { supabase } from "../supabase";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import logo from "../assets/555logo.png";
+import logo from "../assets/skookslogo.png";
 import { Link } from "react-router-dom";
 import { FiShare2, FiHeart, FiChevronRight, FiLoader} from "react-icons/fi";
 import { FaHeart } from "react-icons/fa";
@@ -631,7 +631,7 @@ function toggleWishlist() {
   
         <img
           src={logo}
-          alt="555 Shoes"
+          alt="SkookS"
           className="loading-logo"
         />
       </div>

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
-import logo from "../assets/555logo.png";
+import logo from "../assets/skookslogo.png";
 import { categoryImages } from "../data/categoryImages";
 import { categories } from "../data/categories";
 import "./CategoriesPage.css";
@@ -48,7 +48,7 @@ function CategoriesPage() {
 
             <img
             src={logo}
-            alt="555 Shoes"
+            alt="Skooks"
             className="categories-logo"
             />
 

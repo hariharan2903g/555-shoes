@@ -118,7 +118,7 @@ function Footer() {
     </a>
 
     <a
-        href="https://instagram.com/555shoes.in"
+        href="https://instagram.com/skooks.in"
         target="_blank"
         rel="noreferrer"
     >
@@ -177,7 +177,7 @@ function Footer() {
 
         <img
           src={logo}
-          alt="555 Shoes"
+          alt="SkookS"
           className="footer-logo"
         />
         <br></br><br></br><br></br>

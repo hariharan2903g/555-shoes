@@ -258,7 +258,8 @@ Deliver Here
 )}
 
 
-    </div>
-    
+    </div>  
+  );
+}
 
-);
+export default AddressSheet;

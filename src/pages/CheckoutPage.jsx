@@ -113,7 +113,7 @@ function CheckoutPage() {
       .join("\n");
   
     const message = `
-  🛒 NEW ORDER - 555 SHOES
+  🛒 NEW ORDER - SkookS
   
  Customer Name:
 ${selectedAddress.name}

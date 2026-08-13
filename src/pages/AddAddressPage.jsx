@@ -1,7 +1,7 @@
 import { useNavigate, useLocation,} from "react-router-dom";
 import "../App.css";
 import { useState, useEffect, useRef } from "react";
-import logo from "../assets/555logo.png";
+import logo from "../assets/skookslogo.png";
 function AddAddressPage({
     setCartOpen,
     returnToCart,
@@ -1167,7 +1167,7 @@ onChange={handleChange}
 
         <img
             src={logo}
-            alt="555 Shoes"
+            alt="SkookS"
             className="loading-logo"
         />
 
