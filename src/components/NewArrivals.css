@@ -1,0 +1,218 @@
+.new-arrivals-section{
+    padding:24px 16px;
+}
+
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.section-header h2{
+    font-size:24px;
+    font-weight:700;
+}
+
+.view-all{
+    font-size:14px;
+    color:#666;
+}
+
+.arrival-slider{
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-behavior: smooth;
+}
+
+.arrival-slider::-webkit-scrollbar{
+    display:none;
+}
+
+.arrival-card{
+    width:190px;
+    min-width:190px;
+    max-width:190px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    background: #fff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 22px rgba(0,0,0,.08);
+    cursor: pointer;
+    transition: .25s;
+}
+
+.arrival-card:hover{
+    transform:translateY(-4px);
+}
+
+.arrival-image{
+    position:relative;
+    background:#f7f7f7;
+    height:200px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.arrival-image img{
+    width:90%;
+    height:90%;
+    object-fit:contain;
+}
+
+.arrival-info{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding:14px;
+}
+
+.arrival-info h3{
+    font-size:16px;
+    font-weight:600;
+    line-height:22px;
+
+    height:44px;
+
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+
+    white-space:normal;
+}
+
+.arrival-info p{
+    color:#777;
+    font-size:14px;
+    margin-bottom:10px;
+    margin-top: 8px;
+}
+
+.arrival-pricing{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.selling-price{
+    font-size:22px;
+    font-weight:700;
+    color:#111;
+}
+
+.original-price{
+    text-decoration:line-through;
+    color:#888;
+    font-size:14px;
+}
+
+.discount{
+    color:#0a8a2a;
+    font-size:14px;
+    font-weight:700;
+}
+
+.arrival-cart-btn{
+    width:100%;
+    height:42px;
+    border:none;
+    border-radius:12px;
+    background:#111;
+    color:white;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.arrival-badge{
+    position:absolute;
+    left:12px;
+    top:12px;
+
+    background: #F58220;
+    color:white;
+
+    padding:5px 10px;
+
+    border-radius:20px;
+
+    font-size:11px;
+    font-weight:700;
+}
+
+.arrival-heart{
+    position:absolute;
+    right:12px;
+    top:12px;
+  
+    width:36px;
+    height:36px;
+  
+    border:none;
+    border-radius:50%;
+  
+    background:#fff;
+  
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+  
+    cursor:pointer;
+  
+    font-size:18px;
+  
+    transition:.25s;
+  }
+  
+  .arrival-heart svg{
+    transition:.25s;
+  }
+  
+  .arrival-heart.active svg{
+    color:#ff3b30;
+  }
+  
+  .arrival-heart:hover{
+    transform:scale(1.08);
+  }
+
+.arrival-details{
+    padding:14px;
+}
+
+.arrival-details h3{
+    font-size:15px;
+    font-weight:600;
+    margin-bottom:6px;
+
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+.arrival-brand{
+    color:#888;
+    font-size:13px;
+    margin-bottom:10px;
+}
+
+.arrival-price{
+    font-size:18px;
+    font-weight:700;
+}
+
+.arrival-track{
+    display: flex;
+    gap: 16px;
+    width: max-content;
+}

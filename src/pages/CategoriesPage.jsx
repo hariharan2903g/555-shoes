@@ -1,32 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { supabase } from "../supabase";import logo from "../assets/555logo.png";
-import runningShoes from "../assets/categories/Runningshoes.webp";
-import casualShoes from "../assets/categories/Casualshoes.webp";
-import formalShoes from "../assets/categories/FormalShoes.jpg";
-import partyWearShoes from "../assets/categories/Partywearshoes.webp";
-
-import crocsClogs from "../assets/categories/Crocsclogs.jpeg";
-import crocsFlipFlops from "../assets/categories/Crocsflipflop.webp";
-import crocsSliders from "../assets/categories/Crocssliders.webp";
-
-import casualSliders from "../assets/categories/Casualsliders.webp";
-
-import sportSandals from "../assets/categories/Sportsandals.webp";
-import formalSandals from "../assets/categories/Formalsandals.webp";
-
-import digitalWatch from "../assets/categories/Digitalwatch.jpg";
-import automaticWatch from "../assets/categories/Automaticwatch.avif";
-import chronographWatch from "../assets/categories/Chronographwatch.webp";
-import leatherWatch from "../assets/categories/Leatherstrapwatch.webp";
-import metalWatch from "../assets/categories/Metalstrapwatch.webp";
-import socks from "../assets/categories/Socks.jpg";
-import capImage from "../assets/categories/cap.webp";
-import beltImage from "../assets/categories/belts.avif";
-import walletImage from "../assets/categories/Wallets.avif";
-import sideBagImage from "../assets/categories/Sidebags.jpeg";
-import glassesImage from "../assets/categories/glasses.webp";
-import keychainImage from "../assets/categories/keychain.jpg";
+import { supabase } from "../supabase";
+import logo from "../assets/555logo.png";
+import { categoryImages } from "../data/categoryImages";
+import { categories } from "../data/categories";
+import "./CategoriesPage.css";
 
 function CategoriesPage() {
   const navigate = useNavigate();
@@ -34,7 +12,7 @@ function CategoriesPage() {
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState([]);
   const [selectedGender, setSelectedGender] = useState("All");
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("Shoes");
 
   useEffect(() => {
     fetchProducts();
@@ -48,94 +26,13 @@ function CategoriesPage() {
     if (!error) {
       setProducts(data);
     }
-    console.log(data);
+    // console.log(data);
   }
-  console.log(products);
+ 
 
-  const visibleSubcategories = [
-    ...new Set(
-      products
-        .filter(
-          (p) =>
-            (
-                selectedGender === "All"
-                  ? true
-                  : selectedGender === "Men"
-                  ? p.gender === "Men" || p.gender === "Unisex"
-                  : selectedGender === "Women"
-                  ? p.gender === "Women" || p.gender === "Unisex"
-                  : p.gender === "Unisex"
-              )
-            &&
-            (
-              !selectedCategory ||
-              p.category === selectedCategory
-            )
-        )
-        .map((p) => p.subcategory)
-        .filter(Boolean)
-    ),
-  ];
+  const availableCategories = Object.keys(categories);
+ 
 
-
-  const categoryImages = {
-    "Running Shoes": runningShoes,
-    "Casual Shoes": casualShoes,
-    "Sport Shoes": runningShoes,
-    "Formal Shoes": formalShoes,
-    "Party Wear Shoes": partyWearShoes,
-  
-    "Crocs Clogs": crocsClogs,
-    "Crocs Flip-Flops": crocsFlipFlops,
-    "Crocs Sliders": crocsSliders,
-  
-    "Casual Sliders": casualSliders,
-  
-    "Sports Sandals": sportSandals,
-    "Formal Sandals": formalSandals,
-  
-    "Digital Watch": digitalWatch,
-    "Automatic Watch": automaticWatch,
-    "Chronograph Watch": chronographWatch,
-    "Leather Strap": leatherWatch,
-    "Metal Strap": metalWatch,
-    "Silicon Strap": digitalWatch, // temp image
-  
-    "Cap": capImage,
-    "Belts": beltImage,
-    "Wallets": walletImage,
-    "Side Bags": sideBagImage,
-    "Glasses": glassesImage,
-    "Keychain": keychainImage,
-    "Socks": socks,
-  };
-
-  const availableCategories = [
-    ...new Set(
-      products
-        .filter((p) => {
-          if (selectedGender === "All") return true;
-  
-          if (selectedGender === "Men") {
-            return p.gender === "Men" || p.gender === "Unisex";
-          }
-  
-          if (selectedGender === "Women") {
-            return p.gender === "Women" || p.gender === "Unisex";
-          }
-  
-          if (selectedGender === "Unisex") {
-            return p.gender === "Unisex";
-          }
-  
-          return false;
-        })
-        .map((p) => p.category)
-        .filter(Boolean)
-    ),
-  ];
-  console.log(availableCategories);
-  
   return (
     <div className="categories-page">
 
@@ -181,7 +78,7 @@ function CategoriesPage() {
   }`}
   onClick={() => {
     setSelectedGender("All");
-    setSelectedCategory(null);
+    setSelectedCategory("Shoes");
   }}
 >
   All
@@ -195,7 +92,7 @@ function CategoriesPage() {
   }`}
   onClick={() => {
     setSelectedGender("Men");
-    setSelectedCategory(null);
+    setSelectedCategory("Shoes");
   }}
 >
   Men
@@ -209,7 +106,7 @@ function CategoriesPage() {
   }`}
   onClick={() => {
     setSelectedGender("Women");
-    setSelectedCategory(null);
+    setSelectedCategory("Shoes");
   }}
 >
   Women
@@ -223,7 +120,7 @@ function CategoriesPage() {
   }`}
   onClick={() => {
     setSelectedGender("Unisex");
-    setSelectedCategory(null);
+    setSelectedCategory("Shoes");
   }}
 >
   Unisex
@@ -247,13 +144,7 @@ function CategoriesPage() {
                       ? "active-pill"
                       : ""
                   }`}
-                  onClick={() =>
-                    setSelectedCategory(
-                      selectedCategory === category
-                        ? null
-                        : category
-                    )
-                  }
+                  onClick={() => setSelectedCategory(category)}
             >
                 {category}
             </button>
@@ -270,34 +161,89 @@ function CategoriesPage() {
 
       
 
-      <div className="categories-grid">
+        <div className="categories-page-grid">
 
-      {visibleSubcategories.map((item) => (
+      {(selectedCategory
+    ? categories[selectedCategory]
+    : Object.values(categories).flat()
+).map((item) => (
           <div
             key={item}
-            className="category-card"
+            className="categories-page-card"
             onClick={() => {
 
-                const productForSubcategory =
-                  products.find(
-                    (p) => p.subcategory === item
-                  );
+              let url = `/products?gender=${selectedGender}&category=${selectedCategory}`;
+            
+              if (selectedCategory === "Shoes") {
+            
+                url += `&best_for=${item}`;
+            
+              }
+            
+              else if (selectedCategory === "Watches") {
+            
+                if (item === "Digital") {
+                  url += `&display_type=Digital`;
+                }
+            
+                else if (item === "Quartz") {
+                  url += `&movement=Quartz`;
+                }
+            
+                else if (item === "Automatic") {
+                  url += `&movement=Automatic`;
+                }
+            
+                else if (item === "Leather") {
+                  url += `&material=Leather`;
+                }
+            
+                else if (item === "Metal") {
+                  url += `&material=Stainless Steel`;
+                }
+            
+                else if (item === "Silicon") {
+                  url += `&material=Silicon`;
+                }
+            
+              }
+            
+              else if (selectedCategory === "Crocs") {
+            
+                url += `&crocs_type=${item}`;
+            
+              }
+            
+              else if (selectedCategory === "Sliders") {
+
+                url = `/products?gender=${selectedGender}&category=${item}`;
               
-                navigate(
-                  `/products?gender=${selectedGender}&category=${
-                    productForSubcategory?.category
-                  }&subcategory=${item}`
-                );
+              }
               
-              }}
+              else if (selectedCategory === "Sandals") {
+              
+                url = `/products?gender=${selectedGender}&category=${item}`;
+              
+              }
+            
+              else if (selectedCategory === "Accessories") {
+
+                url = `/products?gender=${selectedGender}&category=${item}`;
+              
+              }
+            
+              navigate(url);
+            
+            }}
           >
             <>
             <img
-                src={categoryImages[item]}
+                className="categories-page-image"
+                src={categoryImages[selectedCategory]?.[item]}
                 alt={item}
             />
 
-            <h3>{item}</h3>
+            <h3 className="categories-page-name">{item}</h3>
             </>
           </div>
         ))}

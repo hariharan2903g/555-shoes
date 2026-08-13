@@ -16,6 +16,8 @@ import Admin from "./pages/Admin";
 import AddProduct from "./admin/AddProduct";
 import { ToastContainer } from "react-toastify";
 import ViewProducts from "./admin/pages/ViewProducts/ViewProducts";
+import CustomerCarePage from "./pages/CustomerCarePage";
+import ToastProvider from "./components/Toast/ToastProvider";
 
 function App() {
   const [cartOpen, setCartOpen] =useState(false);
@@ -107,7 +109,10 @@ function App() {
   path="/admin/view-products"
   element={<ViewProducts />}
 />
-   
+<Route
+    path="/customer-care"
+    element={<CustomerCarePage />}
+/>
 
     <Route
   path="/address"
@@ -146,6 +151,8 @@ function App() {
   draggable
   theme="light"
 />
+
+<ToastProvider />
     
     </>
   );

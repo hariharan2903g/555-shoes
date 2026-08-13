@@ -6,6 +6,7 @@ function ConfirmModal({
     message,
     onConfirm,
     onCancel,
+    confirmText = "Delete",
 }) {
 
     if (!isOpen) return null;
@@ -33,7 +34,7 @@ function ConfirmModal({
                         className="delete-btn"
                         onClick={onConfirm}
                     >
-                        Delete
+                        {confirmText || "Delete"}
                     </button>
 
                 </div>

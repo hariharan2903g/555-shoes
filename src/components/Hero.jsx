@@ -1,14 +1,16 @@
+import sloganImage from "../assets/slogan.png";
+import "./Hero.css";
+
 function Hero() {
   return (
     <section className="hero">
       <div className="hero-content">
-        {/* <p className="hero-tagline">
-          PREMIUM FOOTWEAR & ACCESSORIES
-        </p> */}
-
-        <h2>
-          EVERY STEP HAS A STORY
-        </h2>
+    
+      <img
+        src={sloganImage}
+        alt="Every Step Has a Story"
+        className="home-slogan-image"
+      />
       </div>
     </section>
   );

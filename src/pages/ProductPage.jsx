@@ -1,5 +1,5 @@
 import "./ProductPage.css";
-import { useParams, useNavigate, } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect, useRef  } from "react";
 import { supabase } from "../supabase";
 import Footer from "../components/Footer";
@@ -18,6 +18,8 @@ import DeliveryInformation from "../components/DeliveryInformation/DeliveryInfor
 import ReturnReplacement from "../components/ReturnReplacement/ReturnReplacement";
 import { addToWishlist, removeFromWishlist, isWishlisted } from "../utils/wishlist";
 import ProductCard from "../components/ProductCard/ProductCard";
+import noImage from "../assets/no-image.png";
+import { addToCart } from "../utils/cart";
 // import DeliveryBanner from "../components/DeliveryBanner";
 // import AddressSheet from "../pages/AddressPage";
 
@@ -27,9 +29,10 @@ function ProductPage({
 }) {
   // const [showAddressSheet,setShowAddressSheet] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
-
   const { id } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const colorFromUrl = searchParams.get("color");
   const [pincode, setPincode] = useState("");
   const [deliveryEstimate, setDeliveryEstimate] = useState("");
   const [deliveryLocation, setDeliveryLocation] = useState("");
@@ -55,6 +58,10 @@ function ProductPage({
   const [openAccordion, setOpenAccordion] = useState(null);
   const [deliveryError, setDeliveryError] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
+  const [toast, setToast] = useState({
+    show: false,
+    message: ""
+});
 
   useEffect(() => {
 
@@ -81,6 +88,7 @@ function ProductPage({
   }, [id]);
 
   useEffect(() => {
+    setAddedToCart(false);
     fetchProduct();
   }, [id]);
 
@@ -157,22 +165,37 @@ function ProductPage({
 
 }, []);
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    if (!product) return;
+  //   if (!product) return;
   
-    const cart =
-      JSON.parse(
-        localStorage.getItem("cart")
-      ) || [];
+  //   const cart =
+  //     JSON.parse(
+  //       localStorage.getItem("cart")
+  //     ) || [];
   
-    const exists = cart.some(
-      (item) => item.id === product.id
-    );
+  //     useEffect(() => {
+
+  //       if (!product || !selectedSize) {
+    
+  //           setAddedToCart(false);
+    
+  //           return;
+    
+  //       }
+    
+  //       checkIfAddedToCart(
+  //           selectedSize,
+  //           selectedColor
+  //       );
+    
+  //   }, [
+  //       product,
+  //       selectedSize,
+  //       selectedColor
+  //   ]);
   
-    setAddedToCart(exists);
-  
-  }, [product]);
+  // }, [product]);
 
   const [navHidden, setNavHidden] = useState(false);
 
@@ -206,6 +229,24 @@ function ProductPage({
         window.removeEventListener("scroll", handleScroll);
 
 }, []);
+
+function showToast(message) {
+
+  setToast({
+      show: true,
+      message
+  });
+
+  setTimeout(() => {
+
+      setToast({
+          show: false,
+          message: ""
+      });
+
+  }, 1800);
+
+}
   
 
   async function fetchProduct() {
@@ -223,9 +264,15 @@ function ProductPage({
       } else {
         setProduct(data);
 
-        setSelectedColor(
-          data.colors?.[0]?.color || ""
-        );
+const matchingColor = data.colors?.find(
+  color => color.color === colorFromUrl
+);
+
+setSelectedColor(
+  matchingColor?.color ||
+  data.colors?.[0]?.color ||
+  ""
+);
         
         const inventory =
             data.gender?.toLowerCase() === "women"
@@ -235,9 +282,8 @@ function ProductPage({
               setSelectedSize("");
               setSelectedStock(null);
 
-        console.log(data);
-console.log("colors field =", data.colors);
-console.log("keys =", Object.keys(data));
+       
+
 
         fetchRecommendations(data);
 
@@ -317,27 +363,29 @@ console.log("keys =", Object.keys(data));
   const colors =
     product?.colors || [];
 
-  const discountPercent =
-  product
+    const isAccessory =
+  product?.department?.toLowerCase() === "accessories";
+
+    const hasDiscount =
+    Boolean(
+      product?.original_price &&
+      product.original_price > product.selling_price
+    );
+  
+  const discountPercent = hasDiscount
     ? Math.round(
         ((product.original_price - product.selling_price) /
           product.original_price) *
           100
       )
-    : 0;
-
-    const hasDiscount =
-  product?.original_price &&
-  product.original_price > product.selling_price;
+    : null;
 
   const selectedColorData =
     product?.colors?.find(
         color => color.color === selectedColor
     ) || product?.colors?.[0];
 
-    console.log("selectedColor =", selectedColor);
-console.log("product.colors =", product?.colors);
-console.log("selectedColorData =", selectedColorData);
+    
 
 const selectedInventory =
   product?.gender?.toLowerCase() === "women"
@@ -356,9 +404,9 @@ const availableSizes = Object.entries(
 const allImages =
     selectedColorData?.images || [];
 
-    console.log("selectedColorData =", selectedColorData);
-    console.log("inventory =", selectedColorData?.inventory);
-    console.log( "isArray =",  Array.isArray(selectedColorData?.inventory) );
+    // console.log("selectedColorData =", selectedColorData);
+    // console.log("inventory =", selectedColorData?.inventory);
+    // console.log( "isArray =",  Array.isArray(selectedColorData?.inventory) );
 
     const productDetails = [
 
@@ -529,6 +577,26 @@ function addToCart() {
     new Event("cartUpdated")
   );
   setAddedToCart(true);
+  showToast("🛍️ Added to cart");
+}
+
+function checkIfAddedToCart(size, color) {
+
+  const cart =
+      JSON.parse(
+          localStorage.getItem("cart")
+      ) || [];
+
+  const exists = cart.some(item =>
+
+      item.id === product.id &&
+      item.size === size &&
+      item.color === color
+
+  );
+
+  setAddedToCart(exists);
+
 }
 
 // Wishlist function
@@ -541,11 +609,17 @@ function toggleWishlist() {
 
       setWishlisted(false);
 
-  } else {
+      showToast("💔 Removed from Wishlist");
+
+  }
+
+  else {
 
       addToWishlist(product);
 
       setWishlisted(true);
+
+      showToast("❤️ Added to Wishlist");
 
   }
 
@@ -616,11 +690,15 @@ onOpen={() => setShowAddressSheet(true)}
                 </button>
             )}
 
-              <img
-                  src={
-                      allImages[currentImage]?.preview ||
-                      allImages[currentImage]?.url
-                  }
+                <img
+                    src={
+                        allImages[currentImage]?.preview ||
+                        allImages[currentImage]?.url ||
+                        noImage
+                    }
+                    onError={(e) => {
+                        e.target.src = noImage;
+                    }}
                   alt={product.product_name}
                   className={`product-page-image ${
                       imageAnimating ? "fade-image" : ""
@@ -761,9 +839,9 @@ onOpen={() => setShowAddressSheet(true)}
                             ? colorObj.inventory?.women
                             : colorObj.inventory?.men;
             
-                            setSelectedSize("");
-            
+                    setSelectedSize("");
                     setCurrentImage(0);
+                    setAddedToCart(false);
             
                 }}
             >
@@ -785,6 +863,7 @@ onOpen={() => setShowAddressSheet(true)}
             </div>
   
             <div className="product-page-divider"></div>
+            {!isAccessory && (
             <div
                 ref={sizeSectionRef}
                 className={`size-section ${
@@ -833,6 +912,12 @@ onOpen={() => setShowAddressSheet(true)}
                                 setSelectedStock(item.stock);
                                 setSizeError(false);
 
+                                checkIfAddedToCart(
+                                  item.size,
+                                  selectedColor
+                              );
+                               
+
                             }}
                         >
                             {item.size}
@@ -858,6 +943,7 @@ onOpen={() => setShowAddressSheet(true)}
 
 
                 </div>
+              )}
            
   
             <div className="product-page-divider"></div>
@@ -1254,7 +1340,7 @@ productDetails[index+1] && (
         </div>
   
       </section>
- 
+      {recommendedProducts.length > 0 && (
       <section className="section">
 
     <h2 className="section-title">Shop Similar</h2>
@@ -1273,11 +1359,12 @@ productDetails[index+1] && (
     </div>
 
 </section>
+)}
 
 <section className="section">
 
   <h2 className="section-title">
-    Customers Also Bought
+    You May Also Like
   </h2>
 
   <div className="you-may-like-grid">
@@ -1343,46 +1430,56 @@ productDetails[index+1] && (
     )}
 </button>
 
-    <button
-        className="footer-add-btn"
-        onClick={() => {
+<button
+    className="footer-add-btn"
+    onClick={() => {
 
-          if (!selectedSize) {
-      
-            const y =
-            sizeSectionRef.current.getBoundingClientRect().top +
-            window.pageYOffset -
-            130;
-          
+      if (addedToCart) {
+  
+       setCartOpen(true)
+  
+          return;
+  
+      }
+  
+      if (!isAccessory && !selectedSize) {
+  
+          const y =
+              sizeSectionRef.current.getBoundingClientRect().top +
+              window.pageYOffset -
+              130;
+  
           window.scrollTo({
-            top: y,
-            behavior: "smooth",
+              top: y,
+              behavior: "smooth",
           });
-      
-              setTimeout(() => {
-      
-                  setSizeError(true);
-      
-                  setShaking(true);
-      
-              },400);
-      
-              setTimeout(() => {
-      
-                  setShaking(false);
-      
-              },850);
-      
-              return;
-      
-          }
-      
-          addToCart();
-      
-      }}
-    >
-        Add to Bag
-    </button>
+  
+          setTimeout(() => {
+  
+              setSizeError(true);
+  
+              setShaking(true);
+  
+          }, 400);
+  
+          setTimeout(() => {
+  
+              setShaking(false);
+  
+          }, 850);
+  
+          return;
+  
+      }
+  
+      addToCart();
+  
+  }}
+>
+
+    {addedToCart ? "View Cart" : "Add to Bag"}
+
+</button>
 
 </div>
 <BottomSheet
@@ -1421,6 +1518,20 @@ productDetails[index+1] && (
     selectedAddress={selectedAddress}
     setSelectedAddress={setSelectedAddress}
 /> */}
+
+
+
+
+
+{toast.show && (
+
+<div className="app-toast">
+
+    {toast.message}
+
+</div>
+
+)}
 
 </div>
   );

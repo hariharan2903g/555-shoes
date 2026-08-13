@@ -1,261 +1,138 @@
-import logo from "../assets/555logo.png";
-import { useEffect, useState } from "react";
-import { FaInstagram, FaWhatsapp } from "react-icons/fa";
-import { FiSearch, FiShoppingBag } from "react-icons/fi";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FiSearch } from "react-icons/fi";
+import logo from "../assets/skookslogo.png";
+import logo1 from "../assets/skookslogo1.png";
+import { saveScrollAndNavigate } from "../utils/navigation";
+
+import "./Header.css";
 
 function Header({
   menuOpen = false,
   setMenuOpen = () => {},
   scrolled = false,
-  setCartOpen = () => {},
 }) {
-  const [cartCount, setCartCount] = useState(0);
-  const [wishlistCount, setWishlistCount] = useState(0);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = menuOpen ? "hidden" : "auto";
 
     return () => {
       document.body.style.overflow = "auto";
     };
   }, [menuOpen]);
 
-  useEffect(() => {
-    const updateCounts = () => {
-      const cart =
-        JSON.parse(
-          localStorage.getItem("cart")
-        ) || [];
-
-      const wishlist =
-        JSON.parse(
-          localStorage.getItem("wishlist")
-        ) || [];
-
-        setCartCount(
-
-          cart.reduce(
-        
-            (total, item) => total + item.quantity,
-        
-            0
-        
-          )
-        
-        );
-      setWishlistCount(wishlist.length);
-    };
-
-    updateCounts();
-
-    window.addEventListener(
-      "cartUpdated",
-      updateCounts
-    );
-
-    window.addEventListener(
-      "wishlistUpdated",
-      updateCounts
-    );
-
-    return () => {
-      window.removeEventListener(
-        "cartUpdated",
-        updateCounts
-      );
-
-      window.removeEventListener(
-        "wishlistUpdated",
-        updateCounts
-      );
-    };
-  }, []);
-
   return (
-    <header
-      className={`header ${
-        scrolled ? "scrolled" : ""
-      }`}
-    >
-      <div className="header-left">
-        <Link
-          to="/"
-          className="logo-link"
-        >
-          <div
-            className={`logo-container ${
-              scrolled
-                ? "logo-left"
-                : ""
-            }`}
-          >
-            <img
-              src={logo}
-              alt="555 Shoes Logo"
-              className="logo"
-            />
 
-            <h1
-              // className={
-              //   scrolled
-              //     ? "hide-title"
-              //     : ""
-              // }
-            >
-             555shoes.in
-            </h1>
-          </div>
-        </Link>
+    <header className="header">
 
-        <nav
-          className={`desktop-nav ${
-            scrolled
-              ? "desktop-nav-scrolled"
-              : ""
-          }`}
-        >
-          <Link to="/category/shoes">
-            Shoes
-          </Link>
-
-          <Link to="/category/slides">
-            Slides
-          </Link>
-
-          <Link to="/category/crocs">
-            Crocs
-          </Link>
-
-          <Link to="/category/Flip-Flops">
-            Sandals
-          </Link>
-
-          <Link to="/category/watches">
-            Watches
-          </Link>
-
-          <Link to="/category/accessories">
-            Accessories
-          </Link>
-        </nav>
-      </div>
-
-      <div className="header-icons">
-        <FiSearch
-          className="header-icon"
-          onClick={() =>
-            navigate("/search")
-          }
-        />
-
-
-        <div
-          className="menu-icon"
-          onClick={() =>
-            setMenuOpen(!menuOpen)
-          }
+        <button
+          className="header-menu-btn"
+          onClick={() => setMenuOpen(true)}
         >
           ☰
-        </div>
-      </div>
+        </button>
+
+        <img
+            src={logo}
+            alt="Skooks"
+            className="header-logo"
+            onClick={() =>
+              saveScrollAndNavigate(navigate, "/")
+            }
+            style={{ cursor: "pointer" }}
+          />
+      
+
+      <button
+          className="header-search-btn"
+          onClick={() => navigate("/search")}
+        >
+          <FiSearch />
+        </button>
 
       {menuOpen && (
         <div
-          className="menu-overlay"
-          onClick={() =>
-            setMenuOpen(false)
-          }
+          className="header-overlay"
+          onClick={() => setMenuOpen(false)}
         />
       )}
 
-      <nav
-        className={
-          menuOpen
-            ? "navbar active"
-            : "navbar"
-        }
+      <div
+        className={`header-drawer ${
+          menuOpen ? "open" : ""
+        }`}
       >
-        <div className="menu-header">
-          <img
-            src={logo}
-            alt="logo"
-          />
 
-          <button
-            className="menu-close"
-            onClick={() =>
-              setMenuOpen(false)
-            }
-          >
-            ✕
-          </button>
-        </div>
-
-        <Link
-          to="/category/shoes"
-          onClick={() =>
-            setMenuOpen(false)
-          }
+        <button
+          className="header-close-btn"
+          onClick={() => setMenuOpen(false)}
         >
-          Shoes
-        </Link>
+          ✕
+        </button>
 
-        <Link
-          to="/category/slides"
-          onClick={() =>
-            setMenuOpen(false)
-          }
-        >
-          Slides
-        </Link>
+        <img
+          src={logo1}
+          alt="Skooks"
+          className="drawer-logo"
+          onClick={() => {
+            setMenuOpen(false);
+            saveScrollAndNavigate(navigate, "/");
+          }}
+          style={{ cursor: "pointer" }}
+        />
 
-        <Link
-          to="/category/crocs"
-          onClick={() =>
-            setMenuOpen(false)
-          }
-        >
-          Crocs
-        </Link>
+        <nav className="drawer-links">
 
-        <Link
-          to="/category/FlipFlops"
-          onClick={() =>
-            setMenuOpen(false)
-          }
-        >
-          Sandals
-        </Link>
 
-        <Link
-          to="/category/watches"
-          onClick={() =>
-            setMenuOpen(false)
-          }
-        >
-          Watches
-        </Link>
+          <Link to="/products?category=Shoes" onClick={() => setMenuOpen(false)}>
+            Shoes
+          </Link>
 
-        <Link
-          to="/category/accessories"
-          onClick={() =>
-            setMenuOpen(false)
-          }
-        >
-          Accessories
-        </Link>
+          <Link to="/products?category=Crocs" onClick={() => setMenuOpen(false)}>
+            Crocs
+          </Link>
 
-        
+          <Link to="/products?category=Watches" onClick={() => setMenuOpen(false)}>
+            Watches
+          </Link>
 
-      </nav>
+          <Link to="/products?category=Sliders" onClick={() => setMenuOpen(false)}>
+            Sliders
+          </Link>
+
+          <Link to="/products?category=Sandals" onClick={() => setMenuOpen(false)}>
+            Sandals
+          </Link>
+
+          <Link to="/products?category=Accessories" onClick={() => setMenuOpen(false)}>
+            Accessories
+          </Link>
+
+        </nav>
+       
+       
+        <div className="drawer-footer">
+
+            <button
+              className="footer-help-btn"
+              onClick={() => {
+                setMenuOpen(false);
+                navigate("/customer-care", {
+                  state: { section: "contact" },
+                });
+              }}
+            >
+              💬 Need Help?
+            </button>
+
+          </div>
+
+      </div>
+
     </header>
+
   );
 }
 

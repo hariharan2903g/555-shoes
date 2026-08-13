@@ -1,28 +1,26 @@
-import logo from "../assets/555logo.png";
 import shoes from "../assets/shoe image.webp";
 import Crocs from "../assets/crocs image.jpg";
 import slides from "../assets/slider image.webp"
 import flipflop from "../assets/flipflop image.jpg";
-import airmax from "../assets/airmax image.jpeg";
-import crocsclassic from "../assets/crocsclassic.jpg";
 import casio from "../assets/casiowatch.avif";
 import "../App.css";
+
 import Header from "../components/Header";
 import DiscountBanner from "../components/DiscountBanner";
 import Banner from "../components/Banner";
 import Hero from "../components/Hero";
 import Categories from "../components/Categories";
-import Contact from "../components/Contact";
 import Whychooseus from "../components/Whychooseus";
 import Footer from "../components/Footer";
 import NewArrivals from "../components/NewArrivals";
 import ProductModal from "../components/ProductModal";
-import FeaturedProducts from "../components/FeaturedProducts";
+import FeaturedProducts from "../components/TrendingProducts";
 import { supabase } from "../supabase";
 import { useState, useEffect } from "react";
 import accessoriesImage from "../assets/accessories.avif";
 import Brands from "../components/Brands";
 import BottomNav from "../components/BottomNav";
+import HomeCategories from "../components/HomeCategories";
 // import DeliveryBanner from "../components/DeliveryBanner";
 // import AddressSheet from "../pages/AddressPage";
 
@@ -31,7 +29,9 @@ function Home({ setCartOpen }) {
   const [scrolled, setScrolled] = useState(false);
   const [products, setProducts] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
+  const [trendingProducts, setTrendingProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [banners, setBanners] = useState([]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,42 +64,58 @@ function Home({ setCartOpen }) {
       );
   }, []);
 
-  const categories = [
-    {
-      name: "Shoes",
-      image: shoes,
-      startingPrice: "Starting From ₹999",
-    },
-    {
-      name: "Crocs",
-      image: Crocs,
-      startingPrice: "Starting From ₹799",
-    },
-    {
-      name: "Watches",
-      image: casio,
-      startingPrice: "Starting From ₹499",
-    },
-    {
-      name: "Sliders",
-      image: slides,
-      startingPrice: "Starting From ₹399",
-    },
-    {
-      name: "Flip-Flops",
-      image: flipflop,
-      startingPrice: "Starting From ₹299",
-    },
-    {
-      name: "Accessories",
-      image: accessoriesImage,
-      startingPrice: "Starting From ₹299",
-    },
-  ];
+
+  async function fetchHomeBanners() {
+
+    const { data, error } = await supabase
+      .from("home_banners")
+      .select("*")
+      .eq("active", true)
+      .order("display_order");
+  
+    if (!error) {
+      setBanners(data);
+    }
+  
+  }
+
+  // const categories = [
+  //   {
+  //     name: "Shoes",
+  //     image: shoes,
+  //     startingPrice: "Starting From ₹999",
+  //   },
+  //   {
+  //     name: "Crocs",
+  //     image: Crocs,
+  //     startingPrice: "Starting From ₹799",
+  //   },
+  //   {
+  //     name: "Watches",
+  //     image: casio,
+  //     startingPrice: "Starting From ₹499",
+  //   },
+  //   {
+  //     name: "Sliders",
+  //     image: slides,
+  //     startingPrice: "Starting From ₹399",
+  //   },
+  //   {
+  //     name: "Flip-Flops",
+  //     image: flipflop,
+  //     startingPrice: "Starting From ₹299",
+  //   },
+  //   {
+  //     name: "Accessories",
+  //     image: accessoriesImage,
+  //     startingPrice: "Starting From ₹299",
+  //   },
+  // ];
 
   useEffect(() => {
     fetchProducts();
     fetchNewArrivals();
+    fetchTrendingProducts();
   }, []);
   
   async function fetchProducts() {
@@ -123,14 +139,11 @@ if (savedPosition) {
     );
   }, 100);
 }
-console.log(data);
+// console.log(data);
     }
   }
 
-  // const [showAddressSheet,setShowAddressSheet] = useState(false);
-
-  
-  // newArrivals fetching
+ 
 
   async function fetchNewArrivals() {
     const { data, error } = await supabase
@@ -144,6 +157,23 @@ console.log(data);
     } else {
       setNewArrivals(data);
     }
+    // console.log(data[0]);
+  }
+
+  async function fetchTrendingProducts() {
+
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("featured", true)
+      .limit(12);
+  
+    if (error) {
+      console.error(error);
+    } else {
+      setTrendingProducts(data);
+    }
+  
   }
 
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -156,7 +186,7 @@ console.log(data);
       );
 
   return (
-    <div>
+    <div className="home-page">
 
 <Header
   menuOpen={menuOpen}
@@ -164,31 +194,27 @@ console.log(data);
   scrolled={scrolled}
   setCartOpen={setCartOpen}
 />
-{/* <DeliveryBanner
 
-    selectedAddress={selectedAddress}
-
-    onOpen={() => setShowAddressSheet(true)}
-
-/> */}
+<HomeCategories />
 
 <Banner/>
 
-<Hero />
+<Hero banners={banners} />
 
 <NewArrivals
   newArrivals={newArrivals}
-  setSelectedProduct={setSelectedProduct}
+  
 />
 
 <DiscountBanner />
 
-<Categories categories={categories} />
+{/* <Categories categories={categories} /> */}
 
 <Brands />
 
 <FeaturedProducts
-  products={filteredProducts}
+    trendingProducts={trendingProducts}
+   
 />
 
 <BottomNav
@@ -198,7 +224,7 @@ console.log(data);
 
 <Whychooseus />
 
-<Contact/>
+
 
 <Footer />
 

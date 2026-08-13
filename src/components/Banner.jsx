@@ -1,16 +1,29 @@
-import banner1 from "../assets/Banner1.jpg";
-import banner2 from "../assets/Banner2.webp";
-import banner3 from "../assets/Banner3.avif";
-import banner4 from "../assets/Banner4.jpg";
+import banner1 from "../assets/Banner1.png";
+import banner2 from "../assets/Banner2.png";
+import banner3 from "../assets/Banner3.png";
+import banner4 from "../assets/Banner4.png";
+import { Link } from "react-router-dom";
 import {FaChevronLeft,FaChevronRight,} from "react-icons/fa";
 import { useState, useEffect } from "react";
 
 function Banner() {
   const banners = [
-    banner1,
-    banner2,
-    banner3,
-    banner4,
+    {
+      image: banner1,
+      link: "/product/43",
+    },
+    {
+      image: banner2,
+      link: "/products?brand=Crocs",
+    },
+    {
+      image: banner3,
+      link: "/products?brand=Casio",
+    },
+    {
+      image: banner4,
+      link: "/products?brand=Puma&category=Shoes",
+    },
   ];
 
   const [current, setCurrent] = useState(0);
@@ -42,18 +55,18 @@ function Banner() {
   return (
     <section className="banner">
   
-      {banners.map((image, index) => (
-        <img
-          key={index}
-          src={image}
-          alt="banner"
-          className={
-            index === current
-              ? "active"
-              : ""
-          }
-        />
-      ))}
+  {banners.map((banner, index) => (
+  <Link
+    key={index}
+    to={banner.link}
+    className={index === current ? "banner-link active" : "banner-link"}
+  >
+    <img
+      src={banner.image}
+      alt="banner"
+    />
+  </Link>
+))}
   
       <button
         className="banner-arrow left"

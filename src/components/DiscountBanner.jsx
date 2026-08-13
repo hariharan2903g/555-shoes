@@ -1,20 +1,28 @@
+import { useNavigate } from "react-router-dom";
+import banner from "../assets/shipping-banner.png";
+import "./DiscountBanner.css";
+
 function DiscountBanner() {
-    return (
-      <section className="discount-banner">
-        <div className="discount-content">
-          <h2>UP TO 50% OFF</h2>
-  
-          <p>
-            Premium Footwear, Crocs, Watches &
-            Accessories
-          </p>
-  
-          <button>
-            Shop Collection
-          </button>
-        </div>
-      </section>
-    );
-  }
-  
-  export default DiscountBanner;
+  const navigate = useNavigate();
+
+  return (
+    <section className="home-discount-banner">
+
+      <img
+        src={banner}
+        alt="Free Shipping"
+        className="home-discount-image"
+      />
+
+      <button
+        className="home-discount-btn"
+        onClick={() => navigate("/products")}
+      >
+        Shop Collection 
+      </button>
+
+    </section>
+  );
+}
+
+export default DiscountBanner;

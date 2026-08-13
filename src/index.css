@@ -52,6 +52,10 @@
 
 body {
   margin: 0;
+  background:#fff;
+  color:#111;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 
 #root {
@@ -101,4 +105,11 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Manrope",sans-serif;
 }

@@ -9,6 +9,8 @@ import ProductHeader from "../components/ProductHeader";
 import ActiveFilters from "../components/ActiveFilters";
 import SortDrawer from "../components/SortDrawer";
 import FilterDrawer from "../components/FilterDrawer";
+import ProductCard from "../components/ProductCard/ProductCard";
+import "./AllProductsPage.css";
 // import DeliveryBanner from "../components/DeliveryBanner";
 // import AddressSheet from "../pages/AddressPage";
 
@@ -31,28 +33,58 @@ function AllProductsPage({ setCartOpen }) {
   const [selectedColor, setSelectedColor] = useState("All");
   const urlGender = searchParams.get("gender");
   const urlCategory = searchParams.get("category");
-  const urlSubcategory = searchParams.get("subcategory");
-  // const [relatedProducts, setRelatedProducts] = useState([]);
- 
+  const urlBestFor = searchParams.get("best_for");
+  const urlMovement = searchParams.get("movement");
+const urlDisplayType = searchParams.get("display_type");
+const urlMaterial = searchParams.get("material");
 
-  // const relatedProducts =
-  // products
-  //   .sort(() => 0.5 - Math.random())
-  //   .slice(0, 10);
+const urlCrocsType = searchParams.get("crocs_type");
+const urlSliderType = searchParams.get("slider_type");
+const urlSandalType = searchParams.get("sandal_type");
+const urlAccessoryType = searchParams.get("accessory_type");
+const isCrocs = searchParams.get("category") === "Crocs";
 
-  const [selectedSubcategory, setSelectedSubcategory] =
+  const [selectedBestFor, setSelectedBestFor] =
   useState(
-    searchParams.get("subcategory") ||
+    searchParams.get("best_for") ||
     "All"
   );
 
+  const [selectedMovement, setSelectedMovement] =
+useState(urlMovement || "All");
+
+const [selectedDisplayType, setSelectedDisplayType] =
+useState(urlDisplayType || "All");
+
+const [selectedMaterial, setSelectedMaterial] =
+useState(urlMaterial || "All");
+
+const [selectedCrocsType, setSelectedCrocsType] =
+useState(urlCrocsType || "All");
+
+const [selectedSliderType, setSelectedSliderType] =
+useState(urlSliderType || "All");
+
+const [selectedSandalType, setSelectedSandalType] =
+useState(urlSandalType || "All");
+
+const [selectedAccessoryType, setSelectedAccessoryType] =
+useState(urlAccessoryType || "All");
+
   const relatedProducts =
-  products
-    .filter(
-      product =>
-        product.category === selectedCategory
-    )
-    .slice(0, 6);
+    products
+        .filter((product) => {
+
+            if (
+                selectedCategory !== "All" &&
+                product.category !== selectedCategory
+            ) {
+                return false;
+            }
+
+            return true;
+        })
+        .slice(0, 8);
 
   const [sortBy, setSortBy] =
     useState("newest");
@@ -76,8 +108,8 @@ function AllProductsPage({ setCartOpen }) {
         );
 
         const pageTitle =
-        selectedSubcategory !== "All"
-          ? selectedSubcategory
+        selectedBestFor !== "All"
+          ? selectedBestFor
           : selectedCategory !== "All"
           ? selectedCategory
           : "All Products";
@@ -104,11 +136,7 @@ function AllProductsPage({ setCartOpen }) {
               )
                 return false;
       
-              if (
-                selectedSubcategory !== "All" &&
-                p.subcategory !== selectedSubcategory
-              )
-                return false;
+             
       
               return true;
       
@@ -188,18 +216,7 @@ const categories = [
   ),
 ];
 
-const subcategories = [
-  ...new Set(
-    products
-      .filter(
-        p =>
-          selectedCategory === "All" ||
-          p.category === selectedCategory
-      )
-      .map(p => p.subcategory)
-      .filter(Boolean)
-  ),
-];
+
 
 const genders = [
   
@@ -221,11 +238,7 @@ const activities = [
         if (p.category !== "Shoes")
           return false;
 
-        if (
-          selectedSubcategory !== "All" &&
-          p.subcategory !== selectedSubcategory
-        )
-          return false;
+        
 
         if (
           selectedBrand !== "All" &&
@@ -249,11 +262,7 @@ const strapTypes = [
         if (p.category !== "Watches")
           return false;
 
-        if (
-          selectedSubcategory !== "All" &&
-          p.subcategory !== selectedSubcategory
-        )
-          return false;
+       
 
         if (
           selectedBrand !== "All" &&
@@ -269,6 +278,13 @@ const strapTypes = [
   ),
 ];
 
+useEffect(() => {
+  window.scrollTo({
+    top: 0,
+    behavior: "instant",
+  });
+}, []);
+
 
   const [scrolled, setScrolled] =
     useState(false);
@@ -283,7 +299,14 @@ const strapTypes = [
   [
     products,
     selectedCategory,
-    selectedSubcategory,
+    selectedBestFor,
+    selectedMovement,
+    selectedDisplayType,
+    selectedMaterial,
+    selectedCrocsType,
+    selectedSliderType,
+    selectedSandalType,
+    selectedAccessoryType,
     selectedBrand,
     sortBy,
     searchTerm,
@@ -307,9 +330,37 @@ useEffect(() => {
     searchParams.get("gender") || "All"
   );
 
-  setSelectedSubcategory(
-    searchParams.get("subcategory") ||
+  setSelectedBestFor(
+    searchParams.get("best_for") ||
     "All"
+  );
+
+  setSelectedMovement(
+    searchParams.get("movement") || "All"
+  );
+  
+  setSelectedDisplayType(
+    searchParams.get("display_type") || "All"
+  );
+  
+  setSelectedMaterial(
+    searchParams.get("material") || "All"
+  );
+  
+  setSelectedCrocsType(
+    searchParams.get("crocs_type") || "All"
+  );
+  
+  setSelectedSliderType(
+    searchParams.get("slider_type") || "All"
+  );
+  
+  setSelectedSandalType(
+    searchParams.get("sandal_type") || "All"
+  );
+  
+  setSelectedAccessoryType(
+    searchParams.get("accessory_type") || "All"
   );
 
   setSelectedBrand(
@@ -344,7 +395,12 @@ useEffect(() => {
     if (!error) {
       setProducts(data);
     }
+    // console.log(
+    //   data.filter(p => p.brand === "Crocs")
+    // );
   }
+
+ 
 
   useEffect(() => {
 
@@ -365,22 +421,105 @@ useEffect(() => {
     let result = [...products];
 
     if (selectedCategory !== "All") {
-      result = result.filter(
-        (product) =>
-          product.category ===
-          selectedCategory
-      );
+
+      result = result.filter(product => {
+    
+        if (selectedCategory === "Crocs") {
+          return product.brand === "Crocs";
+        }
+    
+        return product.category === selectedCategory;
+    
+      });
+    
     }
+    // console.log(
+    //   result.map(p => ({
+    //     name: p.name,
+    //     brand: p.brand,
+    //     category: p.category,
+    //     subcategory: p.subcategory
+    //   }))
+    // );
 
-    if (selectedSubcategory !== "All") {
+    if (selectedBestFor !== "All") {
 
       result = result.filter(
         (product) =>
-          product.subcategory ===
-          selectedSubcategory
+          product.specifications?.best_for?.includes(
+            selectedBestFor
+          )
       );
     
     }
+
+    if (selectedMovement !== "All") {
+
+      result = result.filter(
+        product =>
+          product.specifications?.movement ===
+          selectedMovement
+      );
+    
+    }
+    
+    if (selectedDisplayType !== "All") {
+    
+      result = result.filter(
+        product =>
+          product.specifications?.display_type ===
+          selectedDisplayType
+      );
+    
+    }
+    
+    if (selectedMaterial !== "All") {
+    
+      result = result.filter(
+        product =>
+          (selectedMaterial === "Metal"
+            ? product.specifications?.material === "Stainless Steel"
+            : product.specifications?.material === selectedMaterial)
+      );
+    
+    }
+    
+    if (selectedCrocsType !== "All") {
+
+      result = result.filter(
+        product =>
+          product.category === selectedCrocsType
+      );
+    
+    }
+    
+    if (selectedSliderType !== "All") {
+
+      result = result.filter(
+        product =>
+          product.category === selectedSliderType
+      );
+    
+    }
+    
+    if (selectedSandalType !== "All") {
+
+      result = result.filter(
+        product =>
+          product.category === selectedSandalType
+      );
+    
+    }
+    
+    if (selectedAccessoryType !== "All") {
+
+      result = result.filter(
+        product =>
+          product.category === selectedAccessoryType
+      );
+    
+    }
+
 
     if (searchTerm) {
       result = result.filter(
@@ -538,6 +677,19 @@ useEffect(() => {
       );
     }
 
+//     console.log("Selected Category:", selectedCategory);
+// console.log("Selected Crocs Type:", selectedCrocsType);
+
+// console.log(
+//   result.map(p => ({
+//     name: p.product_name || p.name,
+//     category: p.category,
+//     brand: p.brand,
+//     subcategory: p.subcategory,
+//     specifications: p.specifications,
+//   }))
+// );
+
     setFilteredProducts(result);
   }
 
@@ -548,6 +700,18 @@ useEffect(() => {
         return 0;
       });
     }
+
+
+    const displayedProductCount = filteredProducts.reduce(
+      (total, product) => {
+          if (product.colors?.length) {
+              return total + product.colors.length;
+          }
+  
+          return total + 1;
+      },
+      0
+  );
 
   return (
     <>
@@ -580,11 +744,11 @@ onOpen={() => setShowAddressSheet(true)}
 
 selectedGender={selectedGender}
 selectedCategory={selectedCategory}
-selectedSubcategory={selectedSubcategory}
+selectedBestFor={selectedBestFor}
 
 setSelectedGender={setSelectedGender}
 setSelectedCategory={setSelectedCategory}
-setSelectedSubcategory={setSelectedSubcategory}
+setSelectedBestFor={setSelectedBestFor}
 
 />
 
@@ -674,7 +838,6 @@ products={products}
 filteredProducts={filteredProducts}
 
 categories={categories}
-subcategories={subcategories}
 brands={brands}
 activities={activities}
 strapTypes={strapTypes}
@@ -682,8 +845,8 @@ strapTypes={strapTypes}
 selectedCategory={selectedCategory}
 setSelectedCategory={setSelectedCategory}
 
-selectedSubcategory={selectedSubcategory}
-setSelectedSubcategory={setSelectedSubcategory}
+selectedBestFor={selectedBestFor}
+setSelectedBestFor={setSelectedBestFor}
 
 selectedBrand={selectedBrand}
 setSelectedBrand={setSelectedBrand}
@@ -704,28 +867,36 @@ setSelectedDiscount={setSelectedDiscount}
 
 
         <p className="product-count">
-            Showing {
-              filteredProducts.length
-            } Products
+        Showing {displayedProductCount} Products
           </p>
 
           {filteredProducts.length === 0 && (
 
-          <div className="no-products">
+<div className="coming-soon">
 
-            <h2>
-              No Products Found
-            </h2>
+    <h2>
+        🚧 Coming Soon
+    </h2>
 
-            <p>
-              Try changing your filters
-              or explore related products
-              below.
-            </p>
+    <p>
+        We're adding products to this collection.
+        Stay tuned!
+    </p>
 
-          </div>
+    <button
+        className="explore-products-btn"
+        onClick={() => {
 
-          )}
+            navigate("/products");
+
+        }}
+    >
+        Explore Other Products
+    </button>
+
+</div>
+
+)}
 
           <div
             className={
@@ -735,86 +906,47 @@ setSelectedDiscount={setSelectedDiscount}
             }
           >
 
-          {filteredProducts.map(
-            (product) => (
-              <div
-                key={product.id}
-                className="product-category-card"
-                onClick={() =>
-                  navigate(
-                    `/product/${product.id}`
-                  )
-                }
-              >
-                <img
-                    src={
-                      product.colors?.[0]?.images?.find(
-                        image =>
-                          image.id ===
-                          product.colors[0].coverImageId
-                      )?.url
-                    }
-                    alt={product.product_name}
-                  />
+{filteredProducts.flatMap((product) => {
 
-                <div className="product-category-info">
-                  <h3>
-                  {product.product_name}
-                  </h3>
+if (!product.colors || product.colors.length === 0) {
+    return [
+        <ProductCard
+            key={product.id}
+            product={product}
+        />
+    ];
+}
 
-                  <p>
-                  ₹{product.selling_price}
-                  </p>
+return product.colors.map((color, index) => (
 
-                  {/* <button>
-                    View Product
-                  </button> */}
-                </div>
-              </div>
-            )
-          )}
+    <ProductCard
+        key={`${product.id}-${color.color}-${index}`}
+        product={product}
+        displayColor={color}
+    />
+
+));
+
+})}
            </div>
 
           {filteredProducts.length === 0 && (
 <>
 
   <h2 className="related-title">
-    Related Products
+    You May also Like
   </h2>
 
   <div className="related-products-grid">
 
   {relatedProducts.map((product) => (
 
-    <div
-      key={product.id}
-      className="product-category-card"
-      onClick={() =>
-        navigate(`/product/${product.id}`)
-      }
-    >
-     <img
-        src={
-          product.colors?.[0]?.images?.find(
-            image =>
-              image.id ===
-              product.colors[0].coverImageId
-          )?.url
-        }
-        alt={product.product_name}
-      />
+<ProductCard
+    key={product.id}
+    product={product}
+/>
 
-      <div className="product-category-info">
-        <h3>{product.product_name}</h3>
-        <p>₹{product.selling_price}</p>
-
-        {/* <button>
-          View Product
-        </button> */}
-      </div>
-    </div>
-
-  ))}
+))}
 
 </div>
 

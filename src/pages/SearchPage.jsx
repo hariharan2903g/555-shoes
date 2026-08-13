@@ -39,36 +39,29 @@ function SearchPage() {
     }
   }
 
-  const filteredProducts =
-  products.filter(
-    (product) =>
-      product.name
-        .toLowerCase()
-        .includes(
-          search.toLowerCase()
-        ) ||
-
-      product.category
-        ?.toLowerCase()
-        .includes(
-          search.toLowerCase()
-        ) ||
-
-      product.brand
-        ?.toLowerCase()
-        .includes(
-          search.toLowerCase()
-        )
-
-        
+  const filteredProducts = products.filter((product) =>
+    product.product_name
+      ?.toLowerCase()
+      .includes(search.toLowerCase()) ||
+  
+    product.category
+      ?.toLowerCase()
+      .includes(search.toLowerCase()) ||
+  
+    product.brand
+      ?.toLowerCase()
+      .includes(search.toLowerCase())
   );
+
+
   const suggestions = [
-    ...new Set(
-      filteredProducts.map(
-        (product) => product.name
-      )
-    ),
-  ].slice(0, 5);
+  ...new Set(
+    filteredProducts.map(
+      (product) => product.product_name
+    )
+  ),
+].slice(0, 5);
+
 
   return (
     <div className="search-page">
@@ -144,23 +137,17 @@ function SearchPage() {
                   }
                 >
 
-                  <img
-                    src={
-                      product.image_url
-                    }
-                    alt={
-                      product.name
-                    }
-                  />
+                    <img
+                      src={product.colors?.[0]?.images?.[0]?.url}
+                      alt={product.product_name}
+                    />
 
                   <div>
 
-                    <h3>
-                      {product.name}
-                    </h3>
+                  <h3>{product.product_name}</h3>
 
-                    <p>
-                      ₹{product.price}
+                   <p>
+                      ₹{product.selling_price.toLocaleString("en-IN")}
                     </p>
 
                   </div>
@@ -224,21 +211,21 @@ function SearchPage() {
 
                   <img
                     src={
-                      product.image_url
+                      product.colors?.[0]?.images?.[0]?.url
                     }
                     alt={
-                      product.name
+                      product.product_name
                     }
                   />
 
                   <div>
 
                     <h3>
-                      {product.name}
+                      {product.product_name}
                     </h3>
 
                     <p>
-                      ₹{product.price}
+                      ₹{product.selling_price}
                     </p>
 
                   </div>

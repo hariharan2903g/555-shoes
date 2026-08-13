@@ -92,11 +92,11 @@ function AddressSheet({
 
     function deleteAddress(id){
 
-        console.log("Deleting:", id);
+    //     console.log("Deleting:", id);
 
-    console.log(
-        JSON.parse(localStorage.getItem("addresses"))
-    );
+    // console.log(
+    //     JSON.parse(localStorage.getItem("addresses"))
+    // );
 
         const updated =
             addresses.filter(

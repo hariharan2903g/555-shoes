@@ -337,7 +337,7 @@ ${selectedAddress.name}
 
 </div> {/* checkout-page */}
 
-<Footer />
+
             </>
         );
         }

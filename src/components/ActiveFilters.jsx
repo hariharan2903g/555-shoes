@@ -1,77 +1,67 @@
 function ActiveFilters({
 
-    selectedGender,
-    selectedCategory,
-    selectedSubcategory,
-    
-    setSelectedGender,
-    setSelectedCategory,
-    setSelectedSubcategory
-    
-    }){
-    
-    return(
-    
-    
+  selectedGender,
+  selectedCategory,
+  selectedBestFor,
+
+  setSelectedGender,
+  setSelectedCategory,
+  setSelectedBestFor,
+
+}) {
+
+  return (
+
     <div className="active-filters">
 
-{selectedGender !== "All" && (
-  <button
-    className="filter-pill"
-    onClick={() =>
-      setSelectedGender("All")
-    }
-  >
-    {selectedGender} ✕
-  </button>
-)}
+      {selectedGender !== "All" && (
+        <button
+          className="filter-pill"
+          onClick={() => setSelectedGender("All")}
+        >
+          {selectedGender} ✕
+        </button>
+      )}
 
-{selectedCategory !== "All" && (
-  <button
-    className="filter-pill"
-    onClick={() =>
-      setSelectedCategory("All")
-    }
-  >
-    {selectedCategory} ✕
-  </button>
-)}
+      {selectedCategory !== "All" && (
+        <button
+          className="filter-pill"
+          onClick={() => setSelectedCategory("All")}
+        >
+          {selectedCategory} ✕
+        </button>
+      )}
 
-{selectedSubcategory !== "All" && (
-  <button
-    className="filter-pill"
-    onClick={() =>
-      setSelectedSubcategory("All")
-    }
-  >
-    {selectedSubcategory} ✕
-  </button>
-)}
+      {selectedBestFor !== "All" && (
+        <button
+          className="filter-pill"
+          onClick={() => setSelectedBestFor("All")}
+        >
+          {selectedBestFor} ✕
+        </button>
+      )}
 
-{(selectedGender !== "All" ||
-  selectedCategory !== "All" ||
-  selectedSubcategory !== "All") && (
+      {(selectedGender !== "All" ||
+        selectedCategory !== "All" ||
+        selectedBestFor !== "All") && (
 
-  <button
-    className="clear-all-pill"
-    onClick={() => {
+        <button
+          className="clear-all-pill"
+          onClick={() => {
+            setSelectedGender("All");
+            setSelectedCategory("All");
+            setSelectedBestFor("All");
+          }}
+        >
+          Clear All
+        </button>
 
-      setSelectedGender("All");
-      setSelectedCategory("All");
-      setSelectedSubcategory("All");
+      )}
 
-    }}
-  >
-    Clear All
-  </button>
+    </div>
 
-)}
+  );
 
-</div>
-    
-    
-    );
-    
-    }
-    
-    export default ActiveFilters;
+}
+
+export default ActiveFilters;

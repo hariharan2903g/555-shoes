@@ -16,7 +16,7 @@ box-sizing:border-box;
     width:100%;
     aspect-ratio:1/1; 
     overflow:hidden;
-    background:#f7f7f7;
+    background:#ffffff;
     border-radius:12px;
     display:flex;
     align-items:center;
@@ -104,19 +104,19 @@ margin-bottom:1px;
 
 .shop-product-name{
     font-size:15px;
+    margin-top:0;
     margin-bottom:6px;
-font-weight:600;
-
-margin-top:0;
-
+    font-weight:600;
     color:#222;
     line-height:1.35;
-   
 
     display:-webkit-box;
     -webkit-line-clamp:2;
     -webkit-box-orient:vertical;
     overflow:hidden;
+
+    min-height:40.5px;
+    max-height:40.5px;
 }
 
 .shop-product-price-row{
@@ -181,3 +181,57 @@ margin-top:0;
 
 }
 
+.wishlist-actions{
+    display:flex;
+    align-items:center;
+    gap:5px;
+
+    margin-top:14px;
+}
+
+.wishlist-remove{
+    width:58px;
+    height:35px;
+    padding: 10px;
+    flex-shrink:0;
+
+    border:1px solid #ddd;
+    border-radius:10px;
+
+    background:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    font-size:20px;
+}
+
+.wishlist-add{
+    flex:1;
+    height:35px;
+    
+    border:none;
+    border-radius:10px;
+
+    background:#000;
+    color:#fff;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:15px;
+    font-weight:600;
+
+    cursor:pointer;
+}
+
+.shop-product-color {
+    font-size: 11px;
+    color: #777;
+    margin: -2px 0 6px;
+    text-transform: capitalize;
+}

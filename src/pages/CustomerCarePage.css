@@ -1,0 +1,321 @@
+.customer-care-page{
+
+    max-width:900px;
+
+    margin:auto;
+
+    padding:24px 18px 120px;
+
+    background:#fff;
+
+}
+
+.customer-care-header{
+    display:flex;
+    align-items:flex-start;
+    gap:18px;
+    margin-bottom:50px;
+}
+
+.customer-care-header h1{
+    font-size:32px;
+    font-weight:700;
+    margin:0;
+}
+
+.customer-care-subtitle{
+    margin-top:8px;
+    color:#666;
+    line-height:1.6;
+    font-size:15px;
+}
+
+.customer-back-btn{
+
+    border:none;
+
+    background:none;
+
+    font-size:28px;
+
+    cursor:pointer;
+
+}
+
+
+
+.care-section{
+    padding:52px 0;
+    border-bottom:1px solid #ececec;
+}
+
+.care-section h2{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:28px;
+    font-weight:700;
+    margin-bottom: 20px;
+}
+
+.section-emoji{
+    font-size:30px;
+}
+.care-section p{
+    font-size:16px;
+    line-height:1.9;
+    color:#555;
+    margin-bottom:18px;
+}
+
+.care-section h3{
+    font-size:18px;
+    margin-top:32px;
+    margin-bottom:10px;
+    color:#111;
+}
+
+.care-intro{
+    background:#fafafa;
+    border-left:4px solid #000;
+    padding:20px;
+    border-radius:12px;
+    margin-bottom:32px;
+}
+
+
+.section-subtitle{
+    color:#777;
+    margin-bottom:30px;
+    line-height:1.6;
+    padding:10px 0;
+}
+
+.contact-call{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+
+    color:#111;
+    text-decoration:none;
+    font-weight:600;
+
+    transition:.25s ease;
+}
+
+.contact-call:hover{
+    color:#000;
+    transform:translateX(4px);
+}
+
+.call{
+    width:22px;
+    height:22px;
+    display:block;
+    flex-shrink:0;
+}
+
+
+
+
+.section-highlight{
+
+    animation:sectionGlow 2s ease;
+
+}
+
+@keyframes sectionGlow{
+
+    0%{
+        background:#fff8dc;
+    }
+    
+    50%{
+        background:#fff5b5;
+    }
+    
+    100%{
+        background:transparent;
+    }
+    
+    }
+
+
+.help-buttons{
+    display:flex;
+    gap:14px;
+    margin-top:20px;
+    
+}
+
+.help-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    background-color: #000;
+    color: #ffffff;
+
+    width:50%;
+    padding:14px 18px;
+
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.help-btn img{
+    width:22px;
+    height:22px;
+    display:block;
+    flex-shrink:0;
+}
+
+.help-btn span{
+    font-weight:600;
+    line-height:1;
+}
+
+.help-btn:hover{
+    background:#222;
+}
+
+.help-btn.secondary{
+    background:#fff;
+    color:#000;
+    border:1px solid #ddd;
+}
+
+.help-btn.secondary:hover{
+    background:#f5f5f5;
+}
+
+.faq-item{
+    border:1px solid #ececec;
+    border-radius:14px;
+    margin-bottom:14px;
+    overflow:hidden;
+    background:#fff;
+    padding: 5px 15px;
+}
+    
+    .faq-header{
+    
+    width:100%;
+    
+    background:none;
+    
+    border:none;
+    
+    display:flex;
+    
+    justify-content:space-between;
+    
+    align-items:center;
+    
+    padding:18px 0;
+    
+    font-size:16px;
+    
+    font-weight:600;
+    
+    cursor:pointer;
+    
+    text-align:left;
+    
+    }
+    
+    .faq-content{
+    
+    max-height:0;
+    
+    overflow:hidden;
+    
+    transition:max-height .35s ease;
+    
+    }
+    
+    .faq-content.open{
+    
+    max-height:250px;
+    
+    }
+    
+    .faq-content p{
+    
+    margin:0 0 18px;
+    
+    line-height:1.7;
+    
+    color:#555;
+    
+    }
+
+    .care-heading{
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
+    
+    .care-heading svg{
+        font-size:24px;
+        color:#111;
+    }
+
+   
+    
+   /* ============================= */
+/* Desktop Layout */
+/* ============================= */
+
+@media (min-width: 992px){
+
+    .customer-care-page{
+        max-width:1100px;
+        padding:50px 60px 150px;
+    }
+
+    .customer-care-header{
+        margin-bottom:70px;
+    }
+
+    .customer-care-header h1{
+        font-size:44px;
+    }
+
+    .customer-care-subtitle{
+        font-size:18px;
+        max-width:700px;
+    }
+
+    .care-section{
+        padding:70px 0;
+    }
+
+    .care-section h2{
+        font-size:36px;
+    }
+
+    .care-section p{
+        font-size:17px;
+        max-width:760px;
+    }
+
+    .care-section h3{
+        font-size:22px;
+    }
+
+    .faq-header{
+        font-size:18px;
+        padding:24px;
+    }
+
+    .faq-content p{
+        padding:0 24px 24px;
+    }
+
+    .help-buttons{
+        max-width:420px;
+    }
+
+}

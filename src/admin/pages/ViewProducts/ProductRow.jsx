@@ -153,12 +153,30 @@ function ProductRow({ product, products, setProducts }) {
                     
                         const rect = imageRef.current.getBoundingClientRect();
                     
+                        const modalHeight = 620; // Approximate popup height
+                    
+                        const spaceBelow = window.innerHeight - rect.bottom;
+
+                        let top;
+                        
+                        if (spaceBelow < modalHeight + 20) {
+                        
+                            // Anchor popup ABOVE the thumbnail
+                            top = rect.bottom - modalHeight;
+                        
+                        } else {
+                        
+                            // Anchor popup BELOW the thumbnail
+                            top = rect.top;
+                        
+                        }
+                        
+                        // Prevent it from going off the top of the screen
+                        top = Math.max(20, top);
+                    
                         setModalPosition({
-                    
-                            top: rect.top,
-                    
+                            top,
                             left: rect.right + 15,
-                    
                         });
                     
                         setShowImagesModal(true);

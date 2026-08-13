@@ -6,8 +6,9 @@ function BottomSheet({
     open,
     onClose,
     title,
-    children
-}) {
+    children,
+    className = ""
+    }) {
 
     useEffect(() => {
 
@@ -83,8 +84,8 @@ function BottomSheet({
                 onClick={onClose}
             />
 
-            <div
-                    className="bottom-sheet"
+                <div
+                    className={`bottom-sheet ${className}`}
                     onTouchStart={handleTouchStart}
                     onTouchMove={handleTouchMove}
                     onTouchEnd={handleTouchEnd}

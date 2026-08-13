@@ -1,0 +1,43 @@
+.coming-soon{
+
+    text-align:center;
+
+    padding:60px 20px;
+
+}
+
+.coming-soon h2{
+
+    font-size:28px;
+
+    margin-bottom:12px;
+
+}
+
+.coming-soon p{
+
+    color:#666;
+
+    margin-bottom:24px;
+
+    line-height:1.6;
+
+}
+
+.explore-products-btn{
+
+    background:#111;
+    color:#fff;
+
+    border:none;
+
+    padding:14px 26px;
+
+    border-radius:12px;
+
+    font-size:15px;
+    font-weight:600;
+
+    cursor:pointer;
+
+}

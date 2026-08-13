@@ -1,27 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap');
 
-.logo-container {
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.4s ease;
 
+.home-page {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
-.logo-container h1 {
-  /* font-family: 'Cinzel', serif; */
-  font-size: 2.4rem;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #111;
-}
-
-/* .logo-left {
-  flex-direction: row;
-  align-items: center;
-
-  gap: 10px;
-} */
 
 .hide-title {
   opacity: 0;
@@ -36,6 +20,8 @@
 .section h1{
   color: #111 !important;
 }
+
+
 
 .desktop-nav {
   display: flex;
@@ -203,39 +189,7 @@ padding: 14px 24px;
   transition: all 0.4s ease;
 }
 
-  /* .header.scrolled {
-    flex-direction: row;
-  
-    justify-content: space-between;
-    align-items: center;
-  
-    padding: 12px 40px;
-  }
 
-  .header.scrolled {
-    padding: 12px 40px;
-  }
-  
-  .header.scrolled .header-left {
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 40px;
-    width: 100%;
-  }
-  
-  .header.scrolled .logo-container {
-    justify-content: flex-start;
-    margin-right: 20px;
-  }
-
-  .header.scrolled .logo {
-    width: 100px;
-  }
-
-  .header.scrolled .desktop-nav {
-    margin-top: 0;
-  } */
 
   @media (min-width: 769px) {
 
@@ -251,14 +205,7 @@ padding: 14px 24px;
       width: 100%;
     }
   
-    .header.scrolled .logo-container {
-      justify-content: flex-start;
-      margin-right: 20px;
-    }
   
-    .header.scrolled .logo {
-      width: 100px;
-    }
   
     .header.scrolled .desktop-nav {
       margin-top: 0;
@@ -285,13 +232,7 @@ padding: 14px 24px;
   
     margin: 0;
   }
-  .header.scrolled .logo-container h1 {
-    opacity: 0;
-    width: 0;
-    margin: 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
+ 
 
   .header-icon {
     font-size: 22px;
@@ -359,30 +300,42 @@ body {
 }
 
 /* Banner section */
+
 .banner {
   position: relative;
-
   width: 100%;
-  height: 700px;
-
+  height: 300px;
   overflow: hidden;
 }
 
-.banner img {
+.banner-link {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-background: #fff;
-  object-fit: cover;
-  object-position: center;
-  opacity: 0;
+  display: block;
 
-  transition: opacity 1s ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 0.5s ease;
 }
 
-.banner img.active {
+.banner-link.active {
   opacity: 1;
+  pointer-events: auto;
+}
+
+.banner-link img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: contain;
+  object-position: center;
+
+  background: #fff;
 }
 
 /* banner arrow styling */
@@ -534,124 +487,9 @@ opacity: 30%;
 } */
 
 
-.new-arrivals {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  padding: 10px 0;
-}
-
-.arrival-slider {
-  overflow-x: auto;
-  overflow-y: hidden;
-  cursor: grab;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  user-select: none;
-}
 
 
-.arrival-track {
-  display: flex;
-  gap: 20px;
-  width: max-content;
-  animation: autoScroll 30s linear infinite;
-}
-@keyframes autoScroll {
-  from {
-    transform: translateX(0);
-  }
 
-  to {
-    transform: translateX(-70%);
-  }
-}
-
-.arrival-card {
-  min-width: 250px;
-  flex: 0 0 250px;
-  height: 250px;
-
-  background: white;
-  border-radius: 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.arrival-card img {
-  width: 220px;
-  height: 220px;
-  object-fit: contain;
-}
-.arrival-slider::-webkit-scrollbar {
-  display: none;
-}
-
-.arrival-track:hover {
-  animation-play-state: paused;
-}
-
-/* Discount sections  */
-
-.discount-banner {
-  background: #111;
-
-  color: white;
-
-  margin: 60px 40px;
-
-  border-radius: 25px;
-
-  overflow: hidden;
-}
-
-.discount-content {
-  text-align: center;
-
-  padding: 70px 20px;
-}
-
-.discount-content h2 {
-  font-size: 3rem;
-
-  margin-bottom: 15px;
-
-  letter-spacing: 3px;
-}
-
-.discount-content p {
-  font-size: 1.1rem;
-
-  color: #ccc;
-
-  margin-bottom: 25px;
-}
-
-.discount-content button {
-  background: white;
-
-  color: #111;
-
-  border: none;
-
-  padding: 15px 35px;
-
-  border-radius: 30px;
-
-  cursor: pointer;
-
-  font-weight: 600;
-
-  transition: 0.3s;
-}
-
-.discount-content button:hover {
-  transform: translateY(-3px);
-}
 
 .category-grid {
   display: grid;
@@ -847,14 +685,7 @@ opacity: 30%;
   background: white;
 }
 
-.loading-logo {
-  width: 140px;
-  height: 140px;
 
-  object-fit: contain;
-
-  animation: logoPulse 1.5s ease-in-out infinite;
-}
 
 @keyframes logoPulse {
 
@@ -946,9 +777,9 @@ opacity: 30%;
 
 
 }
-.product-page-container{
-  padding-bottom:100px;
-}
+/* .product-page-container{
+  padding-bottom:10px;
+} */
 
 .product-category-info h3{
   font-size:16px;
@@ -1094,16 +925,7 @@ opacity: 30%;
   line-height:1.2;
 }
 
-.arrival-card:hover {
-  transform: translateY(-8px);
 
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
-}
-.arrival-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
 
 .overlay {
   position: absolute;
@@ -1275,11 +1097,12 @@ opacity: 30%;
 .footer {
   background: #000;
   border-top: 1px solid #222;
-  padding: 50px 20px;
   color: white;
   text-align: center;
   padding: 30px;
+  margin-bottom:50px;
 }
+
 .contact-left {
   background: #1a1a1a;
   padding: 30px;
@@ -1293,18 +1116,7 @@ opacity: 30%;
 transform: scale(1.1);
 }
 
-.logo {
-  width: 75px;
-  height: 75xpx;
-  object-fit: contain;
 
-  transition: all 0.4s ease;
-}
-
-
-.logo-container h1 {
-  transition: all 0.3s ease;
-}
 
 
 
@@ -1477,34 +1289,9 @@ transform: scale(1.1);
   color: #25D366;
 } */
 
-.scroll-controls {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
 
-  margin-top: 25px;
-}
 
-.scroll-controls button {
-  padding: 12px 24px;
 
-  border: none;
-  border-radius: 30px;
-
-  background: #111;
-  color: white;
-
-  font-size: 16px;
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: all 0.3s ease;
-}
-
-.scroll-controls button:hover {
-  transform: translateY(-2px);
-}
 
 .menu-icon {
   display: none;
@@ -4234,13 +4021,20 @@ select:-webkit-autofill {
 .app-toast {
   position: fixed;
   left: 50%;
-  bottom: 110px;
+  bottom: 200px;
   transform: translateX(-50%);
-  background: #111;
+  display:inline-flex;
+  align-items: center;
+  justify-content: center;
+  width:max-content;
+  max-width: 90vw;
+  min-width: 170px;
+  background: #302f2f;
   color: white;
   padding: 12px 18px;
   border-radius: 999px;
   font-size: 14px;
+  white-space: nowrap;
   font-weight: 600;
   z-index: 10050;
 
@@ -6478,7 +6272,8 @@ border-top:1px solid #e5e5e5;
   width:100%;
   height:170px;
   object-fit:cover;
-  border-radius:12px;
+  display: block;
+  border-radius:10px;
 }
 
 .category-card h3{
@@ -6843,40 +6638,8 @@ color: #111;
       .header-icon {
         font-size: 20px;
       }
-      /* .header.scrolled .header-left {
-        width: auto;
-        gap: 0;
-        justify-content: flex-start;
       
-      }
     
-      .header.scrolled .logo-container {
-        margin-right: 0;
-      }
-     */
-      .logo-container {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        width: auto;
-        flex-shrink: 0;
-        gap: 8px;
-      }
-
-  
-    .logo {
-      width: 42px;
-      height: 42px;
-    }
-    .logo-link {
-      text-decoration: none;
-      color: inherit;
-    }
-    .logo-container h1 {
-      font-size: 1.5rem;
-      letter-spacing: 2px;
-      text-align: center;
-    }
   
     .navbar {
       position: fixed;
@@ -6938,7 +6701,7 @@ color: #111;
       font-size: 1rem;
     }
     .banner {
-      height: 420px;
+      height: 280px;
     }
   
     .section{
@@ -6961,15 +6724,9 @@ color: #111;
       height: 180px;
     }
 
-    .arrival-card {
-      min-width: 220px;
-      height: 220px;
-    }
+    
   
-    .arrival-card img {
-      width: 180px;
-      height: 180px;
-    }
+    
   
     /* Brand circle design */
     .brand-circle {
@@ -6992,20 +6749,7 @@ color: #111;
       flex: 1;
     }
   
-    /* Discount banner */
-
-    .discount-banner {
-      margin: 40px 20px;
-    }
-    
-    .discount-content {
-      padding: 50px 20px;
-    }
-    
-    .discount-content h2 {
-      font-size: 2rem;
-    }
-
+   
     .product-grid {
       grid-template-columns: 1fr;
     }
@@ -7069,15 +6813,6 @@ color: #111;
       width: 100%;
     }
   
-    
-  
-    .footer {
-      text-align: center;
-      padding: 20px;
-      
-        margin-bottom:50px;
-    
-    }
     .features {
       display: grid;
       grid-template-columns: 1fr;

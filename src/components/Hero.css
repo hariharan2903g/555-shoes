@@ -1,0 +1,7 @@
+.home-slogan-image{
+    display: block;
+    width: auto;
+    height: 280px;
+    margin: 22px auto 15px;
+    object-fit: contain;
+  }
