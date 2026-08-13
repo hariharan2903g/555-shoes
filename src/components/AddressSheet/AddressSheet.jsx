@@ -23,17 +23,18 @@ return (
         <h2>Select Delivery Address</h2>
 
         <button
-            className="add-new-btn"
-            onClick={() =>
-                navigate("/add-address", {
-                    state: {
-                        mode: "new"
-                    }
-                })
+    className="add-new-btn"
+    onClick={() =>
+        navigate("/add-address", {
+            state: {
+                mode: "new",
+                fromAddressSheet: true
             }
-        >
-            + Add New
-        </button>
+        })
+    }
+>
+    + Add New
+</button>
 
         </div>
 
@@ -114,10 +115,11 @@ onClick={(e)=>{
 
     e.stopPropagation();
 
-    navigate("/add-address",{
-        state:{
-            mode:"edit",
-            address
+    navigate("/add-address", {
+        state: {
+            mode: "edit",
+            address,
+            fromAddressSheet: true
         }
     });
 

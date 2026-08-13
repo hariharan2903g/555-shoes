@@ -172,7 +172,7 @@ useEffect(() => {
 
     setCartOpen(true);
 
-    setAddressSheetOpen(true);
+    // setAddressSheetOpen(true);
 
 }
 
@@ -746,7 +746,7 @@ Price: ₹${item.price}`
 
 <div className="delivery-header">
 
-    <div className="delivery-content">
+    <div className="delivery-left">
 
         <span className="delivery-label">
             DELIVER TO
@@ -772,6 +772,10 @@ Price: ₹${item.price}`
     </button>
 
 </div>
+
+    
+
+
 
 <p className="delivery-name">
     {address.name}

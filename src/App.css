@@ -1729,7 +1729,7 @@ text-decoration: none;
   width:100%;
   max-width:430px;
 
-  height:100vh;
+  height:100dvh;
 
   background:#fff;
 
@@ -2748,15 +2748,8 @@ text-decoration: none;
 
 }
 
-.delivery-label{
 
-  font-size:14px;
 
-  color:#666;
-
-  margin-bottom:12px;
-
-}
 
 
 
@@ -3022,19 +3015,7 @@ text-decoration: none;
   overflow:hidden;
 }
 
-.change-address-btn{
-  margin-left: 0;
-  flex-shrink: 0;
-  align-self:flex-start;
-  background: none;
-  border: none;
 
-  font-size: 13px;
-  font-weight: 700;
-
-  color: #111;
-  cursor: pointer;
-}
 
 .delivery-top{
 
@@ -3048,19 +3029,11 @@ text-decoration: none;
 
 }
 
-
-.delivery-badge{
-
-
-    font-size:13px;
-    font-weight:600;
-
-
-  font-weight:700;
-
-  color:#111;
-
+.delivery-top > div:first-child {
+  flex: 1;
+  min-width: 0;
 }
+
 
 .delivery-name{
   margin-top:10px;
@@ -3797,22 +3770,60 @@ select:-webkit-autofill {
 
 }
 
-.delivery-header{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-}
 
-.delivery-content{
-  flex:1;
-  min-width:0;
-}
 
-.delivery-header > div{
+
+.delivery-content {
   flex: 1;
   min-width: 0;
+  padding-right: 80px;
+  box-sizing: border-box;
 }
+
+.delivery-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.delivery-left {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+}
+
+.delivery-label {
+  font-size: 13px;
+  color: #777;
+  white-space: nowrap;
+}
+
+.delivery-badge {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+  white-space: nowrap;
+}
+
+.change-address-btn {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0;
+
+  background: none;
+  border: none;
+
+  font-size: 13px;
+  font-weight: 700;
+  color: #111;
+
+  white-space: nowrap;
+  cursor: pointer;
+}
+
 
 .delivery-icon{
 
@@ -6860,4 +6871,21 @@ color: #111;
   
   .checkout-page h1 {
     font-size: 26px;
+  }
+
+  @media (max-width:768px){
+
+    .cart-drawer{
+      height:100dvh;
+    }
+  
+    .cart-body{
+      min-height:0;
+      overflow-y:auto;
+    }
+  
+    .cart-footer{
+      flex-shrink:0;
+    }
+  
   }
