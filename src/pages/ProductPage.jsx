@@ -1303,7 +1303,7 @@ productDetails[index+1] && (
 
     <p>
 
-      The products sold on <strong>555Shoes</strong> are
+      The products sold on <strong>SkookS</strong> are
       not covered under any manufacturer or seller warranty.
       However, every order is carefully inspected before
       dispatch, and if you receive a damaged, defective,

@@ -89,25 +89,7 @@ const grandTotal = subtotal + shippingCharge;
       
   }, [cartOpen]);
 
-  useEffect(() => {
-
-    if (cartOpen) {
-
-        document.body.style.overflow = "hidden";
-
-    } else {
-
-        document.body.style.overflow = "";
-
-    }
-
-    return () => {
-
-        document.body.style.overflow = "";
-
-    };
-
-}, [cartOpen]);
+  
 
 useEffect(() => {
 
@@ -148,6 +130,37 @@ useEffect(() => {
   };
 
 }, []);
+
+
+
+useEffect(() => {
+    if (!cartOpen) return;
+  
+    const scrollY = window.scrollY;
+  
+    document.documentElement.style.overflow = "hidden";
+  
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+  
+    return () => {
+      document.documentElement.style.overflow = "";
+  
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+  
+      window.scrollTo(0, scrollY);
+    };
+  }, [cartOpen]);
+
 
 useEffect(() => {
 
@@ -829,25 +842,32 @@ Price: ₹${item.price}`
 )}
 </div>
          
-      <button
-          className="checkout-btn"
-          disabled={checkoutLoading}
-          onClick={() => {
+<button
+    className="checkout-btn"
+    disabled={checkoutLoading}
+    onClick={() => {
 
-              setCheckoutLoading(true);
+        // No address selected
+        if (!address) {
+            setAddressSheetOpen(true);
+            showToast("📍 Please add a delivery address");
+            return;
+        }
 
-              setTimeout(() => {
+        setCheckoutLoading(true);
 
-                  setCartOpen(false);
+        setTimeout(() => {
 
-                  navigate("/checkout");
+            setCartOpen(false);
 
-                  setCheckoutLoading(false);
+            navigate("/checkout");
 
-              }, 450);
+            setCheckoutLoading(false);
 
-          }}
-      >
+        }, 450);
+
+    }}
+>
 
         {checkoutLoading ? (
             <>

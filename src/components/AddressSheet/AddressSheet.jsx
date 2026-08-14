@@ -5,6 +5,8 @@ function AddressSheet({
     setSelectedAddress
 }) {
 
+    if (!open) return null;
+
 return (
 
     <div
@@ -15,7 +17,7 @@ return (
 
         <button
             className="address-back-btn"
-            onClick={() => navigate(-1)}
+            onClick={onClose}
         >
             ←
         </button>
@@ -238,7 +240,7 @@ onClick={() => {
     
     setTimeout(() => {
     
-        navigate(-1);
+        onClose();
     
     }, 1200);
 

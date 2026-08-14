@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";import Footer from "../components/Footer";
 import { calculateShipping } from "../utils/shipping";
+import AddressSheet from "../components/AddressSheet";
 
 function CheckoutPage() {
     const navigate = useNavigate();
@@ -8,7 +9,8 @@ function CheckoutPage() {
     const [shipping, setShipping] = useState(0);
     const [delivery, setDelivery] = useState("");
     const [selectedAddress, setSelectedAddress] = useState(null);
-    const freeShippingLimit = 2000;
+    const [addressSheetOpen, setAddressSheetOpen] = useState(false);
+    const freeShippingLimit = 2500;
 
     useEffect(() => {
 
@@ -79,6 +81,19 @@ function CheckoutPage() {
           );
   
   }, []);
+
+
+  const refreshSelectedAddress = () => {
+
+    const addresses =
+        JSON.parse(localStorage.getItem("addresses")) || [];
+
+    const selected =
+        addresses.find(address => address.selected);
+
+    setSelectedAddress(selected || null);
+
+};
 
     //   pincode and cost
 
@@ -191,10 +206,11 @@ ${selectedAddress.name}
     <h3>Delivery Address</h3>
 
     <button
-        onClick={() => navigate("/address")}
-    >
-        Change
-    </button>
+    className="checkout-change-btn"
+    onClick={() => setAddressSheetOpen(true)}
+>
+    CHANGE
+</button>
 
 </div>
 
@@ -240,27 +256,25 @@ ${selectedAddress.name}
 
 ) : (
 
-    <button
-        className="add-address-checkout"
-        onClick={() => navigate("/address")}
-    >
-        + Add Address
-    </button>
+  <p className="no-address-checkout">
+  No delivery address selected.
+</p>
 
 )}
 
 </div>
 
 
-        <div className="checkout-summary">
-        {cart.map((item) => (
+<div className="checkout-products">
 
-            <div
-            key={item.id}
-            className="checkout-product"
-            >
+{cart.map((item) => (
 
-            <div className="checkout-product-info">
+    <div
+        key={`${item.id}-${item.size}-${item.color}`}
+        className="checkout-product"
+    >
+
+        <div className="checkout-product-info">
 
             <h3>{item.name}</h3>
 
@@ -272,68 +286,83 @@ ${selectedAddress.name}
 
             <p>Price: ₹{item.price}</p>
 
-            </div>
+        </div>
 
-            <img
+        <img
             src={item.image}
             alt={item.name}
             className="checkout-product-image"
-            />
+        />
 
-            </div>
+    </div>
 
-            ))}
-        <h2>
-        Order Summary
-        </h2>
+))}
+
+</div>
+
+
+<div className="checkout-bottom">
+
+    <div className="checkout-summary">
+
+        <h2>Order Summary</h2>
 
         <div className="summary-row">
-        <span>Subtotal</span>
-        <span>₹{subtotal}</span>
+            <span>Subtotal</span>
+            <span>₹{subtotal}</span>
         </div>
 
         <div className="summary-row">
-        <span>Shipping</span>
+            <span>Shipping</span>
 
-        <span>
-            {shipping === 0 &&
-            subtotal >= freeShippingLimit
-            ? "FREE 🚚"
-            : `₹${shipping}`}
-        </span>
+            <span>
+                {shipping === 0 &&
+                subtotal >= freeShippingLimit
+                    ? "FREE 🚚"
+                    : `₹${shipping}`}
+            </span>
         </div>
 
-        {subtotal <
-        freeShippingLimit && (
-        <p className="shipping-message">
-
-            Add ₹
-            {freeShippingLimit -
-            subtotal}
-            {" "}more to get FREE
-            shipping 🚚
-
-        </p>
+        {subtotal < freeShippingLimit && (
+            <p className="shipping-message">
+                Add ₹
+                {freeShippingLimit - subtotal}
+                {" "}more to get FREE shipping 🚚
+            </p>
         )}
 
         <div className="summary-row total-row">
-        <strong>Total</strong>
 
-        <strong>
-            ₹{total}
-        </strong>
+            <strong>Total</strong>
+
+            <strong>
+                ₹{total}
+            </strong>
+
         </div>
 
-        </div>
+    </div>
 
-        <button
+    <button
         className="place-order-btn"
         onClick={placeOrder}
-        >
+    >
         Order On WhatsApp
-        </button>
+    </button>
+
+</div>
 
             </div> {/* checkout-form */}
+
+            <AddressSheet
+                open={addressSheetOpen}
+                onClose={() => {
+                    setAddressSheetOpen(false);
+                    refreshSelectedAddress();
+                }}
+                selectedAddress={selectedAddress}
+                setSelectedAddress={setSelectedAddress}
+            />
 
 </div> {/* checkout-page */}
 
