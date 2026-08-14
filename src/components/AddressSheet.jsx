@@ -8,7 +8,8 @@ import "../App.css";
 function AddressSheet({
     open,
     onClose,
-    onAddressSelected
+    onAddressSelected,
+    hideAddNew = false
 }) {
     const navigate = useNavigate();
     const location = useLocation();
@@ -149,6 +150,7 @@ function AddressSheet({
 
 <h2>Select Delivery Address</h2>
 
+{!hideAddNew && (
 <button
     className={`add-new-btn ${maxAddressesReached ? "limit-reached" : ""}`}
     onClick={() => {
@@ -181,6 +183,7 @@ function AddressSheet({
 >
     + Add New
 </button>
+)}
 
 </div>
 

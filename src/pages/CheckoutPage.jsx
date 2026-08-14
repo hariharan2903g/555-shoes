@@ -361,7 +361,11 @@ ${selectedAddress.name}
                     refreshSelectedAddress();
                 }}
                 selectedAddress={selectedAddress}
-                setSelectedAddress={setSelectedAddress}
+                onAddressSelected={(address) => {
+                    setSelectedAddress(address);
+                    setAddressSheetOpen(false);
+                }}
+                hideAddNew={true}
             />
 
 </div> {/* checkout-page */}

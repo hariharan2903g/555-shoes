@@ -48,7 +48,7 @@ function TrendingProducts({
 
       <div className="section-header">
 
-        <h2>Trending 🔥 </h2>
+        <h2>Trending Now 🔥 </h2>
 
       </div>
 
