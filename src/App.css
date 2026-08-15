@@ -1401,14 +1401,19 @@ transform: scale(1.1);
   overflow-x: auto;
   overflow-y: hidden;
 
-  padding: 5px 4px 12px;
+  padding: 5px 0 12px;
 
-  scroll-behavior: smooth;
+  margin-left: -18px;
+  margin-right: -18px;
+
+  padding-left: 16px;
+  padding-right: 16px;
 
   scrollbar-width: none;
   -ms-overflow-style: none;
-}
 
+  touch-action: pan-x;
+}
 .brands-container::-webkit-scrollbar {
   display: none;
 }

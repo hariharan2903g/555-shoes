@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import nike from "../assets/brands/nike.png";
 import adidas from "../assets/brands/adidas.png";
 import puma from "../assets/brands/puma.png";
@@ -16,6 +17,17 @@ import { saveScrollAndNavigate }from "../utils/navigation";
 
 function Brands() {
   const navigate = useNavigate();
+
+  const brandsContainerRef = useRef(null);
+
+  const animationRef = useRef(null);
+  const pauseTimeoutRef = useRef(null);
+
+  const directionRef = useRef("forward");
+  const pauseUntilRef = useRef(0);
+
+
+
   const brands = [
     { name: "Nike", logo: nike },
     { name: "Adidas", logo: adidas },
@@ -31,11 +43,124 @@ function Brands() {
     { name: "Onitsuka Tiger", logo: onitsuka },
   ];
 
+  useEffect(() => {
+
+    const container = brandsContainerRef.current;
+
+    if (!container) return;
+
+    let lastTime = performance.now();
+
+    const forwardSpeed = 45;
+    const reverseSpeed = 800;
+
+    const animate = (currentTime) => {
+
+      const deltaTime =
+        (currentTime - lastTime) / 1000;
+
+      lastTime = currentTime;
+
+      if (currentTime >= pauseUntilRef.current) {
+
+        if (directionRef.current === "forward") {
+
+          container.scrollLeft +=
+            forwardSpeed * deltaTime;
+
+          const reachedEnd =
+            container.scrollLeft +
+              container.clientWidth >=
+            container.scrollWidth - 2;
+
+          if (reachedEnd) {
+
+            directionRef.current = "reverse";
+
+            pauseUntilRef.current =
+              currentTime + 1200;
+
+          }
+
+        }
+
+        else if (
+          directionRef.current === "reverse"
+        ) {
+
+          container.scrollLeft -=
+            reverseSpeed * deltaTime;
+
+          if (container.scrollLeft <= 0) {
+
+            container.scrollLeft = 0;
+
+            directionRef.current = "forward";
+
+            pauseUntilRef.current =
+              currentTime + 1200;
+
+          }
+
+        }
+
+      }
+
+      animationRef.current =
+        requestAnimationFrame(animate);
+
+    };
+
+    animationRef.current =
+      requestAnimationFrame(animate);
+
+    return () => {
+
+      cancelAnimationFrame(
+        animationRef.current
+      );
+
+    };
+
+  }, []);
+
+  const pauseAfterInteraction = () => {
+
+    pauseUntilRef.current =
+      performance.now() + 3000;
+
+    if (pauseTimeoutRef.current) {
+
+      clearTimeout(
+        pauseTimeoutRef.current
+      );
+
+    }
+
+    pauseTimeoutRef.current =
+      setTimeout(() => {
+
+        pauseUntilRef.current =
+          performance.now();
+
+      }, 3000);
+
+  };
+
+
   return (
     <section className="section brands-section">
       <h2 className="brand-header">Shop By Brands</h2>
 
-      <div className="brands-container">
+      <div
+          className="brands-container"
+          ref={brandsContainerRef}
+          onTouchStart={pauseAfterInteraction}
+          onPointerDown={pauseAfterInteraction}
+          onWheel={pauseAfterInteraction}
+        >
+
+
         {brands.map((brand) => (
            <div
            key={brand.name}
