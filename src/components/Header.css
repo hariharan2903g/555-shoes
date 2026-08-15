@@ -110,27 +110,31 @@
     z-index:999;
 }
 
-.header-drawer{
-    position:fixed;
-
-    top:0;
-    left:-300px;
-
-    width:280px;
-    height:100vh;
-
-    background:#fff;
-
-    transition:.3s;
-
-    z-index:1001;
-
-    padding:24px;
-}
-
-.header-drawer.open{
-    left:0;
-}
+.header-drawer {
+    position: fixed;
+  
+    top: 0;
+    left: 0;
+  
+    width: 280px;
+    height: 100dvh;
+  
+    background: #fff;
+  
+    z-index: 10001;
+  
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  
+    overflow-y: auto;
+  
+    padding-bottom: 80px;
+  }
+  
+  
+  .header-drawer.open {
+    transform: translateX(0);
+  }
 
 .header-close-btn{
     position: absolute;
@@ -225,3 +229,106 @@
     opacity: .9;
     transform: translateY(-1px);
 }
+
+
+
+.drawer-links {
+    margin-top: 35px;
+    padding: 0 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  
+  .drawer-category {
+    width: 100%;
+  }
+  
+  
+  .drawer-category-btn {
+    width: 100%;
+    height: 52px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    padding: 0 6px;
+  
+    border: none;
+    background: transparent;
+  
+    font-family: "Manrope", sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: #111;
+  
+    cursor: pointer;
+  }
+  
+  
+  .drawer-category-arrow {
+    font-size: 28px;
+    font-weight: 300;
+    line-height: 1;
+  
+    transition: transform 0.25s ease;
+  }
+  
+  
+  .drawer-category-arrow.expanded {
+    transform: rotate(90deg);
+  }
+  
+  
+  .drawer-subcategories {
+    display: flex;
+    flex-direction: column;
+  
+    padding: 2px 0 10px 16px;
+  
+    border-left: 1px solid #eee;
+  
+    animation: drawerSubcategoryIn 0.2s ease;
+  }
+  
+  
+  .drawer-subcategories a {
+    display: block;
+  
+    padding: 9px 10px;
+  
+    text-decoration: none;
+  
+    font-family: "Manrope", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+  
+    color: #777;
+  
+    transition:
+      color 0.2s ease,
+      padding-left 0.2s ease;
+  }
+  
+  
+  .drawer-subcategories a:hover {
+    color: #f58220;
+    padding-left: 15px;
+  }
+  
+  
+  @keyframes drawerSubcategoryIn {
+  
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  
+  }

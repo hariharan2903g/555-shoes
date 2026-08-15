@@ -262,6 +262,24 @@
         color:#111;
     }
 
+    .instagram-section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .instagram-section-icon {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        margin-bottom: 10px;
+    }
+    
+    .instagram-section p {
+        margin: 0;
+    }
    
     
    /* ============================= */

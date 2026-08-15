@@ -4,6 +4,7 @@ import { FiSearch } from "react-icons/fi";
 import logo from "../assets/skookslogo.png";
 import logo1 from "../assets/skookslogo1.png";
 import { saveScrollAndNavigate } from "../utils/navigation";
+import { categories } from "../data/categories";
 
 import "./Header.css";
 
@@ -14,6 +15,7 @@ function Header({
 }) {
 
   const navigate = useNavigate();
+  const [expandedCategory, setExpandedCategory] = useState(null);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "auto";
@@ -22,6 +24,63 @@ function Header({
       document.body.style.overflow = "auto";
     };
   }, [menuOpen]);
+
+
+  function getSubcategoryUrl(category, item) {
+
+    let url = `/products?gender=All&category=${category}`;
+  
+    if (category === "Shoes") {
+  
+      url += `&best_for=${encodeURIComponent(item)}`;
+  
+    }
+  
+    else if (category === "Crocs") {
+  
+      url += `&crocs_type=${encodeURIComponent(item)}`;
+  
+    }
+  
+    else if (category === "Watches") {
+  
+      if (item === "Digital") {
+        url += `&display_type=Digital`;
+      }
+  
+      else if (
+        item === "Automatic" ||
+        item === "Quartz"
+      ) {
+        url += `&movement=${encodeURIComponent(item)}`;
+      }
+  
+      else {
+        url += `&material=${encodeURIComponent(
+          item === "Metal"
+            ? "Stainless Steel"
+            : item
+        )}`;
+      }
+  
+    }
+  
+    else if (
+      category === "Sliders" ||
+      category === "Sandals" ||
+      category === "Accessories"
+    ) {
+  
+      url = `/products?gender=All&category=${encodeURIComponent(item)}`;
+  
+    }
+  
+    return url;
+  }
+
+
+
+
 
   return (
 
@@ -76,7 +135,7 @@ function Header({
           src={logo1}
           alt="Skooks"
           className="drawer-logo"
-          onClick={() => {
+          onClick={() => { 
             setMenuOpen(false);
             saveScrollAndNavigate(navigate, "/");
           }}
@@ -85,32 +144,70 @@ function Header({
 
         <nav className="drawer-links">
 
+  {Object.keys(categories).map((category) => (
 
-          <Link to="/products?category=Shoes" onClick={() => setMenuOpen(false)}>
-            Shoes
-          </Link>
+    <div
+      key={category}
+      className="drawer-category"
+    >
 
-          <Link to="/products?category=Crocs" onClick={() => setMenuOpen(false)}>
-            Crocs
-          </Link>
+      <button
+        className="drawer-category-btn"
+        onClick={() =>
+          setExpandedCategory(
+            expandedCategory === category
+              ? null
+              : category
+          )
+        }
+      >
 
-          <Link to="/products?category=Watches" onClick={() => setMenuOpen(false)}>
-            Watches
-          </Link>
+        <span>{category}</span>
 
-          <Link to="/products?category=Sliders" onClick={() => setMenuOpen(false)}>
-            Sliders
-          </Link>
+        <span
+          className={`drawer-category-arrow ${
+            expandedCategory === category
+              ? "expanded"
+              : ""
+          }`}
+        >
+          ›
+        </span>
 
-          <Link to="/products?category=Sandals" onClick={() => setMenuOpen(false)}>
-            Sandals
-          </Link>
+      </button>
 
-          <Link to="/products?category=Accessories" onClick={() => setMenuOpen(false)}>
-            Accessories
-          </Link>
 
-        </nav>
+      {expandedCategory === category && (
+
+        <div className="drawer-subcategories">
+
+          {categories[category].map((item) => (
+
+            <Link
+              key={item}
+              to={getSubcategoryUrl(
+                category,
+                item
+              )}
+              onClick={() => {
+                setMenuOpen(false);
+                setExpandedCategory(null);
+              }}
+            >
+              {item}
+            </Link>
+
+          ))}
+
+        </div>
+
+      )}
+
+    </div>
+
+  ))}
+
+</nav>
        
        
         <div className="drawer-footer">

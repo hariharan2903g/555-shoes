@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import whatsapp from "../assets/brands/whatsapp.png";
 import phone from "../assets/brands/phone.png";
+import instagram from "../assets/brands/insta.png";
+
 
 
 function CustomerCarePage() {
@@ -427,7 +429,7 @@ function CustomerCarePage() {
             information about our products, our team is here to assist you.
         </p>
 
-        <h3>Store Address</h3>
+        {/* <h3>Store Address</h3>
 
         <p>
             <strong>SkookS</strong><br />
@@ -436,7 +438,7 @@ function CustomerCarePage() {
             Besant Nagar<br />
             Chennai - 600090<br />
             Tamil Nadu, India
-        </p>
+        </p> */}
 
         <h3>Business Hours</h3>
 
@@ -472,10 +474,23 @@ function CustomerCarePage() {
 
         <h3>Follow Us</h3>
 
-        <p>
-            Stay connected with us for the latest arrivals, offers, and
-            updates through our official social media channels.
-        </p>
+            <a
+            href="https://instagram.com/skooks.in"
+            target="_blank"
+            rel="noreferrer"
+            className="instagram-section"
+            >
+            <img
+                className="instagram-section-icon"
+                src={instagram}
+                alt="Instagram"
+            />
+
+            <p>
+                Stay connected with us for the latest arrivals, offers, and
+                updates through our official social media channels.
+            </p>
+            </a>
 
         </section>
 
