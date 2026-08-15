@@ -448,9 +448,9 @@ function CustomerCarePage() {
         <h3>Phone</h3>
 
         <p>
-            <a href="tel:+917868905884" className="contact-call">
+            <a href="tel:+916383147948" className="contact-call">
             <img className="call" src={phone} alt="Call" />
-            <span>+91 7868905884</span>
+            <span>+91 6383147948</span>
                 
             </a>
         </p>
@@ -459,7 +459,7 @@ function CustomerCarePage() {
 
         <p>
             <a
-                href="https://wa.me/917868905884"
+                href="https://wa.me/916383147948"
                 target="_blank"
                 rel="noreferrer"
                 className="contact-call"
@@ -554,7 +554,7 @@ function CustomerCarePage() {
     <div className="help-buttons">
 
         <a
-            href="https://wa.me/917868905884"
+            href="https://wa.me/916383147948"
             target="_blank"
             rel="noreferrer"
             className="help-btn"
@@ -565,7 +565,7 @@ function CustomerCarePage() {
         </a>
 
         <a
-            href="tel:+917868905884"
+            href="tel:+916383147948"
             className="help-btn secondary"
         >
             <img  src={phone} alt="Call" />

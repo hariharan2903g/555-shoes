@@ -109,7 +109,7 @@ function Footer() {
 <div className="footer-social">
 
     <a
-        href="https://wa.me/917868905884"
+        href="https://wa.me/916383147948"
         target="_blank"
         rel="noreferrer"
     >
@@ -126,7 +126,7 @@ function Footer() {
         <span>Instagram</span>
     </a>
 
-    <a href="tel:+917868905884">
+    <a href="tel:+916383147948">
         <img src={phone} alt="Call" />
         <span>Call us</span>
     </a>
@@ -144,15 +144,15 @@ function Footer() {
 <div className="footer-content">
 
 <p>
-        🕒 Open Daily : <strong>11 AM - 10 PM </strong> 
+        🕒 Available Everyday : <strong>11 AM - 10 PM </strong> 
     </p>
 
-    <p>
+    {/* <p>
         📍 Garage No.19<br />
         28th Cross Street<br />
         Besant Nagar<br />
         Chennai - 600090
-    </p>
+    </p> */}
 
    
 
@@ -162,7 +162,7 @@ function Footer() {
 
 
 
-      <div className="footer-map">
+      {/* <div className="footer-map">
     <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.5524890068677!2d80.26728847588005!3d13.000449814243474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5267b91c1b1adb%3A0x8f09138cfc6dfb2e!2s555%20Shoes!5e0!3m2!1sen!2sin!4v1780142628710!5m2!1sen!2sin" 
             width="100%"
@@ -171,7 +171,7 @@ function Footer() {
         loading="lazy"
         allowFullScreen
     />
-</div>
+</div> */}
 
       <div className="footer-brand">
 
