@@ -19,6 +19,16 @@ import ViewProducts from "./admin/pages/ViewProducts/ViewProducts";
 import CustomerCarePage from "./pages/CustomerCarePage";
 import ToastProvider from "./components/Toast/ToastProvider";
 
+import MobileOnlyGuard from "./components/MobileOnlyGuard";
+
+function CustomerRoute({ children }) {
+  return (
+    <MobileOnlyGuard>
+      {children}
+    </MobileOnlyGuard>
+  );
+}
+
 function App() {
   const [cartOpen, setCartOpen] =useState(false);
   const [returnToCart, setReturnToCart] = useState(false);
@@ -28,6 +38,8 @@ function App() {
   location.pathname === "/address" ||
   location.pathname === "/add-address" ||
   location.pathname.startsWith("/admin");
+
+  
   const [hideBottomNav, setHideBottomNav] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   return (
@@ -43,54 +55,66 @@ function App() {
     <Route
       path="/"
       element={
+        <CustomerRoute>
         <Home
           setCartOpen={setCartOpen}
           menuOpen={menuOpen}
           setMenuOpen={setMenuOpen}
         />
+        </CustomerRoute>
       }
     />
 
       <Route
         path="/search"
-        element={<SearchPage />}
+        element={<CustomerRoute><SearchPage /></CustomerRoute>}
       />
 
       <Route
         path="/wishlist"
         element={
+           <CustomerRoute>
           <WishlistPage
             setCartOpen={setCartOpen}
           />
+          </CustomerRoute>
         }
       />
 
 <Route
   path="/product/:id"
-  element={
+  element={ 
+  <CustomerRoute>
     <ProductPage
       setCartOpen={setCartOpen}
       setHideBottomNav={setHideBottomNav}
     />
+    </CustomerRoute>
   }
 />
 
 
         <Route
           path="/checkout"
-          element={
+          element={ <CustomerRoute>
             <CheckoutPage />
+            </CustomerRoute>
           }
         />
 
           <Route
             path="/categories"
-            element={<CategoriesPage />}
+            element={<CustomerRoute> 
+              <CategoriesPage />
+              </CustomerRoute>
+            }
           />
 
       <Route
         path="/products"
-        element={<AllProductsPage setCartOpen={setCartOpen}/>}
+        element={ <CustomerRoute>
+          <AllProductsPage setCartOpen={setCartOpen}/>
+        </CustomerRoute>}
       />
 
 {/* Admin */}
@@ -111,21 +135,28 @@ function App() {
 />
 <Route
     path="/customer-care"
-    element={<CustomerCarePage />}
+    element={ <CustomerRoute>
+    <CustomerCarePage />
+      </CustomerRoute>
+    }
 />
 
     <Route
   path="/address"
-  element={<AddressPage />}
+  element={<CustomerRoute>
+    <AddressPage />
+    </CustomerRoute>
+  }
   />
   <Route
     path="/add-address"
-    element={
+    element={ <CustomerRoute>
         <AddAddressPage
             setCartOpen={setCartOpen}
             returnToCart={returnToCart}
             setReturnToCart={setReturnToCart}
         />
+        </CustomerRoute>
     }
 />
    </Routes>
