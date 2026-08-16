@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getProducts } from "../../services/viewProductsService";
 import EditProductsTable from "./EditProductsTable";
 import "./EditProducts.css";
 
 function EditProducts() {
+
+  const navigate = useNavigate();
 
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
@@ -131,15 +134,24 @@ function EditProducts() {
 
     <div className="edit-products-page">
 
-      <div className="edit-products-header">
+        <div className="edit-products-header">
 
-        <h1>Edit Products</h1>
+        <div>
+          <h1>Edit Products</h1>
 
-        <p>
-          Search and edit your products.
-        </p>
+          <p>
+            Search and edit your products.
+          </p>
+        </div>
 
-      </div>
+        <button
+          className="edit-products-back-btn"
+          onClick={() => navigate("/admin")}
+        >
+          ← Back to Admin
+        </button>
+
+        </div>
 
 
       {/* Filters */}

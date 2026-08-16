@@ -36,6 +36,7 @@ export const specificationConfig = {
         "Lace",
         "Slip-on",
         "Velcro",
+        "Bungee",
       ],
     },
     {

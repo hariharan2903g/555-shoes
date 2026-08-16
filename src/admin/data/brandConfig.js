@@ -12,6 +12,7 @@ export const brandConfig = {
       "Brooks",
       "Under Armour",
       "On Cloud",
+      "Converse",
     ],
   
     Clogs: [
