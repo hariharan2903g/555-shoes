@@ -130,14 +130,16 @@ function App() {
       element={<Admin />}
     />
 
-    <Route
-      path="/admin/add-product"
-      element={<AddProduct />}
-    />
-
+    
     <Route
       path="/admin/view-products"
       element={<ViewProducts />}
+    />
+</>
+)}
+<Route
+      path="/admin/add-product"
+      element={<AddProduct />}
     />
 
     <Route
@@ -154,8 +156,10 @@ function App() {
       path="/admin/stock"
       element={<Stock />}
     />
-  </>
-)}
+  
+
+
+
 
 
 <Route
