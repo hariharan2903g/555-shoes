@@ -31,5 +31,36 @@ export async function addProduct(product) {
     ])
     .select();
 
+
+
   return { data, error };
+}
+
+export async function getProductById(id) {
+
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  return {
+    data,
+    error
+  };
+}
+
+export async function updateProduct(id, product) {
+
+  const { data, error } = await supabase
+    .from("products")
+    .update(product)
+    .eq("id", id)
+    .select()
+    .single();
+
+  return {
+    data,
+    error
+  };
 }

@@ -20,6 +20,8 @@ import CustomerCarePage from "./pages/CustomerCarePage";
 import ToastProvider from "./components/Toast/ToastProvider";
 import Stock from "./admin/pages/Stock/Stock";
 import OrdersPage from "./pages/OrdersPage";
+import EditProducts from "./admin/pages/EditProducts/EditProducts";
+import EditProduct from "./admin/pages/EditProducts/EditProduct";
 
 import MobileOnlyGuard from "./components/MobileOnlyGuard";
 
@@ -134,6 +136,18 @@ function App() {
 <Route
   path="/admin/view-products"
   element={<ViewProducts />}
+/>
+
+
+
+<Route
+  path="/admin/edit-products"
+  element={<EditProducts />}
+/>
+
+<Route
+  path="/admin/edit-product/:id"
+  element={<EditProduct />}
 />
 
 <Route

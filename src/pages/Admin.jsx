@@ -18,7 +18,7 @@ function Admin() {
           <h2>📦 Products</h2>
           <button onClick={() => navigate("/admin/add-product")}> Add Product </button>
           <button onClick={() => navigate("/admin/view-products")}> View Products </button>
-          <button>Edit Product</button>
+          <button onClick={() => navigate("/admin/edit-products")}>Edit Product</button>
         </div>
 
         <div className="dashboard-card">

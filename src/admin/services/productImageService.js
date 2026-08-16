@@ -1,26 +1,55 @@
-import { uploadImages, deleteImages } from "./imageService";
+import { uploadImages } from "./imageService";
 
 export async function prepareProductImages(colors) {
+
   const updatedColors = [];
+  const newlyUploadedImages = [];
 
   for (const color of colors) {
-    const localFiles = color.images.map((image) => image.file);
 
-    const uploadedImages = await uploadImages(localFiles);
+    const existingImages = color.images.filter(
+      (image) => image.url && !image.file
+    );
 
-    const images = uploadedImages.map((uploaded, index) => ({
-      id: color.images[index].id,
-      url: uploaded.url,
-    }));
+    const newImages = color.images.filter(
+      (image) => image.file
+    );
 
-    updatedColors.push({
+    let uploadedImages = [];
+
+    if (newImages.length > 0) {
+
+      uploadedImages = await uploadImages(
+        newImages.map((image) => image.file)
+      );
+
+    }
+
+    const uploadedWithOriginalIds =
+      uploadedImages.map((uploaded, index) => ({
+        id: newImages[index].id,
+        url: uploaded.url,
+      }));
+
+    const images = [
+      ...existingImages,
+      ...uploadedWithOriginalIds,
+    ];
+
+    const updatedColor = {
       ...color,
       images,
-    });
+    };
+
+    updatedColors.push(updatedColor);
+
+    newlyUploadedImages.push(
+      ...uploadedWithOriginalIds
+    );
   }
 
   return {
     updatedColors,
-    uploadedImages: updatedColors.flatMap((color) => color.images),
+    uploadedImages: newlyUploadedImages,
   };
 }
