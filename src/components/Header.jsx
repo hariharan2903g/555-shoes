@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import logo from "../assets/skookslogo.png";
 import logo1 from "../assets/skookslogo1.png";
-import { saveScrollAndNavigate } from "../utils/navigation";
 import { categories } from "../data/categories";
 
 import "./Header.css";
@@ -94,14 +93,15 @@ function Header({
         </button>
 
         <img
-            src={logo}
-            alt="Skooks"
-            className="header-logo"
-            onClick={() =>
-              saveScrollAndNavigate(navigate, "/")
-            }
-            style={{ cursor: "pointer" }}
-          />
+          src={logo}
+          alt="Skooks"
+          className="header-logo"
+          onClick={() => {
+            sessionStorage.removeItem("homeScroll");
+            window.location.href = "/";
+          }}
+          style={{ cursor: "pointer" }}
+        />
       
 
       <button
@@ -135,9 +135,10 @@ function Header({
           src={logo1}
           alt="Skooks"
           className="drawer-logo"
-          onClick={() => { 
+          onClick={() => {
+            sessionStorage.removeItem("homeScroll");
             setMenuOpen(false);
-            saveScrollAndNavigate(navigate, "/");
+            window.location.href = "/";
           }}
           style={{ cursor: "pointer" }}
         />

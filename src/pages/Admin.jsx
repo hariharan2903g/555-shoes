@@ -38,7 +38,11 @@ function Admin() {
 
         <div className="dashboard-card">
           <h2>📊 Inventory</h2>
-          <button>Stock</button>
+          <button
+            onClick={() => navigate("/admin/stock")}
+          >
+            Stock
+          </button>
           <button>Out of Stock</button>
         </div>
 

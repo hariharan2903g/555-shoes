@@ -1461,30 +1461,47 @@ transform: scale(1.1);
 .color-options {
   display: flex;
   gap: 12px;
-  margin:12px 0 22px;
+
+  margin: 12px 0 22px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  flex-wrap: nowrap;
+  white-space: nowrap;
+
+  border-bottom: 1px solid #efefef;
+  padding: 0 2px 20px;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.color-circle{
+.color-options::-webkit-scrollbar {
+  display: none;
+}
 
-  width:56px;
-  height:56px;
+.color-circle {
+  width: 56px;
+  height: 56px;
 
-  border:1px solid #e5e5e5;
-  border-radius:50%;
+  flex: 0 0 56px;
 
-  overflow:hidden;
+  border: 1px solid #e5e5e5;
+  border-radius: 50%;
 
-  background:#fff;
+  overflow: hidden;
 
-  padding:0;
+  background: #fff;
 
-  cursor:pointer;
+  padding: 0;
+
+  cursor: pointer;
 
   transition:
-      transform .25s ease,
-      border-color .25s ease,
-      box-shadow .25s ease;
-
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
 
 
@@ -7286,6 +7303,18 @@ color: #111;
     .product-grid {
       grid-template-columns: 1fr;
     }
+
+    .section .product-grid {
+      width: calc(100% + 40px);
+      margin-left: -20px;
+      margin-right: -20px;
+      padding-left: 20px;
+      padding-right: 20px;
+  
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+  
 
     .product-card {
       width: 100%;

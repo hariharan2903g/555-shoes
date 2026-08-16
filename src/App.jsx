@@ -18,6 +18,8 @@ import { ToastContainer } from "react-toastify";
 import ViewProducts from "./admin/pages/ViewProducts/ViewProducts";
 import CustomerCarePage from "./pages/CustomerCarePage";
 import ToastProvider from "./components/Toast/ToastProvider";
+import Stock from "./admin/pages/Stock/Stock";
+import OrdersPage from "./pages/OrdersPage";
 
 import MobileOnlyGuard from "./components/MobileOnlyGuard";
 
@@ -133,12 +135,26 @@ function App() {
   path="/admin/view-products"
   element={<ViewProducts />}
 />
+
+<Route
+  path="/admin/stock"
+  element={<Stock />}
+/>
 <Route
     path="/customer-care"
     element={ <CustomerRoute>
     <CustomerCarePage />
       </CustomerRoute>
     }
+/>
+
+<Route
+  path="/orders"
+  element={
+    <CustomerRoute>
+      <OrdersPage />
+    </CustomerRoute>
+  }
 />
 
     <Route

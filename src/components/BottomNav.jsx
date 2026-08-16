@@ -101,7 +101,7 @@ const cartCount = cart.reduce(
   
         <button
             onClick={() =>
-                alert("Orders page coming soon")
+              navigate("/orders")
             }
             >
             <FiPackage/>
