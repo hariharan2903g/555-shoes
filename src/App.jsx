@@ -123,37 +123,41 @@ function App() {
 
 {/* Admin */}
 
-<Route
-  path="/admin"
-  element={<Admin />}
-/>
+{import.meta.env.DEV && (
+  <>
+    <Route
+      path="/admin"
+      element={<Admin />}
+    />
 
-<Route
-  path="/admin/add-product"
-  element={<AddProduct />}
-/>
+    <Route
+      path="/admin/add-product"
+      element={<AddProduct />}
+    />
 
-<Route
-  path="/admin/view-products"
-  element={<ViewProducts />}
-/>
+    <Route
+      path="/admin/view-products"
+      element={<ViewProducts />}
+    />
+
+    <Route
+      path="/admin/edit-products"
+      element={<EditProducts />}
+    />
+
+    <Route
+      path="/admin/edit-product/:id"
+      element={<EditProduct />}
+    />
+
+    <Route
+      path="/admin/stock"
+      element={<Stock />}
+    />
+  </>
+)}
 
 
-
-<Route
-  path="/admin/edit-products"
-  element={<EditProducts />}
-/>
-
-<Route
-  path="/admin/edit-product/:id"
-  element={<EditProduct />}
-/>
-
-<Route
-  path="/admin/stock"
-  element={<Stock />}
-/>
 <Route
     path="/customer-care"
     element={ <CustomerRoute>
