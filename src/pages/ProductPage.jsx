@@ -599,6 +599,63 @@ function checkIfAddedToCart(size, color) {
 
 }
 
+async function handleShare() {
+
+  const shareUrl =
+    `${window.location.origin}/product/${product.id}`;
+
+  const shareData = {
+    title: product.product_name,
+    text: `Check out ${product.product_name} on SkookS`,
+    url: shareUrl,
+  };
+
+  try {
+
+    // Mobile / supported browsers
+    if (navigator.share) {
+
+      await navigator.share(shareData);
+
+    } else {
+
+      // Desktop fallback
+      await navigator.clipboard.writeText(shareUrl);
+
+      showToast("🔗 Product link copied");
+
+    }
+
+  } catch (error) {
+
+    // User closing/cancelling the native share sheet
+    if (error.name !== "AbortError") {
+
+      console.error("Share failed:", error);
+
+      try {
+
+        await navigator.clipboard.writeText(shareUrl);
+
+        showToast("🔗 Product link copied");
+
+      } catch (clipboardError) {
+
+        console.error(
+          "Clipboard failed:",
+          clipboardError
+        );
+
+        showToast("Unable to share product");
+
+      }
+
+    }
+
+  }
+
+}
+
 // Wishlist function
 
 function toggleWishlist() {
@@ -1413,11 +1470,13 @@ productDetails[index+1] && (
       }`}
     >
 
-    <button
-        className="footer-icon-btn"
-    >
-        <FiShare2 />
-    </button>
+<button
+    className="footer-icon-btn"
+    onClick={handleShare}
+    aria-label="Share product"
+>
+    <FiShare2 />
+</button>
 
     <button
     className="footer-icon-btn"
