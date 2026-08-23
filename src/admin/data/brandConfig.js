@@ -7,7 +7,7 @@ export const brandConfig = {
       "Skechers",
       "ASICS",
       "New Balance",
-      "Onitsuka",
+      "Onitsuka Tiger",
       "Hoka",
       "Brooks",
       "Under Armour",

@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { uploadImages, deleteImage, } from "../services/imageService";
+import { deleteImage } from "../services/imageService";
 import SizeSection from "./SizeSection";
 
 function ColorCard({
@@ -73,10 +73,14 @@ function ColorCard({
       
         if (!image) return;
       
-        const success = await deleteImage(image.url);
+        // Existing image already uploaded to Supabase
+        if (image.url) {
+          const success = await deleteImage(image.url);
       
-        if (!success) return;
+          if (!success) return;
+        }
       
+        // Remove image from React state
         setProduct((prev) => ({
           ...prev,
           colors: prev.colors.map((item) => {
@@ -105,7 +109,12 @@ function ColorCard({
           }),
         }));
       
-        console.log("Deleted from Storage");
+        // Clean up local preview URL if this was a newly added image
+        if (image.preview) {
+          URL.revokeObjectURL(image.preview);
+        }
+      
+        console.log("Image deleted");
       };
 
       const showDeleteConfirmation = () => {

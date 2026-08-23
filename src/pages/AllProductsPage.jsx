@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Funnel, ArrowUpDown } from "lucide-react";
 import { supabase } from "../supabase";
 import Header from "../components/Header";
@@ -414,6 +414,22 @@ useEffect(() => {
     };
   
   }, [filterOpen, sortOpen]);
+
+
+  function shuffleArray(array) {
+    const shuffled = [...array];
+  
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+  
+      [shuffled[i], shuffled[j]] = [
+        shuffled[j],
+        shuffled[i],
+      ];
+    }
+  
+    return shuffled;
+  }
     
 
   function filterProducts() {
@@ -713,6 +729,42 @@ useEffect(() => {
       0
   );
 
+
+
+
+  const displayProducts = useMemo(() => {
+
+    const flattened = filteredProducts.flatMap((product) => {
+  
+      if (!product.colors || product.colors.length === 0) {
+        return [
+          {
+            product,
+            displayColor: null,
+            key: product.id,
+          },
+        ];
+      }
+  
+      return product.colors.map((color, index) => ({
+        product,
+        displayColor: color,
+        key: `${product.id}-${color.color}-${index}`,
+      }));
+  
+    });
+  
+    // Randomize only for the default "newest" view
+    if (sortBy === "newest") {
+      return shuffleArray(flattened);
+    }
+  
+    return flattened;
+  
+  }, [filteredProducts, sortBy]);
+
+  
+
   return (
     <>
     <div className="products-banner">
@@ -906,28 +958,37 @@ setSelectedDiscount={setSelectedDiscount}
             }
           >
 
-{filteredProducts.flatMap((product) => {
+{shuffleArray(
+  filteredProducts.flatMap((product) => {
 
-if (!product.colors || product.colors.length === 0) {
-    return [
-        <ProductCard
-            key={product.id}
-            product={product}
-        />
-    ];
-}
+    if (!product.colors || product.colors.length === 0) {
+      return [
+        {
+          product,
+          displayColor: null,
+          key: product.id,
+        },
+      ];
+    }
 
-return product.colors.map((color, index) => (
+    return product.colors.map((color, index) => ({
+      product,
+      displayColor: color,
+      key: `${product.id}-${color.color}-${index}`,
+    }));
 
-    <ProductCard
-        key={`${product.id}-${color.color}-${index}`}
-        product={product}
-        displayColor={color}
-    />
+  })
+).map(({ product, displayColor, key }) => (
 
-));
+  <ProductCard
+    key={key}
+    product={product}
+    {...(displayColor
+      ? { displayColor }
+      : {})}
+  />
 
-})}
+))}
            </div>
 
           {filteredProducts.length === 0 && (
