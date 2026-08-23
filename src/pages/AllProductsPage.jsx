@@ -1,4 +1,30 @@
 import { useState, useEffect, useMemo } from "react";
+
+const PAGE_SHUFFLE_SEED = Math.random();
+
+function seededShuffle(array) {
+  const shuffled = [...array];
+
+  let seed = PAGE_SHUFFLE_SEED;
+
+  function random() {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  }
+
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+
+    [shuffled[i], shuffled[j]] = [
+      shuffled[j],
+      shuffled[i],
+    ];
+  }
+
+  return shuffled;
+}
+
+
 import { Funnel, ArrowUpDown } from "lucide-react";
 import { supabase } from "../supabase";
 import Header from "../components/Header";
@@ -391,13 +417,13 @@ useEffect(() => {
       await supabase
         .from("products")
         .select("*");
-
+  
     if (!error) {
+  
+      console.log("PRODUCTS FETCHED");
+  
       setProducts(data);
     }
-    // console.log(
-    //   data.filter(p => p.brand === "Crocs")
-    // );
   }
 
  
@@ -416,20 +442,20 @@ useEffect(() => {
   }, [filterOpen, sortOpen]);
 
 
-  function shuffleArray(array) {
-    const shuffled = [...array];
+  // function shuffleArray(array) {
+  //   const shuffled = [...array];
   
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
+  //   for (let i = shuffled.length - 1; i > 0; i--) {
+  //     const j = Math.floor(Math.random() * (i + 1));
   
-      [shuffled[i], shuffled[j]] = [
-        shuffled[j],
-        shuffled[i],
-      ];
-    }
+  //     [shuffled[i], shuffled[j]] = [
+  //       shuffled[j],
+  //       shuffled[i],
+  //     ];
+  //   }
   
-    return shuffled;
-  }
+  //   return shuffled;
+  // }
     
 
   function filterProducts() {
@@ -734,6 +760,8 @@ useEffect(() => {
 
   const displayProducts = useMemo(() => {
 
+    console.log("DISPLAY PRODUCTS RENDER");
+  
     const flattened = filteredProducts.flatMap((product) => {
   
       if (!product.colors || product.colors.length === 0) {
@@ -756,7 +784,7 @@ useEffect(() => {
   
     // Randomize only for the default "newest" view
     if (sortBy === "newest") {
-      return shuffleArray(flattened);
+      return seededShuffle(flattened);
     }
   
     return flattened;
@@ -958,37 +986,19 @@ setSelectedDiscount={setSelectedDiscount}
             }
           >
 
-{shuffleArray(
-  filteredProducts.flatMap((product) => {
+{displayProducts.map(
+  ({ product, displayColor, key }) => (
 
-    if (!product.colors || product.colors.length === 0) {
-      return [
-        {
-          product,
-          displayColor: null,
-          key: product.id,
-        },
-      ];
-    }
+    <ProductCard
+      key={key}
+      product={product}
+      {...(displayColor
+        ? { displayColor }
+        : {})}
+    />
 
-    return product.colors.map((color, index) => ({
-      product,
-      displayColor: color,
-      key: `${product.id}-${color.color}-${index}`,
-    }));
-
-  })
-).map(({ product, displayColor, key }) => (
-
-  <ProductCard
-    key={key}
-    product={product}
-    {...(displayColor
-      ? { displayColor }
-      : {})}
-  />
-
-))}
+  )
+)}
            </div>
 
           {filteredProducts.length === 0 && (
